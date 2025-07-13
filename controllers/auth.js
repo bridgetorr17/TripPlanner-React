@@ -27,15 +27,22 @@ const postLogin = (req, res, next) => {
       if (err) { return next(err) }
       console.log('user is ' + user);
       if (!user) {
-        req.flash('errors', info)
-        console.log('sending to login page')
-        return res.redirect('/login')
+        return res.status(401).json({
+          success: false,
+          message: info?.message || 'Incorrect username or password'
+        })
       }
       req.logIn(user, (err) => {
         if (err) { return next(err) }
-        req.flash('success', { msg: 'Success! You are logged in.' })
-        console.log('req.session.returnTo is ' + req.session.returnTo);
-        res.redirect(req.session.returnTo || '/dashboard')
+        console.log('login success, direct client to dashboard');
+        const {id, email} = user;
+        return res.json({
+          success: true,
+          user: {
+            id,
+            email 
+          }
+        })
       })
     })(req, res, next)
   }
