@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body data-trip-id="<%= trip._id%>">
+    <h1><%= trip.trip.tripName %></h1>
+    <a href="/trips/createNew">Start a new trip</a>
+    <a href="/dashboard">Go to Dashboard</a>
+    <a href="/logout">Logout</a>
+
+    <h2>Starting in <%= trip.trip.tripOrigin %></h2>
+
+    <span>We are going to</span>
+
+    <ul>
+        <% for (let i = 0; i < trip.trip.tripStops.length; i++) { %>
+            <li class="location">
+                <span><%= trip.trip.tripStops[i] %></span>
+            </li>
+        <% } %>
+    </ul>
+
+    <a href="/trips/edit/<%= trip.trip._id %>">
+        <button type="submit">Edit trip</button>
+    </a>
+
+    <h4>The trip owner is <%= trip.creator %></h4>
+    
+    <h5>Other trippers are</h5>
+    <ul>
+        <% for (let i = 0; i < trip.contributors.length; i++) { %>
+            <li class="contributor">
+                <span><%= trip.contributors[i] %></span>
+            </li>
+        <% } %>
+    </ul>
+
+</body>
+</html>

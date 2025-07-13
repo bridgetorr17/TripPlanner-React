@@ -1,0 +1,37 @@
+{
+  "name": "tripplanner-react",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "This project was used for MVC backend practice - ZERO FRONT END WORK! (almost, lol). The idea is to be able to make trips and share them with friends, who can also edit the trip.  Users can make accounts, login with authentication, make trips, add friends to those trips, and view both shared and single trips.  Additionally, there is an \"AI feature\" that will consider the current route of your trip and insert a suggestion. Gemini-2.5-flash API was used for this.",
+  "dependencies": {
+    "@google/genai": "^1.4.0",
+    "bcrypt": "^6.0.0",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.18.1",
+    "method-override": "^3.0.0",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.15.1",
+    "passport": "^0.5.3",
+    "passport-local": "^1.0.0",
+    "validator": "^13.15.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bridgetorr17/TripPlanner-React.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bridgetorr17/TripPlanner-React/issues"
+  },
+  "homepage": "https://github.com/bridgetorr17/TripPlanner-React#readme"
+}
