@@ -5,9 +5,9 @@ const LandingPage = () => {
     return (
         <>  
             <h1>Welcome to your Trip Planner and Reminiscer</h1>
-            <a href="/login">Login</a>
-            <a href="/signup">Signup</a>
-            <a href="/dashboard/">ViewTrips</a>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+            <Link to="/dashboard/">ViewTrips</Link>
         </>
     )
 }

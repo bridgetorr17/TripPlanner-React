@@ -1,12 +1,20 @@
+import {  Route, 
+          createBrowserRouter, 
+          createRoutesFromElements, 
+          RouterProvider } from 'react-router-dom'
 import LandingPage from "./pages/LandingPage";
 
 const App = () => {
 
-    console.log('about to return the landing page')
-    
-    return (
-        <LandingPage />
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route path='/'>
+                <Route index element={<LandingPage />} />
+            </Route>
+        )
     )
+
+    return <RouterProvider router={router}/>
 }
 
 export default App;
