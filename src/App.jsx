@@ -5,8 +5,8 @@ import {  Route,
 import LandingPage from "./pages/LandingPage";
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
-import { useNavigate } from "react-router-dom";
 import PageWrapper from './components/PageWrapper';
+import { dashboardLoader } from './pages/DashboardPage';
 
 const App = () => {
     //Login POST 
@@ -29,7 +29,7 @@ const App = () => {
             <Route path='/' element={<PageWrapper />}>
                 <Route index element={<LandingPage />} />
                 <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} />
-                <Route path='/dashboard' element={<DashboardPage/>} />
+                <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
             </Route>
         )
     )
