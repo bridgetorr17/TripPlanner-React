@@ -4,7 +4,9 @@ import {  Route,
           RouterProvider } from 'react-router-dom'
 import LandingPage from "./pages/LandingPage";
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage';
+import TripPage from './pages/TripPage'
 import PageWrapper from './components/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 
@@ -24,12 +26,31 @@ const App = () => {
         return result;
     }
 
+    //Signup POST
+    const signupAttempt = async (singupInfo) => {
+
+        const res = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(singupInfo)
+        });
+
+        const result = await res.json();
+        return result;
+    }
+
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path='/' element={<PageWrapper />}>
                 <Route index element={<LandingPage />} />
                 <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} />
+                <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
+                <Route path='/trips/:id' element={<TripPage isOwner={true} />}/>
+                <Route path='/trips/sharedTrip/:id' element={<TripPage isOwner={false} />}/>
+                <Route path='/logout' element={<LandingPage/>} />
             </Route>
         )
     )

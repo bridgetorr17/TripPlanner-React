@@ -19,7 +19,10 @@ const postLogin = (req, res, next) => {
   
     if (validationErrors.length) {
       req.flash('errors', validationErrors)
-      return res.redirect('/login')
+      return res.status(401).json({
+          success: false,
+          message: info?.message || 'Incorrect username or password'
+        })
     }
     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
   
@@ -55,7 +58,7 @@ const getlogout = (req, res) => {
     req.session.destroy((err) => {
       if (err) console.log('Error : Failed to destroy the session during logout.', err)
       req.user = null
-      res.redirect('/')
+      //res.redirect('/')
     })
   }
   
@@ -69,6 +72,8 @@ const getSignup = (req, res) => {
   }
   
 const postSignup = async (req, res, next) => {
+
+  console.log(`this is the request! ${req.body.email}`);
     try{
         const validationErrors = []
         if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
@@ -78,7 +83,10 @@ const postSignup = async (req, res, next) => {
         if (validationErrors.length > 0) {
             console.log('here1')
             req.flash('errors', validationErrors)
-            return res.redirect('../signup')
+            return res.json({
+              success: false,
+              message: 'Need a valid email and password needs to be 8 characters'
+            })
         }
         req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
     
@@ -89,7 +97,10 @@ const postSignup = async (req, res, next) => {
         if(existingUser){
             console.log('here2')
             req.flash('errors', { msg: 'Account with that email address or username already exists.' })
-            return res.redirect('../signup')
+            return res.json({
+              success: false,
+              message: 'Account already exists with that username or password'
+            })
         }
 
         const user = new User({
@@ -106,8 +117,11 @@ const postSignup = async (req, res, next) => {
                 console.log(err);
                 return next(err)
             }
-            console.log('redirecting to dashboard GET hopefully')
-            return res.redirect('/dashboard')
+
+            console.log('returned successfully')
+            return res.json({
+              success: true
+            });
         })
     }
     catch(err){

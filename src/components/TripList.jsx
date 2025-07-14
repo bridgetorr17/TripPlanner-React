@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 const TripList = ({name, owner, trips}) => {
 
     let urlPref = owner ? '/trips/' : '/trips/sharedTrip/'
+    
     return (
         <>
             <h2>{name}</h2>
