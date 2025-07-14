@@ -1,4 +1,5 @@
 import { useLoaderData } from "react-router-dom"
+import TripList from '../components/TripList'
 
 const DashboardPage = () => {
     const { userTrips, sharedTrips } = useLoaderData();
@@ -6,8 +7,8 @@ const DashboardPage = () => {
     return (
         <>  
             <h1>DASBOARD</h1>
-            {/* <TripList name={'My trips'} trips={userTrips}/>
-            <TripList name={'Shared trips'} trips={sharedTrips}/> */}
+            <TripList name={'My trips'} owner={true} trips={userTrips}/>
+            <TripList name={'Shared trips'} owner={false} trips={sharedTrips}/>
         </>
     )
 }
