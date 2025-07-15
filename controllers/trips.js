@@ -11,10 +11,17 @@ const getTrip = async (req, res) => {
         const details = await tripDetails(tripId);
 
         console.log(details);
-        res.render('viewTrip.ejs', {trip: details})
+        return res.json({
+            success: true,
+            trip: details.trip
+        });
     }
     catch(err){
         console.error(err);
+        return res.json({
+            success: false,
+            message: err
+        })
     }
 }
 

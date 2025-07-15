@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import TripPage from './pages/TripPage'
 import PageWrapper from './components/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
+import { tripLoader } from './pages/TripPage';
 
 const App = () => {
     //Login POST 
@@ -48,8 +49,8 @@ const App = () => {
                 <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} />
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
-                <Route path='/trips/:id' element={<TripPage isOwner={true} />}/>
-                <Route path='/trips/sharedTrip/:id' element={<TripPage isOwner={false} />}/>
+                <Route path='/trips/:id' element={<TripPage isOwner={true} />} loader={tripLoader}/>
+                <Route path='/trips/sharedTrip/:id' element={<TripPage isOwner={false}/>} loader={tripLoader}/>
                 <Route path='/logout' element={<LandingPage/>} />
             </Route>
         )
