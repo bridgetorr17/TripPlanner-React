@@ -49,8 +49,8 @@ const App = () => {
                 <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} />
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
-                <Route path='/trips/:id' element={<TripPage isOwner={true} />} loader={tripLoader}/>
-                <Route path='/trips/sharedTrip/:id' element={<TripPage isOwner={false}/>} loader={tripLoader}/>
+                <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
+                <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
                 <Route path='/logout' element={<LandingPage/>} />
             </Route>
         )

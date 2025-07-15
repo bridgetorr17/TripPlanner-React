@@ -4,10 +4,6 @@ const getDashboard = async (req, res) => {
     try{
         let userTrips = await Trip.find({createdBy:req.user.id})
         let sharedTrips = await Trip.find({contributors: { $all: [req.user.id]}})
-        // res.render('dashboard.ejs', { 
-        //     name: req.user.userName,
-        //     userTrips: userTrips,
-        //     sharedTrips: sharedTrips});
         return res.json({
             success: true,
             trips: {

@@ -13,7 +13,7 @@ const getTrip = async (req, res) => {
         console.log(details);
         return res.json({
             success: true,
-            trip: details.trip
+            trip: details
         });
     }
     catch(err){
