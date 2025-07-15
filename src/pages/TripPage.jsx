@@ -16,7 +16,7 @@ const TripPage = ({owner}) => {
     
     const tripData = useLoaderData().trip;
     const trip = tripData.trip;
-    console.log(tripData)
+
     return (
         <>
             <h1>Trip Page</h1>
@@ -34,7 +34,10 @@ const TripPage = ({owner}) => {
             
             <List arr={tripData.contributors}/>
 
-            <Link to={`/trips/edit/${tripData.trip._id}`}>Edit this Trip</Link>
+            <Link 
+                to={`/trips/edit/${tripData.trip._id}`}
+                state={ {owner} }
+            >Edit this Trip</Link>
         </>
     )
 }

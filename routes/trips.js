@@ -17,7 +17,7 @@ router.put('/removeLocation/:id', editTripController.removeLocation);
 router.put('/addLocation/:id', editTripController.addLocation);
 router.get('/aiSuggestion/:id', editTripController.getSuggestion);
 router.put('/aiSuggestion/:id', editTripController.addLocation);
-router.get('/edit/:id', editTripController.getEditTrip);
+router.get('/edit/:id', tripController.getTrip);
 router.put('/addContributor/:id', editTripController.putNewContributors);
 
 

@@ -10,7 +10,6 @@ const getTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
-        console.log(details);
         return res.json({
             success: true,
             trip: details

@@ -10,17 +10,18 @@ const getEditTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
-        console.log(req.user.id)
-        console.log(details.trip.createdBy.toString())
-
-        res.render('editTrip.ejs', {trip: details,
-                                    ai: {
-                                        suggestion: '',
-                                        reason: '',
-                                        action: 'GET',
-                                        actionName: 'Get suggested location'
-                                    },
-                                    user: req.user
+        // res.render('editTrip.ejs', {trip: details,
+        //                             ai: {
+        //                                 suggestion: '',
+        //                                 reason: '',
+        //                                 action: 'GET',
+        //                                 actionName: 'Get suggested location'
+        //                             },
+        //                             user: req.user
+        // })
+        return res.json({
+            success: true,
+            message: 'hello from the backend'
         })
     }
     catch(err){
