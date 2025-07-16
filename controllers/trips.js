@@ -71,11 +71,18 @@ const deleteTrip = async (req, res) => {
     console.log('delete trip function reached');
     try{
         await Trip.findOneAndDelete({_id: req.params.id});
-        console.log('deleted and redirected')
-        res.redirect('/dashboard');
+        
+        return res.json({
+            success: true,
+            message: 'trip was deleted'
+        });
     }
     catch(err){
         console.error(err);
+        return res.json({
+            success: false,
+            message: err
+        });
     }
 }
 
