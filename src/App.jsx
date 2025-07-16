@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage';
+import CreateTripPage from './pages/CreateTripPage'
 import TripPage from './pages/TripPage'
 import EditTripPage from './pages/EditTripPage';
 import PageWrapper from './components/PageWrapper';
@@ -50,6 +51,7 @@ const App = () => {
                 <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} />
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
+                <Route path='/trips/createNew' element={<CreateTripPage />}/>
                 <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
                 <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
                 <Route path='/trips/edit/:id' element={<EditTripPage />} loader={tripLoader}/>
