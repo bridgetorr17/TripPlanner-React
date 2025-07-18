@@ -41,16 +41,17 @@ const postCreateNewTrip = async (req, res) => {
         contributors = [contributors];
     }
 
-    console.log(contributors);
-
     const contributorIds = 
         await Promise.all(
             contributors.map(async (cont) => {
-                console.log(`the first username is : ${cont}`);
                 const user = await User.findOne({ userName: cont })
                 return user ? user._id : null;
             })
         );
+    console.log(req.body.tripName);
+    console.log(Array.isArray(req.body.tripStops) ? req.body.tripStops : [req.body.tripStops])
+    console.log(req.user._id)
+    console.log(contributorIds)
 
     try{
         await Trip.create({
@@ -61,10 +62,17 @@ const postCreateNewTrip = async (req, res) => {
             contributors: contributorIds
         });
 
-        res.redirect('/dashboard');
+        return res.json({
+            success: true,
+            message: 'trip create backend reached'
+        })
     }
     catch(err) {
         console.error(err);
+        return res.json({
+            success: false,
+            message: 'There was an error in the backend'
+        })
     }
 }
 const deleteTrip = async (req, res) => {

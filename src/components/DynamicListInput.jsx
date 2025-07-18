@@ -1,4 +1,4 @@
-const DynamicListInput = ({ label, values, setValues }) => {
+const DynamicListInput = ({ label, values, setValues, name }) => {
 
     return (
         <>
@@ -7,6 +7,7 @@ const DynamicListInput = ({ label, values, setValues }) => {
                     <div key={ind}>
                         <input 
                             type="text"
+                            name={name}
                             value={val}
                             placeholder={`${label} #${ind+1}`}
                             onChange={(e) => setValues(prev => 
