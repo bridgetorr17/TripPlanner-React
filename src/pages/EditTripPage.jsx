@@ -1,7 +1,7 @@
 import { useLocation, useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import NavLinks from "../components/NavLinks";
-import List from "../components/List";
+import DynamicListInput from "../components/DynamicListInput";
 
 const EditTripPage = () => {
     const loc = useLocation()
@@ -9,6 +9,9 @@ const EditTripPage = () => {
 
     const tripData = useLoaderData().trip;
     const trip = tripData.trip;
+
+    const [tripStops, setTripStops] = useState(trip.tripStops);
+    const [tripContributors, setTripContributors] = useState(tripData.contributors);
 
     const nav = useNavigate();
 
@@ -30,25 +33,49 @@ const EditTripPage = () => {
         }
     }
 
+    const editTrip = async (e) => {
+        
+        e.preventDefault();
+
+        const tripEdits = {
+            tripStops,
+            tripContributors
+        }
+
+        const res = await fetch(`/api/trips/edit/${trip._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tripEdits)
+        });
+
+        console.log(res.message);
+        return nav('/dashboard')
+    }
+
     return(
         <>
             <h1>Edit trip</h1>
             <NavLinks />
 
+            {owner ? <button onClick={() => deleteTrip()}>Delete this trip</button> : null}
+
             <h2>We start in {trip.tripOrigin}</h2>
 
             <span>We are going to</span>
 
-            <List arr={trip.tripStops}/>
+            <form onSubmit={editTrip}>
+                <DynamicListInput label='Stop' values={tripStops} setValues={setTripStops} name='tripStops'/>
+                <span>This trip is run by {tripData.creator}</span>
+                <br />
+                <br />
+                <span>Other contributors are</span>
+                <DynamicListInput label='Contributor' values={tripContributors} setValues={setTripContributors} name='tripContributors'/>
 
-            <span>This trip is run by {tripData.creator}</span>
-            <br />
-            <br />
-            <span>Other contributors are</span>
-            
-            <List arr={tripData.contributors}/>
+                <button type="submit">Save Edits</button>
+            </form>
 
-            {owner ? <button onClick={() => deleteTrip()}>Delete this trip</button> : null}
         </>
     )
 }

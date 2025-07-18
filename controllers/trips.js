@@ -63,8 +63,7 @@ const postCreateNewTrip = async (req, res) => {
         });
 
         return res.json({
-            success: true,
-            message: 'trip create backend reached'
+            success: true
         })
     }
     catch(err) {

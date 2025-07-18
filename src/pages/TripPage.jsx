@@ -4,9 +4,9 @@ import List from "../components/List"
 import { Link } from "react-router-dom"
 
 const tripLoader = async ({ request }) => {
-    const url = request.url.slice(21)
+    const tripId = request.url.slice(-24)
     
-    const trip = await fetch(`/api${url}`)
+    const trip = await fetch(`/api/trips/${tripId}`)
     const tripRes = await trip.json();
 
     return tripRes;

@@ -15,9 +15,10 @@ router.get('/sharedTrip/:id', tripController.getTrip);
 //editTripController
 router.put('/removeLocation/:id', editTripController.removeLocation);
 router.put('/addLocation/:id', editTripController.addLocation);
+router.put('/edit/:id', editTripController.editLocAndCont);
 router.get('/aiSuggestion/:id', editTripController.getSuggestion);
 router.put('/aiSuggestion/:id', editTripController.addLocation);
-router.get('/edit/:id', tripController.getTrip);
+//router.get('/edit/:id', tripController.getTrip);
 router.put('/addContributor/:id', editTripController.putNewContributors);
 
 

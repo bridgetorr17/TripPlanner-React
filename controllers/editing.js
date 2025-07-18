@@ -10,15 +10,6 @@ const getEditTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
-        // res.render('editTrip.ejs', {trip: details,
-        //                             ai: {
-        //                                 suggestion: '',
-        //                                 reason: '',
-        //                                 action: 'GET',
-        //                                 actionName: 'Get suggested location'
-        //                             },
-        //                             user: req.user
-        // })
         return res.json({
             success: true,
             message: 'hello from the backend'
@@ -121,6 +112,21 @@ const putNewContributors = async (req, res) => {
     }
 }
 
+const editLocAndCont = async (req, res) => {
+    const tripId = req.params.id;
+    const trip = await Trip.findById(tripId);
+    
+    const updatedStops = req.body.tripStops;
+    const updatedContributors = req.body.tripContributors;
+
+    console.log(updatedStops, updatedContributors)
+
+    return res.json({
+        success: true,
+        message: 'made it to edit api'
+    });
+}
+
 const getSuggestion = async (req, res) => {
 
     try{
@@ -175,5 +181,6 @@ const getSuggestion = async (req, res) => {
 export {getEditTrip,
         removeLocation,
         addLocation, 
+        editLocAndCont,
         putNewContributors, 
         getSuggestion};
