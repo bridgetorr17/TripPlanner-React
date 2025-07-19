@@ -5,113 +5,6 @@ import { createPartFromFunctionResponse, GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
-const getEditTrip = async (req, res) => {
-    try{
-        const tripId = req.params.id;
-        const details = await tripDetails(tripId);
-
-        return res.json({
-            success: true,
-            message: 'hello from the backend'
-        })
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-const removeLocation = async (req, res) => {
-    try{
-        const tripId = req.params.id;
-        const location = req.query.location;
-
-        await Trip.findByIdAndUpdate(
-            tripId,
-            { $pull : { tripStops: location } },
-            { new: true}
-        );
-
-        const details = await tripDetails(tripId);
-
-        res.render('editTrip.ejs', {trip: details,
-                                    ai: {
-                                        suggestion: '',
-                                        reason: '',
-                                        action: 'GET',
-                                        actionName: 'Get suggested location'
-                                    },
-                                    user: req.user
-        })
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-const addLocation = async (req, res) => {
-    try{
-        const tripId = req.params.id;
-        const newLocation = req.body.newLocation;
-
-        await Trip.findByIdAndUpdate(
-            tripId,
-            { $push: { tripStops: newLocation } },
-            { new: true }
-        );
-
-        const details = await tripDetails(tripId);
-        console.log(details);
-        res.render('editTrip.ejs', {trip: details,
-                                    ai: {
-                                        suggestion: '',
-                                        reason: '',
-                                        action: 'GET',
-                                        actionName: 'Get suggested location'
-                                    },
-                                    user: req.user
-        })
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-const putNewContributors = async (req, res) => {
-    try{
-        const newContributor = req.body.newTripper;
-        const tripId = req.params.id;
-        console.log(`friend to add: ${newContributor}`)
-
-        const newCont = await User.findOne({ userName: newContributor });
-
-        //trip that is being updated
-        const trip = await Trip.findById(tripId);
-
-        //add new contributors to trip by id(if not already there)
-        await Trip.findByIdAndUpdate(
-            tripId,
-            { $push: {contributors: newCont._id} },
-            {new: true}
-        );
-
-        const details = await tripDetails(tripId);
-
-        console.log(details);
-        res.render('editTrip.ejs', {trip: details,
-                                    ai: {
-                                        suggestion: '',
-                                        reason: '',
-                                        action: 'GET',
-                                        actionName: 'Get suggested location'
-                                    },
-                                    user: req.user
-        })
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
 const editLocAndCont = async (req, res) => {
     try{
         const tripId = req.params.id;
@@ -203,9 +96,5 @@ const getSuggestion = async (req, res) => {
 }
 
 
-export {getEditTrip,
-        removeLocation,
-        addLocation, 
-        editLocAndCont,
-        putNewContributors, 
+export {editLocAndCont, 
         getSuggestion};

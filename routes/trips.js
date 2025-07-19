@@ -6,20 +6,15 @@ import { ensureAuth } from '../middleware/auth.js';
 const router = express.Router();
 
 //tripController
-router.get('/createNew', tripController.getCreateNewTrip);
 router.post('/createNew', tripController.postCreateNewTrip);
 router.delete('/delete/:id', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
 router.get('/sharedTrip/:id', tripController.getTrip);
 
 //editTripController
-router.put('/removeLocation/:id', editTripController.removeLocation);
-router.put('/addLocation/:id', editTripController.addLocation);
 router.put('/edit/:id', editTripController.editLocAndCont);
 router.get('/aiSuggestion/:id', editTripController.getSuggestion);
-router.put('/aiSuggestion/:id', editTripController.addLocation);
-//router.get('/edit/:id', tripController.getTrip);
-router.put('/addContributor/:id', editTripController.putNewContributors);
+//router.put('/aiSuggestion/:id', editTripController.addLocation);
 
 
 export {router};

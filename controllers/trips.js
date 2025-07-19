@@ -24,16 +24,6 @@ const getTrip = async (req, res) => {
     }
 }
 
-const getCreateNewTrip = async (req, res) => {
-    console.log('creating new trip')
-    try{
-        res.render('createTrip.ejs')
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
 const postCreateNewTrip = async (req, res) => {
     let contributors = req.body.tripContributors;
 
@@ -48,10 +38,6 @@ const postCreateNewTrip = async (req, res) => {
                 return user ? user._id : null;
             })
         );
-    console.log(req.body.tripName);
-    console.log(Array.isArray(req.body.tripStops) ? req.body.tripStops : [req.body.tripStops])
-    console.log(req.user._id)
-    console.log(contributorIds)
 
     try{
         await Trip.create({
@@ -94,6 +80,5 @@ const deleteTrip = async (req, res) => {
 }
 
 export {getTrip, 
-        getCreateNewTrip, 
         postCreateNewTrip, 
         deleteTrip};
