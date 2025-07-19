@@ -50,7 +50,6 @@ const EditTripPage = () => {
             body: JSON.stringify(tripEdits)
         });
 
-        console.log(res.message);
         return nav('/dashboard')
     }
 

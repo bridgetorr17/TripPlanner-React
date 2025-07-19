@@ -113,18 +113,43 @@ const putNewContributors = async (req, res) => {
 }
 
 const editLocAndCont = async (req, res) => {
-    const tripId = req.params.id;
-    const trip = await Trip.findById(tripId);
-    
-    const updatedStops = req.body.tripStops;
-    const updatedContributors = req.body.tripContributors;
+    try{
+        const tripId = req.params.id;
+        const trip = await Trip.findById(tripId);
 
-    console.log(updatedStops, updatedContributors)
+        const updatedStops = req.body.tripStops;
+        const updatedContributors = req.body.tripContributors;
 
-    return res.json({
-        success: true,
-        message: 'made it to edit api'
-    });
+        const updatedContributorsIds = await Promise.all(
+            updatedContributors.map(async (cont) => {
+                const contUser = await User.findOne({ userName: cont });
+                return contUser._id;
+            })
+        )
+
+        await Trip.findByIdAndUpdate(
+                tripId,
+                {
+                    $set: {
+                        tripStops: updatedStops,
+                        contributors: updatedContributorsIds
+                    }
+                },
+                {new: true}
+            );
+
+        return res.json({
+            success: true,
+            message: 'Successfully saved edits'
+        });
+    }
+    catch(err){
+        console.log(err);
+        return res.json({
+            success: false,
+            message: 'There was an error saving those edits'
+        });
+    }
 }
 
 const getSuggestion = async (req, res) => {
