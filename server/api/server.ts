@@ -4,11 +4,11 @@ const app = express();
 
 //mongodb
 import mongoose, { mongo } from 'mongoose';
-import {connectDB} from './config/database.js';
+import { connectDB } from './config/database.js'
 
 //env variables
 import dotenv from 'dotenv';
-dotenv.config({path: './config/.env'})
+dotenv.config({path: '../../.env'})
 
 //auth
 import passport from './config/passport.js'
@@ -54,10 +54,12 @@ app.use(passport.session());
 app.use(flash());
 
 //use routers
-app.use('/', homeRoutes);
-app.use('/dashboard', dashboardRoutes);
-app.use('/trips', tripRoutes);
+app.use('/api/', homeRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/trips', tripRoutes);
 
-app.listen(8000, () => {
-    console.log('server running on port 8000');
-})
+// app.listen(8000, () => {
+//     console.log('server running on port 8000');
+// })
+
+export default app;

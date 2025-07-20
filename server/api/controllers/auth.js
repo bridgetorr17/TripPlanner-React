@@ -1,7 +1,6 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
-import { networkInterfaces } from 'os';
 
  const getLogin = (req, res) => {
   console.log('req.isAuth on the get login is ' + req.isAuthenticated())
