@@ -1,7 +1,7 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
 import {tripDetails} from '../middleware/tripDetails.js';
-import { createPartFromFunctionResponse, GoogleGenAI } from '@google/genai';
+//import { createPartFromFunctionResponse, GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
