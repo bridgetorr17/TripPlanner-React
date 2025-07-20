@@ -9,7 +9,7 @@
   "license": "ISC",
   "description": "",
   "functions": {
-    "api/**/*.js": {
+    "api/**/*.{js, ts}": {
       "includeFiles": "node_modules/@google/genai/**"
     }
   },
