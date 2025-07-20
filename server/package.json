@@ -8,6 +8,11 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "node_modules/@google/genai/**"
+    }
+  },
   "dependencies": {
     "@google/genai": "^1.10.0",
     "bcrypt": "^6.0.0",
