@@ -1,5 +1,4 @@
 import { useLoaderData } from "react-router-dom"
-import NavLinks from "../components/NavLinks"
 import List from "../components/List"
 import { Link } from "react-router-dom"
 

@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom"
 import { useState } from "react";
 import TripList from '../components/TripList'
 import NavLinks from "../components/NavLinks";
+import { Link } from "react-router-dom";
 import CreateTripPage from "./CreateTripPage.jsx"
 
 const DashboardPage = () => {
@@ -24,6 +25,9 @@ const DashboardPage = () => {
                 <h1 className="text-3xl font-bold mb-4 text-blue-700">
                     {userName.toUpperCase()}'s DASHBOARD
                 </h1>
+                <Link to="/logout">
+                    <h6 className="text-xl text-blue-400">Logout</h6>
+                </Link>
             </section>
             <NavLinks activeTab={activeTab} setActiveTab={setActiveTab}/>
             <section className="space-y-12">

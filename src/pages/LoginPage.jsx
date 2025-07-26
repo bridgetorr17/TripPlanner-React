@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { FaE } from "react-icons/fa6";
 
 const LoginPage = ({loginAttempt}) => {
 

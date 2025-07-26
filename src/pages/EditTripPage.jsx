@@ -1,6 +1,5 @@
 import { useLocation, useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import NavLinks from "../components/NavLinks";
 import DynamicListInput from "../components/DynamicListInput";
 import { FaSave, FaTrash } from "react-icons/fa";
 

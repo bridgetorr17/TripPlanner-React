@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignupPage = ({signupAttempt}) => {
 
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
     const [confirmPassword, setConfrimPassword] = useState('');
+    const [signupError, setSignupError] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -28,14 +30,18 @@ const SignupPage = ({signupAttempt}) => {
         try{
             const result = await signupAttempt(signupAttemptInfo);
             nav = result.success ? '/dashboard' : '/signup';
+
+            if (!result.success) {
+                setSignupError(result.message);
+                throw result.message;
+            }
         }
         catch(err){
-            console.error(err);
-            if(!result.success) toast.error(result.message);
+            console.log(err);
         }
         finally{
             setLoading(false);
-            return navigate(nav);
+            navigate(nav);
         }
     }
 
@@ -62,15 +68,25 @@ const SignupPage = ({signupAttempt}) => {
                         className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
                         disabled={loading}
                     />
-                    <input 
-                        type="password"
-                        name="password" 
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} 
-                        className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
-                        disabled={loading}
-                    />
+                    <div className="flex flex-row justify-between items-center px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition">
+                        <input 
+                            type={showPassword ? "text" : "password"}
+                            name="password" 
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} 
+                            className="focus:outline-none focus:ring-0"
+                            disabled={loading}
+                        />
+                        <button
+                            type="button"
+                            onClick={(e) => setShowPassword(prev => !prev)}
+                            className=" text-blue-500 hover:text-blue-700"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
                     <input 
                         type="password"
                         name="confirmPassword" 
@@ -80,6 +96,9 @@ const SignupPage = ({signupAttempt}) => {
                         className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
                         disabled={loading}
                     />
+                    <div className="text-center">
+                        {signupError.map(err => <p className="text-red-600 font-semibold">{err.msg}</p>)}      
+                    </div>
                     <button type="submit"
                             className={`mt-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
                                         ${loading
