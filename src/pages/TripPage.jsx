@@ -18,11 +18,11 @@ const TripPage = ({owner}) => {
     const trip = tripData.trip;
 
     return (
-        <div className="flex flex-row items-center bg-sky-50 text-blue-800 min-h-screen p-8">
-            <div className="w-full max-w-3xl mb-8">
-                <h1 className="text-3xl font-bold text-blue-700 mb-4">Trip Page</h1>
+        <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
+            <div className="w-full max-w-3xl mb-8 flex flex-row items-center justify-start">
+                <h1 className="text-3xl font-bold text-blue-700 p-6">Trip Page</h1>
                 <Link to='/dashboard'>
-                    <h2 className="text-2xl text-blue-500 mb-4 hover:text-blue-600">DASHBOARD</h2>
+                    <h2 className="text-2xl text-blue-500 p-6 hover:text-blue-600">DASHBOARD</h2>
                 </Link>
             </div>
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 space-y-6">
