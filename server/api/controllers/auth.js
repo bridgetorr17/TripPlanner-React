@@ -19,7 +19,6 @@ const postLogin = (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) { return next(err) }
       if (!user) {
-        console.log('user is ' + user);
         return res.status(401).json({
           success: false,
           message: 'Incorrect username or password'
@@ -27,7 +26,6 @@ const postLogin = (req, res, next) => {
       }
       req.logIn(user, (err) => {
         if (err) { return next(err) }
-        console.log('login success, direct client to dashboard');
         const {id, email} = user;
         return res.json({
           success: true,
@@ -41,14 +39,12 @@ const postLogin = (req, res, next) => {
   }
   
 const getlogout = (req, res) => {
-  console.log('here in the logout');
     req.logout(() => {
       console.log('User has logged out.')
     })
     req.session.destroy((err) => {
       if (err) console.log('Error : Failed to destroy the session during logout.', err)
       req.user = null
-      //res.redirect('/')
     })
   }
   
@@ -62,7 +58,6 @@ const postSignup = async (req, res, next) => {
           {userName: req.body.userName}]})
           
       if(existingUser){
-          console.log('here2');
           return res.json({
             success: false,
             message: [{ msg: 'Account already exists with that username or email'}]
@@ -98,19 +93,15 @@ const postSignup = async (req, res, next) => {
 
         req.logIn(user, (err) => {
             if(err){
-                console.log('here3');
                 console.log(err);
                 return next(err)
             }
-
-            console.log('returned successfully')
             return res.json({
               success: true
             });
         })
     }
     catch(err){
-        console.log('here4')
         return next(err)
     }
   }

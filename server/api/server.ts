@@ -8,7 +8,7 @@ import { connectDB } from './config/database.js'
 
 //env variables
 import dotenv from 'dotenv';
-dotenv.config({path: '../../.env'})
+dotenv.config({path: '../../.env', quiet: true})
 
 //auth
 import passport from './config/passport.js'

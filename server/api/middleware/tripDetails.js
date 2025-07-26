@@ -5,22 +5,27 @@ const tripDetails = async (tripId) => {
     const trip = await Trip.findById(tripId).lean();
     const creator = await User.findById(trip.createdBy);
     const creatorName = creator.userName;
-
     const tripContributors = trip.contributors;
+
+    console.log(`in tripDetails, here is the contributors array: ${tripContributors}`)
+
     let contNames = [];
     if(tripContributors[0] !== null) {
         contNames = await Promise.all(
             tripContributors.map(async (cont) => {
                 const contUser = await User.findById(cont);
-                return contUser.userName;
+                if (contUser === null) return null;
+                else return contUser.userName;
             })
         )
     }
 
+    const existingUsers = contNames.filter(user => user !== null)
+
     return {
         trip: trip,
         creator: creatorName,
-        contributors: contNames
+        contributors: existingUsers
     }
 }
 

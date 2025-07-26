@@ -13,8 +13,6 @@ router.get('/sharedTrip/:id', tripController.getTrip);
 
 //editTripController
 router.put('/edit/:id', editTripController.editLocAndCont);
-//router.get('/aiSuggestion/:id', editTripController.getSuggestion);
-//router.put('/aiSuggestion/:id', editTripController.addLocation);
 
 
 export {router};
