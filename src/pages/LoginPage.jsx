@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import bg from '../photos/landingPageBackground.jpg'
 import Spinner from "../components/Spinner";
 
 const LoginPage = ({loginAttempt}) => {
