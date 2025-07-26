@@ -21,8 +21,9 @@ const DashboardPage = () => {
     return (
         <div className="flex flex-col p-12 bg-sky-50 text-blue-800 min-h-screen">
             <section className="flex flex-row justify-between">
-                <h1 className="text-3xl font-bold mb-4 text-blue-700">DASHBOARD</h1>
-                <h2 className="text-2xl font-bold mb-4 text-blue-700">{userName.toUpperCase()}</h2>
+                <h1 className="text-3xl font-bold mb-4 text-blue-700">
+                    {userName.toUpperCase()}'s DASHBOARD
+                </h1>
             </section>
             <NavLinks activeTab={activeTab} setActiveTab={setActiveTab}/>
             <section className="space-y-12">

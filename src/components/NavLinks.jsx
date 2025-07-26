@@ -9,12 +9,6 @@ const NavLinks = ({activeTab, setActiveTab}) => {
     ]
 
     return (
-        // <div className="flex flex-row">            
-        //     <Link to={'/dashboard'} className="text-teal-600 hover:text-teal-800 p-3">Dashboard</Link>
-        //     <Link to={'/trips/createNew'} className="text-teal-600 hover:text-teal-800 p-3">Start a new trip</Link>
-        //     <Link to={'/logout'} className="text-teal-600 hover:text-teal-800 p-3">Logout</Link>
-        // </div>
-
         <div className="flex space-x-4 mb-8">
             {tabs.map(tab => (
                 <button
