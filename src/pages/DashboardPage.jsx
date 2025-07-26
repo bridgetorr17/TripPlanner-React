@@ -1,20 +1,32 @@
 import { useLoaderData } from "react-router-dom"
+import { useState } from "react";
 import TripList from '../components/TripList'
 import NavLinks from "../components/NavLinks";
+import CreateTripPage from "./CreateTripPage.jsx"
 
 const DashboardPage = () => {
-    const { userTrips, sharedTrips } = useLoaderData();
+    const { userTrips, sharedTrips, userName } = useLoaderData();
+    const [activeTab, setActiveTab] = useState('my');
+
+    let content = null;
+
+    if (activeTab === 'my'){
+        content = <TripList owner={true} trips={userTrips} />
+    } else if (activeTab === 'shared'){
+        content = <TripList owner={false} trips={sharedTrips} />
+    } else if (activeTab === 'create'){
+        content = <CreateTripPage />
+    }
 
     return (
         <div className="flex flex-col p-12 bg-sky-50 text-blue-800 min-h-screen">
             <section className="flex flex-row justify-between">
                 <h1 className="text-3xl font-bold mb-4 text-blue-700">DASHBOARD</h1>
-                <h2 className="text-2xl font-bold mb-4 text-blue-700">USERNAME</h2>
+                <h2 className="text-2xl font-bold mb-4 text-blue-700">{userName.toUpperCase()}</h2>
             </section>
-            <NavLinks />
+            <NavLinks activeTab={activeTab} setActiveTab={setActiveTab}/>
             <section className="space-y-12">
-                <TripList name={'My trips'} owner={true} trips={userTrips}/>
-                <TripList name={'Shared trips'} owner={false} trips={sharedTrips}/>
+                {content}
             </section>
        </div> 
     )
@@ -24,10 +36,11 @@ const DashboardPage = () => {
 const dashboardLoader = async () => {
     const trips = await fetch(`/api/dashboard`)
     const tripsRes = await trips.json();
-
+    const userName = tripsRes.userName;
     return {
         userTrips: tripsRes.trips.userTrips,
-        sharedTrips: tripsRes.trips.sharedTrips
+        sharedTrips: tripsRes.trips.sharedTrips,
+        userName
     }
 }
 

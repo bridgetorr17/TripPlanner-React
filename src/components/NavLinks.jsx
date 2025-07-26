@@ -1,13 +1,35 @@
 import { Link } from "react-router-dom"
 
-const NavLinks = () => {
-    return (
-        <div className="flex flex-row">            
-            <Link to={'/dashboard'} className="text-teal-600 hover:text-teal-800 p-3">Dashboard</Link>
-            <Link to={'/trips/createNew'} className="text-teal-600 hover:text-teal-800 p-3">Start a new trip</Link>
-            <Link to={'/logout'} className="text-teal-600 hover:text-teal-800 p-3">Logout</Link>
-        </div>
+const NavLinks = ({activeTab, setActiveTab}) => {
 
+    const tabs = [
+        { key: 'my', label: 'My Trips' },
+        { key: 'shared', label: 'Shared Trips' },
+        { key: 'create', label: 'Create New Trip' }
+    ]
+
+    return (
+        // <div className="flex flex-row">            
+        //     <Link to={'/dashboard'} className="text-teal-600 hover:text-teal-800 p-3">Dashboard</Link>
+        //     <Link to={'/trips/createNew'} className="text-teal-600 hover:text-teal-800 p-3">Start a new trip</Link>
+        //     <Link to={'/logout'} className="text-teal-600 hover:text-teal-800 p-3">Logout</Link>
+        // </div>
+
+        <div className="flex space-x-4 mb-8">
+            {tabs.map(tab => (
+                <button
+                    key={tab.key}
+                    onClick={() => setActiveTab(tab.key)}
+                    className={
+                        activeTab === tab.key
+                        ? 'p-3 text-xl font-bold text-teal-900'
+                        : 'p-3 text-teal-600 hover:text-teal-800'
+                    }
+                >
+                    {tab.label}
+                </button>
+            ))}
+        </div>
     )
 }
 
