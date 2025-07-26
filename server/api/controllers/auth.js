@@ -1,15 +1,6 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
-
- const getLogin = (req, res) => {
-  console.log('req.isAuth on the get login is ' + req.isAuthenticated())
-    if (req.isAuthenticated()) {
-      console.log('this user is already logged in, return them to the dashboard');
-      return res.redirect('/dashboard')
-    }
-    res.render('login', { })
-  }
   
 const postLogin = (req, res, next) => {
     const validationErrors = []
@@ -27,11 +18,11 @@ const postLogin = (req, res, next) => {
   
     passport.authenticate('local', (err, user, info) => {
       if (err) { return next(err) }
-      console.log('user is ' + user);
       if (!user) {
+        console.log('user is ' + user);
         return res.status(401).json({
           success: false,
-          message: info?.message || 'Incorrect username or password'
+          message: 'Incorrect username or password'
         })
       }
       req.logIn(user, (err) => {
@@ -129,4 +120,4 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  export { getLogin, postLogin, getlogout, getSignup, postSignup}
+  export { postLogin, getlogout, getSignup, postSignup}

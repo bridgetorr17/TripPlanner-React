@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaE } from "react-icons/fa6";
 
 const LoginPage = ({loginAttempt}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false)
+    const [loginError, setLoginError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -23,15 +26,17 @@ const LoginPage = ({loginAttempt}) => {
 
         try{
             const result = await loginAttempt(loginAttemptInfo);
-            nav = nav = result.success ? '/dashboard' : '/login';
+            nav = result.success ? '/dashboard' : '/login';
+
+            if (!result.success) throw new Error(result.message || 'Login failed')
         }
         catch(err){
             console.error(err);
-            if(!result.success) toast.error(result.message);
+            setLoginError(err.message);
         }
         finally{
             setLoading(false);
-            return navigate(nav);
+            navigate(nav);
         }
     }
 
@@ -49,17 +54,34 @@ const LoginPage = ({loginAttempt}) => {
                         onChange={(e) => setEmail(e.target.value)}
                         className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
                         disabled={loading}
+                        required
                     />
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
-                        disabled={loading}
-                    />
+                    <div className="flex flex-row justify-between items-center px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition">
+                        <input
+                            id="password"
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="focus:outline-none focus:ring-0"
+                            disabled={loading}
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={(e) => setShowPassword(prev => !prev)}
+                            className=" text-blue-500 hover:text-blue-700"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
+                    {loginError && (
+                        <div className="text-center">
+                            <p className="text-red-600 font-semibold">{loginError}</p>
+                        </div>
+                    )}
                     <button
                         type="submit"
                         className={`mt-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
