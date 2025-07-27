@@ -2,13 +2,31 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
-    userName: {type: String, unique: true },
-    email: { type: String, unique: true},
-    password: { type: String}
+    userName: {
+      type: String, 
+      unique: true,
+      required: true
+    },
+    email: { 
+      type: String, 
+      unique: true,
+      required: true
+    },
+    password: { 
+      type: String,
+      required: true
+    },
+    profilePicture: {
+      type: String,
+      default: 'https://i.pinimg.com/736x/9f/16/72/9f1672710cba6bcb0dfd93201c6d4c00.jpg',
+    },
+    bio: {
+      type: String,
+      default: ''
+    }
 });
 
 // Password hash middleware.
- 
  UserSchema.pre('save', function save(next) {
   const user = this;
   console.log('here the password is ', user.password);

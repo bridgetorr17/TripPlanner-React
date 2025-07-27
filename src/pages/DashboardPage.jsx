@@ -5,7 +5,7 @@ import NavLinks from "../components/NavLinks";
 import { Link } from "react-router-dom";
 
 const DashboardPage = () => {
-    const { userTrips, sharedTrips, userName } = useLoaderData();
+    const { userTrips, sharedTrips, userName, profilePicture } = useLoaderData();
     const [activeTab, setActiveTab] = useState('my');
 
     let content = null;
@@ -22,9 +22,17 @@ const DashboardPage = () => {
                 <h1 className="text-3xl font-bold mb-4 text-blue-700">
                     {userName.toUpperCase()}'s DASHBOARD
                 </h1>
-                <Link to="/logout">
-                    <h6 className="text-xl text-blue-400">Logout</h6>
-                </Link>
+                <div className="relative">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-sky-300 focus:border-blue-400">
+                        <Link to="/logout">
+                            <img
+                                src={profilePicture}
+                                alt="Profile Picture"
+                                className="w-full h-full object-cover object-center"
+                            />
+                        </Link>
+                    </div>
+                </div>
             </section>
             <NavLinks activeTab={activeTab} setActiveTab={setActiveTab}/>
             <section className="space-y-12">
@@ -38,12 +46,17 @@ const DashboardPage = () => {
 const dashboardLoader = async () => {
     const trips = await fetch(`/api/dashboard`)
     const tripsRes = await trips.json();
+
+    console.log(`the json we got: ${tripsRes}`);
+
     const userName = tripsRes.userName;
+    const profilePicture = tripsRes.profilePicture;
 
     return {
         userTrips: tripsRes.trips.userTrips,
         sharedTrips: tripsRes.trips.sharedTrips,
-        userName
+        userName,
+        profilePicture
     }
 }
 
