@@ -27,6 +27,10 @@ const TripPage = ({owner}) => {
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 space-y-6">
 
                 <div>
+                    <h2>{trip.name}</h2>
+                </div>
+
+                <div>
                     <h3 className="text-xl font-semibold text-teal-700 mb-2">
                         Stops along the way
                     </h3>

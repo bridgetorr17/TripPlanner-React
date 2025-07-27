@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom"
+
 const NavLinks = ({activeTab, setActiveTab}) => {
 
     const tabs = [
         { key: 'my', label: 'My Trips' },
-        { key: 'shared', label: 'Shared Trips' },
-        { key: 'create', label: 'Create New Trip' }
+        { key: 'shared', label: 'Shared Trips' }
     ]
 
     return (
@@ -21,6 +22,11 @@ const NavLinks = ({activeTab, setActiveTab}) => {
                     {tab.label}
                 </button>
             ))}
+            <Link 
+                to={'/trips/createNew'}
+                className='p-3 text-teal-600 hover:text-teal-800'>
+                Create New Trip
+            </Link>
         </div>
     )
 }

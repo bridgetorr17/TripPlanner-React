@@ -31,17 +31,26 @@ const CreateTripPage = () => {
         const tripInfo = {
             name,
             locations,
-            contributors
+            contributors,
+            year: '2025'
         }
+        const nav = '/dashboard?tab=my'
 
-        const result = await newTripAttempt(tripInfo);
+        try{
+            const result = await newTripAttempt(tripInfo);
+            console.log(result);
 
-        console.log(result);
-        const nav = '/dashboard'
-        
-        if(!result.success) toast.error(result.message);
-
-        return navigate(nav);
+            if (!result.success){
+                throw result.message
+            }
+        }
+        catch (err){
+            console.log(err);
+        }
+        finally{
+            console.log('navigating to dashboard');
+            navigate(nav)
+        }
     }
 
     return (

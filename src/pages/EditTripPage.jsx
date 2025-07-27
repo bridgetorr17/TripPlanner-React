@@ -22,8 +22,6 @@ const EditTripPage = () => {
             })
 
             if (!res.ok) throw new Error (`Delete failed: ${res.status}`)
-
-            console.log('trip deleted');
         }
         catch(err){
             console.error(err)
@@ -42,15 +40,25 @@ const EditTripPage = () => {
             contributors
         }
 
-        const res = await fetch(`/api/trips/edit/${trip._id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(tripEdits)
-        });
+        try{
+            const result = await fetch(`/api/trips/edit/${trip._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tripEdits)
+            });
 
-        return nav('/dashboard')
+            if (!result.success){
+                throw result.message
+            }
+        }
+        catch (err){
+            console.log(err);
+        }
+        finally{
+            nav('/dashboard')
+        }
     }
 
     return(

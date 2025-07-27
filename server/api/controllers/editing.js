@@ -6,10 +6,8 @@ dotenv.config({path: './config/.env'})
 const editLocAndCont = async (req, res) => {
     try{
         const tripId = req.params.id;
-        const trip = await Trip.findById(tripId);
-
-        const updatedStops = req.body.tripStops;
-        const updatedContributors = req.body.tripContributors;
+        const updatedStops = req.body.locations;
+        const updatedContributors = req.body.contributors;
 
         const updatedContributorsIds = await Promise.all(
             updatedContributors.map(async (cont) => {
@@ -17,6 +15,7 @@ const editLocAndCont = async (req, res) => {
                 return contUser._id;
             })
         )
+
 
         await Trip.findByIdAndUpdate(
                 tripId,
