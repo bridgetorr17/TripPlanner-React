@@ -12,6 +12,7 @@ const editLocAndCont = async (req, res) => {
         const updatedContributorsIds = await Promise.all(
             updatedContributors.map(async (cont) => {
                 const contUser = await User.findOne({ userName: cont });
+                console.log(contUser);
                 return contUser._id;
             })
         )

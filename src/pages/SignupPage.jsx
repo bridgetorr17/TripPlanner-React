@@ -55,7 +55,7 @@ const SignupPage = ({signupAttempt}) => {
                         name="userName" 
                         placeholder="User Name"
                         value={userName}
-                        onChange={(e) => setUserName(e.target.value)} 
+                        onChange={(e) => setUserName(e.target.value.toLowerCase())} 
                         className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
                         disabled={loading}
                     />
