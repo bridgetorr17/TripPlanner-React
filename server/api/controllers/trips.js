@@ -40,11 +40,12 @@ const postCreateNewTrip = async (req, res) => {
 
     try{
         await Trip.create({
-            tripName: req.body.tripName,
-            tripOrigin: req.body.tripOrigin,
-            tripStops: Array.isArray(req.body.tripStops) ? req.body.tripStops : [req.body.tripStops],
-            createdBy: req.user._id,
-            contributors: contributorIds
+            name: req.body.tripName,
+            owner: req.user._id,
+            contributors: contributorIds,
+            locations: Array.isArray(req.body.tripStops) ? req.body.tripStops : [req.body.tripStops],
+            month: req.body.month,
+            year: req.body.year
         });
 
         return res.json({

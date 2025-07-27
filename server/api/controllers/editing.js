@@ -22,7 +22,7 @@ const editLocAndCont = async (req, res) => {
                 tripId,
                 {
                     $set: {
-                        tripStops: updatedStops,
+                        locations: updatedStops,
                         contributors: updatedContributorsIds
                     }
                 },
