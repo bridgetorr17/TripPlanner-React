@@ -10,8 +10,8 @@ const EditTripPage = () => {
     const tripData = useLoaderData().trip;
     const trip = tripData.trip;
 
-    const [tripStops, setTripStops] = useState(trip.tripStops);
-    const [tripContributors, setTripContributors] = useState(tripData.contributors);
+    const [locations, setLocations] = useState(trip.locations);
+    const [contributors, setContributors] = useState(tripData.contributors);
 
     const nav = useNavigate();
 
@@ -38,8 +38,8 @@ const EditTripPage = () => {
         e.preventDefault();
 
         const tripEdits = {
-            tripStops,
-            tripContributors
+            locations,
+            contributors
         }
 
         const res = await fetch(`/api/trips/edit/${trip._id}`, {
@@ -60,15 +60,11 @@ const EditTripPage = () => {
             <form onSubmit={editTrip}
                 className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 space-y-6">
 
-                <h2 className="text-2xl font-semibold text-cyan-700">
-                    Starting in <span className="text-blue-900">{trip.tripOrigin}</span>
-                </h2>
-
                 <DynamicListInput 
                     label='Stop' 
-                    values={tripStops} 
-                    setValues={setTripStops} 
-                    name='tripStops'
+                    values={locations} 
+                    setValues={setLocations} 
+                    name='locations'
                     color='blue'
                 />
 
@@ -78,9 +74,9 @@ const EditTripPage = () => {
 
                 <DynamicListInput 
                     label='Contributor' 
-                    values={tripContributors} 
-                    setValues={setTripContributors} 
-                    name='tripContributors'
+                    values={contributors} 
+                    setValues={setContributors} 
+                    name='contributors'
                     color='teal'/>
 
                 <button 

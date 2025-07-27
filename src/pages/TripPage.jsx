@@ -25,15 +25,12 @@ const TripPage = ({owner}) => {
                 </Link>
             </div>
             <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-6 space-y-6">
-                <h2 className="text-2xl font-semibold text-cyan-700">
-                    We start in <span className="text-blue-900">{trip.tripOrigin}</span>
-                </h2>
 
                 <div>
                     <h3 className="text-xl font-semibold text-teal-700 mb-2">
                         Stops along the way
                     </h3>
-                    <List arr={trip.tripStops}/>
+                    <List arr={trip.locations}/>
                 </div>
 
                 <div>
