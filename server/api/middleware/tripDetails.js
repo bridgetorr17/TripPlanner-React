@@ -3,11 +3,9 @@ import User from '../models/User.js';
 
 const tripDetails = async (tripId) => {
     const trip = await Trip.findById(tripId).lean();
-    const creator = await User.findById(trip.createdBy);
+    const creator = await User.findById(trip.owner);
     const creatorName = creator.userName;
     const tripContributors = trip.contributors;
-
-    console.log(`in tripDetails, here is the contributors array: ${tripContributors}`)
 
     let contNames = [];
     if(tripContributors[0] !== null) {

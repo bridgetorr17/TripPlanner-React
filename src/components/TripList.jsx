@@ -11,7 +11,7 @@ const TripList = ({owner, trips}) => {
                     <Link to={`${urlPref}${trip._id}`}
                         key={trip._id}
                         className="block p-4 bg-blue-100 text-blue-900 rounded-lg hover:bg-blue-200 transition">
-                        {trip.tripName}
+                        {trip.name}
                     </Link>
                 ))}
             </div>

@@ -1,17 +1,13 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
-import {tripDetails} from '../middleware/tripDetails.js';
-//import { createPartFromFunctionResponse, GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
 const editLocAndCont = async (req, res) => {
     try{
         const tripId = req.params.id;
-        const trip = await Trip.findById(tripId);
-
-        const updatedStops = req.body.tripStops;
-        const updatedContributors = req.body.tripContributors;
+        const updatedStops = req.body.locations;
+        const updatedContributors = req.body.contributors;
 
         const updatedContributorsIds = await Promise.all(
             updatedContributors.map(async (cont) => {
@@ -20,11 +16,12 @@ const editLocAndCont = async (req, res) => {
             })
         )
 
+
         await Trip.findByIdAndUpdate(
                 tripId,
                 {
                     $set: {
-                        tripStops: updatedStops,
+                        locations: updatedStops,
                         contributors: updatedContributorsIds
                     }
                 },

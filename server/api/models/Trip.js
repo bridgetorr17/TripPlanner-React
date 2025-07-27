@@ -1,21 +1,50 @@
 import mongoose from 'mongoose';
 
-const TripSchema = new mongoose.Schema({
-    tripName:{
+const MemorySchema = new mongoose.Schema({
+    text: {
         type: String,
-        required: true,
+        required: true
     },
-    tripOrigin:{
-        type: String,
-        required: true,
-    },
-    tripStops: [String],
-    createdBy: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
-    contributors: [mongoose.Schema.Types.ObjectId]
+    location: {
+        type: String
+    }
+});
+
+const TripSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        required: true,
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    contributors: {
+        type: [mongoose.Schema.Types.ObjectId]
+    },
+    locations: {
+        type: [String],
+        required: true
+    },
+    month: {
+        type: String
+    },
+    year: {
+        type: String,
+        required: true
+    },
+    memories: {
+        type: [MemorySchema]
+    },
+    photos: {
+        type: [String]
+    }
 });
 
 const Trip = mongoose.model('Trip', TripSchema);

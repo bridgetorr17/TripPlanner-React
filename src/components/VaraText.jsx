@@ -14,7 +14,10 @@ function VaraText({ text, fontURL, options }) {
             [{ text, ...options}],
             { color: options.color, fontSize: options.fontSize, strokeWidth: options.strokeWidth, textAlign: 'center' }
         );
-        return () => vara.remove();
+        return () => {
+            const el = document.getElementById('vara-container')
+            if (el) el.innerHTML = '';
+        }
     }, [text, fontURL, options])
 
     return (

@@ -3,7 +3,7 @@ import DynamicListInput from "../components/DynamicListInput";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 
-const newTripAttempt = async (newTripInfo) => {
+const newTripAttempt = async (tripInfo) => {
 
     const res = await fetch('/api/trips/createNew', {
         method: 'POST',
@@ -11,7 +11,7 @@ const newTripAttempt = async (newTripInfo) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newTripInfo)
+        body: JSON.stringify(tripInfo)
     });
 
     const result = await res.json();
@@ -20,30 +20,37 @@ const newTripAttempt = async (newTripInfo) => {
 
 const CreateTripPage = () => {
 
-    const [tripName, setTripName] = useState('');
-    const [tripOrigin, setTripOrigin] = useState('');
-    const [tripStops, setTripStops] = useState(['']);
-    const [tripContributors, setTripContributors] = useState(['']);
+    const [name, setName] = useState('');
+    const [locations, setLocations] = useState(['']);
+    const [contributors, setContributors] = useState(['']);
     const navigate = useNavigate();
 
     const createTrip = async (e) => {
         e.preventDefault();
 
-        const newTripInfo = {
-            tripName,
-            tripOrigin,
-            tripStops,
-            tripContributors
+        const tripInfo = {
+            name,
+            locations,
+            contributors,
+            year: '2025'
         }
+        const nav = '/dashboard?tab=my'
 
-        const result = await newTripAttempt(newTripInfo);
+        try{
+            const result = await newTripAttempt(tripInfo);
+            console.log(result);
 
-        console.log(result);
-        const nav = '/dashboard'
-        
-        if(!result.success) toast.error(result.message);
-
-        return navigate(nav);
+            if (!result.success){
+                throw result.message
+            }
+        }
+        catch (err){
+            console.log(err);
+        }
+        finally{
+            console.log('navigating to dashboard');
+            navigate(nav)
+        }
     }
 
     return (
@@ -55,34 +62,24 @@ const CreateTripPage = () => {
                     <label className="mb-1 text-blue-700 font-semibold">Trip Name</label>
                     <input 
                         type="text"
-                        name="tripName" 
+                        name="name" 
                         placeholder="Name your trip"
-                        value={tripName}
-                        onChange={(e) => setTripName(e.target.value)} 
-                        className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
-                </div>
-                <div className="flex flex-col">
-                    <label className="mb-1 text-blue-700 font-semibold">Trip Origin</label>
-                    <input 
-                        type="text"
-                        name="tripOrigin" 
-                        placeholder="Where do you start?"
-                        value={tripOrigin}
-                        onChange={(e) => setTripOrigin(e.target.value)} 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)} 
                         className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
                 </div>
 
                 <DynamicListInput 
                     label='Stop' 
-                    values={tripStops} 
-                    setValues={setTripStops} 
-                    name='tripStops'
+                    values={locations} 
+                    setValues={setLocations} 
+                    name='locations'
                     color='blue'/>
                 <DynamicListInput 
                     label='Contributor' 
-                    values={tripContributors} 
-                    setValues={setTripContributors} 
-                    name='tripContributors'
+                    values={contributors} 
+                    setValues={setContributors} 
+                    name='contributors'
                     color='teal'/>
                 <button 
                     type="submit"

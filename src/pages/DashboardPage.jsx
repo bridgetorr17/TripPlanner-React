@@ -1,9 +1,8 @@
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData, useLocation } from "react-router-dom"
 import { useState } from "react";
 import TripList from '../components/TripList'
 import NavLinks from "../components/NavLinks";
 import { Link } from "react-router-dom";
-import CreateTripPage from "./CreateTripPage.jsx"
 
 const DashboardPage = () => {
     const { userTrips, sharedTrips, userName } = useLoaderData();
@@ -15,9 +14,7 @@ const DashboardPage = () => {
         content = <TripList owner={true} trips={userTrips} />
     } else if (activeTab === 'shared'){
         content = <TripList owner={false} trips={sharedTrips} />
-    } else if (activeTab === 'create'){
-        content = <CreateTripPage />
-    }
+    } 
 
     return (
         <div className="flex flex-col p-12 bg-sky-50 text-blue-800 min-h-screen">
@@ -42,6 +39,7 @@ const dashboardLoader = async () => {
     const trips = await fetch(`/api/dashboard`)
     const tripsRes = await trips.json();
     const userName = tripsRes.userName;
+
     return {
         userTrips: tripsRes.trips.userTrips,
         sharedTrips: tripsRes.trips.sharedTrips,
