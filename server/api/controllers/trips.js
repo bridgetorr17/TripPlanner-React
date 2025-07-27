@@ -38,13 +38,14 @@ const postCreateNewTrip = async (req, res) => {
             })
         );
 
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     try{
         await Trip.create({
             name: req.body.name,
             owner: req.user._id,
             contributors: contributorIds,
             locations: Array.isArray(req.body.locations) ? req.body.locations : [req.body.locations],
-            month: req.body.month,
+            month: monthNames[req.body.month],
             year: req.body.year
         });
 

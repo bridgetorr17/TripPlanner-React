@@ -2,6 +2,7 @@ import { useState } from "react";
 import DynamicListInput from "../components/DynamicListInput";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
+import MonthYear from "../components/MonthYear";
 
 const newTripAttempt = async (tripInfo) => {
 
@@ -23,6 +24,7 @@ const CreateTripPage = () => {
     const [name, setName] = useState('');
     const [locations, setLocations] = useState(['']);
     const [contributors, setContributors] = useState(['']);
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const navigate = useNavigate();
 
     const createTrip = async (e) => {
@@ -32,9 +34,11 @@ const CreateTripPage = () => {
             name,
             locations,
             contributors,
-            year: '2025'
+            month: selectedDate.getMonth(),
+            year: selectedDate.getFullYear()
         }
-        const nav = '/dashboard?tab=my'
+
+        const nav = '/dashboard'
 
         try{
             const result = await newTripAttempt(tripInfo);
@@ -60,13 +64,20 @@ const CreateTripPage = () => {
                 className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 space-y-6">
                 <div className="flex flex-col">
                     <label className="mb-1 text-blue-700 font-semibold">Trip Name</label>
-                    <input 
-                        type="text"
-                        name="name" 
-                        placeholder="Name your trip"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)} 
-                        className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
+                    <div className="flex flex-fow justify-between">
+                        <input 
+                            type="text"
+                            name="name" 
+                            placeholder="Name your trip"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)} 
+                            className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
+                        <MonthYear
+                            selectedDate={selectedDate}
+                            setSelectedDate={setSelectedDate}
+                            className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                        />
+                    </div>
                 </div>
 
                 <DynamicListInput 

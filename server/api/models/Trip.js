@@ -33,7 +33,8 @@ const TripSchema = new mongoose.Schema({
         required: true
     },
     month: {
-        type: String
+        type: String,
+        required: true
     },
     year: {
         type: String,
