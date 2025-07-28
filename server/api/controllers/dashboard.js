@@ -33,8 +33,14 @@ const getDashboard = async (req, res) => {
 
 const getUser = async (req, res) => {
 
+    //TODO: pass id or username of profile page to be request, and check if it the same user as the requester (needed for accessibilities on the frontend)
+    if(req.user.userName === req.user.userName) {
+        let isOwner = true;
+    }
+
     //TODO: send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
     res.json({
+        isOwner: true,
         userName: req.user.userName,
         email: req.user.email,
         profilePicture: req.user.profilePicture,
