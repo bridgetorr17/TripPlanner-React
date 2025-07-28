@@ -31,4 +31,18 @@ const getDashboard = async (req, res) => {
     }
 }
 
-export { getDashboard }
+const getUser = async (req, res) => {
+
+    //TODO: send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
+    res.json({
+        userName: req.user.userName,
+        email: req.user.email,
+        profilePicture: req.user.profilePicture,
+        bio: req.user.biography
+    })
+}
+
+export { 
+    getDashboard,
+    getUser
+}

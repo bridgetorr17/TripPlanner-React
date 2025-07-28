@@ -6,12 +6,14 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
+import UserPage from './pages/UserPage';
 import PreviewPage from './pages/PreviewPage';
 import CreateTripPage from './pages/CreateTripPage';
 import TripPage from './pages/TripPage';
 import EditTripPage from './pages/EditTripPage';
 import PageWrapper from './components/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
+import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';
 
 const App = () => {
@@ -53,6 +55,7 @@ const App = () => {
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/preview' element={<PreviewPage/>}/>
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
+                <Route path='/dashboard/user' element={<UserPage/>} loader={userLoader}/>
                 <Route path='/trips/createNew' element={<CreateTripPage />}/>
                 <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
                 <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
