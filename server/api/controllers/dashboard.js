@@ -35,7 +35,7 @@ const getUser = async (req, res) => {
 
     //TODO: pass id or username of profile page to be request, and check if it the same user as the requester (needed for accessibilities on the frontend)
     if(req.user.userName === req.user.userName) {
-        let isOwner = true;
+        console.log('yeah this is true')
     }
 
     //TODO: send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
@@ -48,7 +48,17 @@ const getUser = async (req, res) => {
     })
 }
 
+const editProfileField = async (req, res) => {
+    console.log(req.params.field)
+    console.log(req.body);
+    res.json({
+        success: true,
+        message: 'hello back there'
+    })
+}
+
 export { 
     getDashboard,
-    getUser
+    getUser,
+    editProfileField
 }

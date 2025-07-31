@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
+import ProfileField from "../components/ProfileField";
 
 const UserPage = () => {
     const { isOwner,
@@ -9,23 +10,34 @@ const UserPage = () => {
             bio: initBio} = useLoaderData();
     
     const [userName, setUserName] = useState(initUserName);
-    const [email, setEmail] = useState(initEmail);
-    const [bio, setBio] = useState(initBio);
 
     const [editName, setEditName] = useState(false);
-    const [editEmail, setEditEmail] = useState(false);
-    const [editBio, setEditBio] = useState(false);
 
-    const handleSaveName = () => {
+    const handleSave = async (field, newValue) => {
+        console.log(`trying to save ${field}`)
+        const editField = {
+            field: newValue
+        }
 
-    }
+        try{
+            const result = await fetch(`/api/dashboard/edit/${field}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(editField)
+            });
 
-    const handleSaveEmail = () => {
-        
-    }
-
-    const handleSaveBio = () => {
-
+            if (!result.success){
+                throw result.message
+            } else console.log(result.message);
+        }
+        catch (err){
+            console.log(err);
+        }
+        finally{
+            //nav('/dashboard/user')
+        }
     }
 
     return (
@@ -38,41 +50,16 @@ const UserPage = () => {
                 />
                 <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
             </div>
-            <form onSubmit={handleSaveName} className="mb-6">
-                 <label className="block text-teal-800 font-semibold mb-1">User Name:</label>
-                {editName ? (
-                <div className="flex items-center space-x-2">
-                    <input
-                    type="text"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    className="flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                    />
-                    <button type="submit" className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-md">
-                    Save
-                    </button>
-                </div>
-                ) : (
-                <div className="flex items-center justify-between">
-                    <span className="text-blue-800">{userName}</span>
-                    {isOwner && (
-                    <button
-                        type="button"
-                        onClick={() => setEditName(true)}
-                        className="px-3 py-1 bg-cyan-500 hover:bg-cyan-600 text-white rounded-md"
-                    >
-                        Edit
-                    </button>
-                    )}
-                </div>
-                )}
-            </form>
-            <form onSubmit={handleSaveEmail}>
-
-            </form>
-            <form onSubmit={handleSaveBio}>
-
-            </form>
+            <ProfileField 
+                name='userName'
+                label='User Name'
+                value={userName}
+                setValue={setUserName}
+                edit={editName}
+                setEdit={setEditName}
+                isOwner={isOwner}
+                save={handleSave}    
+            />
         </div>
     )
 }
