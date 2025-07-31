@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProfileField from "../components/ProfileField";
 
@@ -8,6 +8,8 @@ const UserPage = () => {
             email: initEmail, 
             profilePicture,
             bio: initBio} = useLoaderData();
+
+    const nav = useNavigate();
     
     const [userName, setUserName] = useState(initUserName);
 
@@ -28,15 +30,17 @@ const UserPage = () => {
                 body: JSON.stringify(editField)
             });
 
-            if (!result.success){
-                throw result.message
-            } else console.log(result.message);
+            const data = await result.json();
+
+            if (!data.success){
+                throw data.message
+            } else console.log(data.message);
         }
         catch (err){
-            console.log(err);
+            console.err(err);
         }
         finally{
-            //nav('/dashboard/user')
+            nav(0)
         }
     }
 

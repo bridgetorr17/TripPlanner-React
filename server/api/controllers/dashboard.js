@@ -1,5 +1,6 @@
 import Trip from '../models/Trip.js'
 import User from '../models/User.js'
+import mongoose from 'mongoose';
 
 const getDashboard = async (req, res) => {
     try{
@@ -49,8 +50,21 @@ const getUser = async (req, res) => {
 }
 
 const editProfileField = async (req, res) => {
-    console.log(req.params.field)
-    console.log(req.body);
+    const field = req.params.field;
+    const data = req.body;
+    const userId = req.user._id.toString();
+
+    console.log('Data:', data);
+    console.log('Field:', field);
+    console.log('Field Value:', data['field']);
+    console.log(userId);
+
+    await User.findByIdAndUpdate(
+        userId,
+        { $set: { [field]: data['field'] }},
+        { new: true }
+    );
+
     res.json({
         success: true,
         message: 'hello back there'

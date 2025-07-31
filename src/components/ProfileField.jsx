@@ -1,4 +1,5 @@
 const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, save}) => {
+    
     return (
         <>
             <form onSubmit={(e) => {
@@ -20,11 +21,14 @@ const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, sa
                 </div>
                 ) : (
                 <div className="flex items-center justify-between">
-                    <span className="text-blue-800">{name}</span>
+                    <span className="text-blue-800">{value}</span>
                     {isOwner && (
                     <button
                         type="button"
-                        onClick={() => setEdit(true)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setEdit(true);
+                        }}
                         className="px-3 py-1 bg-cyan-500 hover:bg-cyan-600 text-white rounded-md"
                     >
                         Edit
