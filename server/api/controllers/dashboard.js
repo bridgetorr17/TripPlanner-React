@@ -34,19 +34,23 @@ const getDashboard = async (req, res) => {
 
 const getUser = async (req, res) => {
 
-    //TODO: pass id or username of profile page to be request, and check if it the same user as the requester (needed for accessibilities on the frontend)
-    if(req.user.userName === req.user.userName) {
-        console.log('yeah this is true')
+    let isOwner = false;
+    if(req.user.userName === req.params.userName) {
+        isOwner = true;
     }
+
+    console.log(`this is the owner: ${isOwner}`)
+    const userProfile = await User.findOne({userName: req.params.userName})
 
     //TODO: send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
     res.json({
-        isOwner: true,
-        userName: req.user.userName,
-        email: req.user.email,
-        profilePicture: req.user.profilePicture,
-        bio: req.user.bio
-    })
+        isOwner,
+        userName: userProfile.userName,
+        email: userProfile.email,
+        profilePicture: userProfile.profilePicture,
+        bio: userProfile.bio
+    }
+)
 }
 
 const editProfileField = async (req, res) => {

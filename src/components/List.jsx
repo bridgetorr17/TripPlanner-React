@@ -1,10 +1,13 @@
-const List = ({arr}) => {
+import { Link } from "react-router-dom"
+const List = ({arr, links}) => {
 
     return (
         <>
-            <ul>
-                {arr.map((el, ind) => <li key={ind}> {el} </li>)}
-            </ul>
+            {
+                links 
+                ? <ul> {arr.map((el, ind) => <li key={ind}> <Link to={`../../dashboard/${el}`} >{el}</Link></li>)} </ul>
+                : <ul> {arr.map((el, ind) => <li key={ind}> {el} </li>)} </ul>
+            }  
         </>
     )
 }

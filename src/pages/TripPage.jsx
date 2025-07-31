@@ -34,14 +34,18 @@ const TripPage = ({owner}) => {
                     <h3 className="text-xl font-semibold text-teal-700 mb-2">
                         Stops along the way
                     </h3>
-                    <List arr={trip.locations}/>
+                    <List 
+                        arr={trip.locations}
+                        links={false}/>
                 </div>
 
                 <div>
                     <h3 className="text-xl font-semibold text-teal-700 mb-2">
                         Contributors
                     </h3>
-                    <List arr={tripData.contributors}/>
+                    <List 
+                        arr={tripData.contributors}
+                        links={true}/>
                 </div>
 
                 <div className="text-blue-800">

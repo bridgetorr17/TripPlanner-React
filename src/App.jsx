@@ -55,7 +55,7 @@ const App = () => {
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/preview' element={<PreviewPage/>}/>
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
-                <Route path='/dashboard/user' element={<UserPage/>} loader={userLoader}/>
+                <Route path='/dashboard/:userName' element={<UserPage/>} loader={userLoader}/>
                 <Route path='/trips/createNew' element={<CreateTripPage />}/>
                 <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
                 <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>

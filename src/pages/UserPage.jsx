@@ -3,6 +3,8 @@ import { useState } from "react";
 import ProfileField from "../components/ProfileField";
 
 const UserPage = () => {
+
+    console.log('in the user page')
     const { isOwner,
             userName: initUserName, 
             email: initEmail, 
@@ -47,6 +49,7 @@ const UserPage = () => {
         }
     }
 
+    console.log('about to render user page')
     return (
         <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
             <div className="flex flex-col items-center space-y-4 mb-8">
@@ -92,10 +95,14 @@ const UserPage = () => {
 }
 
 //User GET
-const userLoader = async () => {
-    const user = await fetch(`api/dashboard/user`);
+const userLoader = async ({params}) => {
+    console.log('in the user loader')
+    const {userName} = params;
+    console.log(userName);
+    const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
 
+    console.log(`got the data: ${data}`)
     return data;
 }
 
