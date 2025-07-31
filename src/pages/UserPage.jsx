@@ -12,11 +12,14 @@ const UserPage = () => {
     const nav = useNavigate();
     
     const [userName, setUserName] = useState(initUserName);
+    const [email, setEmail] = useState(initEmail);
+    const [bio, setBio] = useState(initBio);
 
     const [editName, setEditName] = useState(false);
+    const [editEmail, setEditEmail] = useState(false);
+    const [editBio, setEditBio] = useState(false);
 
     const handleSave = async (field, newValue) => {
-        console.log(`trying to save ${field}`)
         const editField = {
             field: newValue
         }
@@ -40,7 +43,7 @@ const UserPage = () => {
             console.err(err);
         }
         finally{
-            nav(0)
+            nav('/dashboard')
         }
     }
 
@@ -64,6 +67,26 @@ const UserPage = () => {
                 isOwner={isOwner}
                 save={handleSave}    
             />
+            <ProfileField 
+                name='email'
+                label='Email'
+                value={email}
+                setValue={setEmail}
+                edit={editEmail}
+                setEdit={setEditEmail}
+                isOwner={isOwner}
+                save={handleSave}    
+            />
+            <ProfileField 
+                name='bio'
+                label='Biography'
+                value={bio}
+                setValue={setBio}
+                edit={editBio}
+                setEdit={setEditBio}
+                isOwner={isOwner}
+                save={handleSave}    
+            />
         </div>
     )
 }
@@ -71,9 +94,9 @@ const UserPage = () => {
 //User GET
 const userLoader = async () => {
     const user = await fetch(`api/dashboard/user`);
-    const userRes = await user.json();
+    const data = await user.json();
 
-    return userRes;
+    return data;
 }
 
 export {

@@ -45,7 +45,7 @@ const getUser = async (req, res) => {
         userName: req.user.userName,
         email: req.user.email,
         profilePicture: req.user.profilePicture,
-        bio: req.user.biography
+        bio: req.user.bio
     })
 }
 
