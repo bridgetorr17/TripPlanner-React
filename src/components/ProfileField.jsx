@@ -1,5 +1,4 @@
 const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, save}) => {
-    console.log(`from the ${label} field, isOwner is ${isOwner}`)
     return (
         <>
             <form onSubmit={(e) => {

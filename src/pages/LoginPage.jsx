@@ -115,7 +115,7 @@ const loginLoader = async () => {
     const login = await fetch(`/api/login`)
     const loginRes = await login.json();
 
-    console.log(loginRes.success);
+    console.log(`login success was ${loginRes.success}`)
     return loginRes.success;
 }
 

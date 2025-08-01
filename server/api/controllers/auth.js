@@ -3,9 +3,8 @@ import validator from 'validator';
 import User from '../models/User.js';
 
 const getLogin = (req, res) => {
-  console.log('req.isAuth on the get login is ' + req.isAuthenticated())
     if (req.isAuthenticated()) {
-      console.log('this user is already logged in, return them to the dashboard');
+      console.log(`this user is already logged in!`)
       res.json({
         success: true
       })
@@ -50,14 +49,17 @@ const postLogin = (req, res, next) => {
   
 const getlogout = (req, res) => {
   console.log('about to logout the user');
-    req.logout(() => {
-      console.log('User has logged out.')
-    })
-    req.session.destroy((err) => {
-      if (err) console.log('Error : Failed to destroy the session during logout.', err)
-      req.user = null
-    })
-  }
+  //req.clearCookie('connect.sid');
+  req.session.destroy((err2) => {
+    if (err2) {
+      console.log('Error destroying session: ', err2)
+      return res.json({success: false})
+    }
+    req.user = null;
+    console.log('session destroyed')
+    return res.json({success: true})
+  })
+}
   
 const postSignup = async (req, res, next) => {
 

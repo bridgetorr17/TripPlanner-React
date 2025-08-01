@@ -53,6 +53,17 @@ const UserPage = () => {
         console.log('pressed delete')
     }
 
+    const handleLogout = async () => {
+        const logout = await fetch(`/api/logout`)
+        const logoutRes = await logout.json();
+        console.log(logoutRes.success);
+        if(logoutRes.success) {
+            console.log('gonna navigate home');
+            nav('/')
+        }
+        else console.log('logout was pressed but there was an error')
+    }
+
     return (
         <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
             <div className="flex flex-col items-center space-y-4 mb-8">
@@ -96,13 +107,13 @@ const UserPage = () => {
 
             {isOwner 
                 ? <div>  
-                    <Link 
-                         to={'/logout'}
+                    <button 
+                        onClick={() => handleLogout()}
                         className="w-full flex justify-center items-center mb-3 gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
                         >
                         <FaSignOutAlt className="text-lg"/>
                         Logout
-                    </Link>
+                    </button>
                     <button 
                         onClick={() => handleDelete()}
                         className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition"
@@ -119,13 +130,10 @@ const UserPage = () => {
 
 //User GET
 const userLoader = async ({params}) => {
-    console.log('in the user loader')
     const {userName} = params;
-    console.log(userName);
     const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
 
-    console.log(`got the data: ${data}`)
     return data;
 }
 
