@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 
 const getDashboard = async (req, res) => {
     try{
-        console.log(`the user name is: ${req.user.userName}`)
 
         let userTrips = await Trip.find({owner:req.user.id})
         let sharedTrips = await Trip.find({contributors: { $all: [req.user.id]}})
@@ -12,10 +11,6 @@ const getDashboard = async (req, res) => {
 
         let profilePicture = user.profilePicture;
         let userName = user.userName;
-
-        console.log(`the user is: ${user}`)
-        console.log(`the profile picture url is : ${profilePicture}`)
-        console.log(`the user name is, this time from mongo : ${userName}`)
 
         return res.json({
             success: true,
@@ -38,8 +33,6 @@ const getUser = async (req, res) => {
     if(req.user.userName === req.params.userName) {
         isOwner = true;
     }
-
-    console.log(`this is the owner: ${isOwner}`)
     const userProfile = await User.findOne({userName: req.params.userName})
 
     //TODO: send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
@@ -57,11 +50,6 @@ const editProfileField = async (req, res) => {
     const field = req.params.field;
     const data = req.body;
     const userId = req.user._id.toString();
-
-    console.log('Data:', data);
-    console.log('Field:', field);
-    console.log('Field Value:', data['field']);
-    console.log(userId);
 
     await User.findByIdAndUpdate(
         userId,

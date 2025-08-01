@@ -1,16 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLoaderData } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage = ({loginAttempt}) => {
+    const navigate = useNavigate();
+
+    let isAlreadyLoggedIn = false;
+    isAlreadyLoggedIn = useLoaderData();
+
+    useEffect(() => {
+        if (isAlreadyLoggedIn) {
+            console.log('this user is already logged in');
+            navigate('/dashboard')
+        }
+    }, [isAlreadyLoggedIn])
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
     const [loginError, setLoginError] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -100,4 +110,16 @@ const LoginPage = ({loginAttempt}) => {
     )
 }
 
-export default LoginPage;
+
+const loginLoader = async () => {
+    const login = await fetch(`/api/login`)
+    const loginRes = await login.json();
+
+    console.log(loginRes.success);
+    return loginRes.success;
+}
+
+export {
+    LoginPage as default, 
+    loginLoader
+}

@@ -1,10 +1,10 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ProfileField from "../components/ProfileField";
+import { FaSignOutAlt, FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const UserPage = () => {
-
-    console.log('in the user page')
     const { isOwner,
             userName: initUserName, 
             email: initEmail, 
@@ -49,7 +49,10 @@ const UserPage = () => {
         }
     }
 
-    console.log('about to render user page')
+    const handleDelete = () => {
+        console.log('pressed delete')
+    }
+
     return (
         <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
             <div className="flex flex-col items-center space-y-4 mb-8">
@@ -90,6 +93,26 @@ const UserPage = () => {
                 isOwner={isOwner}
                 save={handleSave}    
             />
+
+            {isOwner 
+                ? <div>  
+                    <Link 
+                         to={'/logout'}
+                        className="w-full flex justify-center items-center mb-3 gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
+                        >
+                        <FaSignOutAlt className="text-lg"/>
+                        Logout
+                    </Link>
+                    <button 
+                        onClick={() => handleDelete()}
+                        className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition"
+                        >
+                        <FaTrash className="text-lg"/>
+                        Delete Account
+                    </button> 
+                </div>
+                : null
+            }
         </div>
     )
 }

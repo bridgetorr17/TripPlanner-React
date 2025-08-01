@@ -1,7 +1,17 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
-  
+
+const getLogin = (req, res) => {
+  console.log('req.isAuth on the get login is ' + req.isAuthenticated())
+    if (req.isAuthenticated()) {
+      console.log('this user is already logged in, return them to the dashboard');
+      res.json({
+        success: true
+      })
+    } else res.json({success: false})
+  }
+
 const postLogin = (req, res, next) => {
     const validationErrors = []
     if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
@@ -39,6 +49,7 @@ const postLogin = (req, res, next) => {
   }
   
 const getlogout = (req, res) => {
+  console.log('about to logout the user');
     req.logout(() => {
       console.log('User has logged out.')
     })
@@ -106,4 +117,4 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  export { postLogin, getlogout, postSignup}
+  export { getLogin, postLogin, getlogout, postSignup}

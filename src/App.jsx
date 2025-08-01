@@ -15,6 +15,7 @@ import PageWrapper from './components/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';
+import { loginLoader } from './pages/LoginPage';
 
 const App = () => {
     //Login POST 
@@ -51,7 +52,7 @@ const App = () => {
         createRoutesFromElements(
             <Route path='/' element={<PageWrapper />}>
                 <Route index element={<LandingPage />} />
-                <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} />
+                <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} loader={loginLoader} />
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
                 <Route path='/preview' element={<PreviewPage/>}/>
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
