@@ -49,9 +49,16 @@ const UserPage = () => {
         }
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         console.log('pressed delete')
-    }
+        const deleteAccount = await fetch('/api/delete', {
+            method: 'DELETE'
+        });
+
+        const deleteRes = await deleteAccount.json();
+        console.log(`account deleting was a ${deleteRes.success}`)
+        nav('/')
+    };
 
     const handleLogout = async () => {
         const logout = await fetch(`/api/logout`)

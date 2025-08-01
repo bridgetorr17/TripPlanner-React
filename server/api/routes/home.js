@@ -8,5 +8,6 @@ router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
 router.get('/logout', authController.getlogout);
 router.post('/signup', authController.postSignup);
+router.delete('/delete', authController.deleteAccount);
 
 export {router}

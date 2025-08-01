@@ -62,7 +62,6 @@ const getlogout = (req, res) => {
 }
   
 const postSignup = async (req, res, next) => {
-
     try{
       req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
     
@@ -119,4 +118,25 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  export { getLogin, postLogin, getlogout, postSignup}
+  const deleteAccount = async (req, res) => {
+    console.log('in the backend gonna try to delete this account');
+
+    const userId = req.user._id;
+
+    try{
+      const result = await User.findByIdAndDelete(userId);
+      if(result) return getlogout(req,res);
+      else res.json({ success: false });
+    }
+    catch(err) {
+      console.error('Error deleting user account:', err);
+      res.json({ success: false });
+    }
+  }
+
+  export {  getLogin, 
+            postLogin, 
+            getlogout, 
+            postSignup,
+            deleteAccount
+  }
