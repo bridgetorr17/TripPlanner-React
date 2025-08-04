@@ -12,11 +12,19 @@ const editLocAndCont = async (req, res) => {
         const updatedContributorsIds = await Promise.all(
             updatedContributors.map(async (cont) => {
                 const contUser = await User.findOne({ userName: cont });
-                console.log(contUser);
-                return contUser._id;
+                if (contUser === null) return '';
+                else return contUser._id;
             })
-        )
+        );
 
+        console.log(updatedContributorsIds)
+        if (updatedContributorsIds.includes('')){
+            console.log(`${updatedContributors[updatedContributorsIds.indexOf('')]} does not exist as a user of Triply.`)
+            return res.json({
+                success: false,
+                message: `${updatedContributors[updatedContributorsIds.indexOf('')]} does not exist as a user of Triply.`
+            });
+        }
 
         await Trip.findByIdAndUpdate(
                 tripId,

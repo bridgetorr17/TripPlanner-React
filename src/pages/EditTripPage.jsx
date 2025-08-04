@@ -12,6 +12,7 @@ const EditTripPage = () => {
 
     const [locations, setLocations] = useState(trip.locations);
     const [contributors, setContributors] = useState(tripData.contributors);
+    const [nullContError, setNullContError] = useState('');
 
     const nav = useNavigate();
 
@@ -49,15 +50,15 @@ const EditTripPage = () => {
                 body: JSON.stringify(tripEdits)
             });
 
-            if (!result.success){
-                throw result.message
-            }
+            const response = await result.json();
+
+            if (!response.success){
+                throw response.message
+            } else nav('/dashboard')
         }
         catch (err){
+            setNullContError(err);
             console.log(err);
-        }
-        finally{
-            nav('/dashboard')
         }
     }
 
@@ -87,6 +88,9 @@ const EditTripPage = () => {
                     name='contributors'
                     color='teal'/>
 
+                <div className="text-center">
+                    <p className="text-red-600 font-semibold">{nullContError}</p>     
+                </div>
                 <button 
                     type="submit"
                     className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
