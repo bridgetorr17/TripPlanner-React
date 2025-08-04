@@ -19,7 +19,6 @@ const editLocAndCont = async (req, res) => {
 
         console.log(updatedContributorsIds)
         if (updatedContributorsIds.includes('')){
-            console.log(`${updatedContributors[updatedContributorsIds.indexOf('')]} does not exist as a user of Triply.`)
             return res.json({
                 success: false,
                 message: `${updatedContributors[updatedContributorsIds.indexOf('')]} does not exist as a user of Triply.`

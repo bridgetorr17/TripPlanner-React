@@ -20,6 +20,10 @@ const TripSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    subtitle:{
+        type: String,
+        default: ''
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
