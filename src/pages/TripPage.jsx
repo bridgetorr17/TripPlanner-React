@@ -27,42 +27,21 @@ const TripPage = ({owner}) => {
     const [editContributors, setEditContributors] = useState(false);
     const [contributorsData, setContributorsData] = useState(tripData.contributors);
 
-    const toggleEditLocations = () => {
-        if (editLocations) saveLocations();
-        else setEditLocations(true);
+    const toggleEdit = (edit, saveFn, setEdit) => {
+        if (edit) saveFn();
+        else setEdit(true);
     }
 
-    const toggleEditContributors = () => {
-        if (editContributors) saveContributors();
-        else setEditContributors(true);
-    }
-
-    const saveLocations = async () => {
+    const save = async (route, data, field, onSuccess) => {
         try{
-            const res = await fetch(`/api/trips/editLocations/${trip._id}`, {
+            const res = await fetch(`/api/trips/${route}/${trip._id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ locations: locationsData})
+                body: JSON.stringify({ [field]: data})
             });
             
             if(!res.ok) throw new Error('Failed to save locations');
-            setEditLocations(false);
-        } 
-        catch(err) {
-            console.error("error saving locations:" , err)
-        }
-    }  
-
-    const saveContributors = async () => {
-        try{
-            const res = await fetch(`/api/trips/editContributors/${trip._id}`, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ contributors: contributorsData})
-            });
-            
-            if(!res.ok) throw new Error('Failed to save locations');
-            setEditContributors(false);
+            onSuccess();
         } 
         catch(err) {
             console.error("error saving locations:" , err)
@@ -101,7 +80,13 @@ const TripPage = ({owner}) => {
                     <TripHeader 
                         headerTitle={"Where we went"}                        
                         modifyText={editLocations ? "Save" : "Edit"}
-                        onToggleEdit={toggleEditLocations} />
+                        onToggleEdit={() => 
+                            toggleEdit(
+                                editLocations, 
+                                () => save('editLocations', locationsData, 'locations', () => setEditLocations(false)),
+                                setEditLocations
+                                )
+                            } />
                     <Locations 
                         editMode={editLocations}
                         locations={locationsData}
@@ -112,7 +97,13 @@ const TripPage = ({owner}) => {
                     <TripHeader 
                         headerTitle={"What we saw"}                      
                         modifyText={editLocations ? "Save" : "Add"}
-                        onToggleEdit={() => setEditLocations(prev => !prev)}
+                        onToggleEdit={() => 
+                            toggleEdit(
+                                editLocations, 
+                                () => save('editLocations', locationsData, 'locations', () => setEditLocations(false)),
+                                setEditLocations
+                                )
+                            }
                         />
                     <div>
                         <span>put the photo album here</span>
@@ -123,7 +114,13 @@ const TripPage = ({owner}) => {
                     <TripHeader 
                         headerTitle={"What we remember"}
                         modifyText={editLocations ? "Save" : "Add"}
-                        onToggleEdit={() => setEditLocations(prev => !prev)}
+                        onToggleEdit={() => 
+                            toggleEdit(
+                                editLocations, 
+                                () => save('editLocations', locationsData, 'locations', () => setEditLocations(false)),
+                                setEditLocations
+                                )
+                            }
                         />
                     <section>
                         <span>put the memory anecdotes here</span>
@@ -135,7 +132,13 @@ const TripPage = ({owner}) => {
                     <TripHeader 
                         headerTitle={"Who was there"}
                         modifyText={editContributors ? "Save" : "Edit"}
-                        onToggleEdit={toggleEditContributors}
+                        onToggleEdit={() => 
+                            toggleEdit(
+                                editContributors, 
+                                () => save('editContributors', contributorsData, 'contributors', () => setEditContributors(false)),
+                                setEditContributors
+                                )
+                            }
                         />
                     <Contributors 
                         editMode={editContributors}
