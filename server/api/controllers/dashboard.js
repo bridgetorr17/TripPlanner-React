@@ -68,12 +68,9 @@ const editProfileField = async (req, res) => {
 
 const uploadProfilePicture = async (req, res) => {
     try{
-        console.log('going to upload a photo')
+        const userId = req.user._id.toString();
+        console.log(userId);
         const {fields, files} = await parseForm(req);
-        console.log(files);
-        console.log(files.profilePicture[0])
-        console.log(files.profilePicture[0].filepath);
-        console.log(files.profilePicture[0].originalFilename)
 
         const readableStream = fs.createReadStream(files.profilePicture[0].filepath)
 
@@ -84,6 +81,11 @@ const uploadProfilePicture = async (req, res) => {
         })
 
         console.log(blob.url);
+        await User.findByIdAndUpdate(
+            userId,
+            { $set: { profilePicture: blob.url }},
+            { new: true }
+        );
 
         res.json({
             success: true,
