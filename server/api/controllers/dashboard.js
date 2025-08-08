@@ -2,8 +2,9 @@ import Trip from '../models/Trip.js'
 import User from '../models/User.js'
 import formidable from 'formidable'
 import { put } from '@vercel/blob';
+import { PassThrough } from 'stream';
 import fs from 'fs'
-import mongoose from 'mongoose';
+import sharp from 'sharp'
 
 const getDashboard = async (req, res) => {
     try{
@@ -74,7 +75,18 @@ const uploadProfilePicture = async (req, res) => {
 
         const readableStream = fs.createReadStream(files.profilePicture[0].filepath)
 
-        const blob = await put(files.profilePicture[0].originalFilename, readableStream, {
+        const resize = sharp()
+            .rotate()
+            .resize(800)
+            .jpeg({quality: 70})
+
+        const optimizeStream = readableStream
+            .pipe(resize);
+
+        const pass = new PassThrough()
+        optimizeStream.pipe(pass);
+
+        const blob = await put(files.profilePicture[0].originalFilename, pass, {
             access: 'public',
             token: process.env.BLOB_READ_WRITE_TOKEN,
             addRandomSuffix: true
