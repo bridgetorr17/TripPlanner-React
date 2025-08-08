@@ -1,16 +1,9 @@
 import { Link } from "react-router-dom";
-import bg from '../photos/landingPageBackground.avif'
 import VaraText from "../components/VaraText";
 
 const LandingPage = () => {
     return (
-        <div className="flex flex-col justify-center items-center"
-            style={{
-                backgroundImage: `url(${bg})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: '100vh'
-                }}>
+        <div className="flex flex-col justify-center items-center bg-blue-300 min-h-screen">
             <div className="vara-wrapper flex justify-center items-center w-full h-ful"
                 style={{
                     width: '100%',
