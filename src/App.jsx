@@ -10,7 +10,6 @@ import UserPage from './pages/UserPage';
 import PreviewPage from './pages/PreviewPage';
 import CreateTripPage from './pages/CreateTripPage';
 import TripPage from './pages/TripPage';
-import EditTripPage from './pages/EditTripPage';
 import PageWrapper from './components/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
@@ -60,7 +59,6 @@ const App = () => {
                 <Route path='/trips/createNew' element={<CreateTripPage />}/>
                 <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
                 <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
-                <Route path='/trips/edit/:id' element={<EditTripPage />} loader={tripLoader}/>
                 <Route path='/logout' element={<LandingPage/>} />
             </Route>
         )

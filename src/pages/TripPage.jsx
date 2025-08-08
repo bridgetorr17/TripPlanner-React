@@ -1,9 +1,11 @@
 import { useLoaderData } from "react-router-dom"
 import { useState } from "react"
-import List from "../components/List"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/TripHeader"
 import Locations from "../components/Locations"
+import Contributors from "../components/Contributors"
+import { FaTrash } from "react-icons/fa6"
+import { useNavigate } from "react-router-dom"
 
 const tripLoader = async ({ request }) => {
     const tripId = request.url.slice(-24)
@@ -18,17 +20,24 @@ const TripPage = ({owner}) => {
     
     const tripData = useLoaderData().trip;
     const trip = tripData.trip;
+    const nav = useNavigate();
 
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
+    const [editContributors, setEditContributors] = useState(false);
+    const [contributorsData, setContributorsData] = useState(tripData.contributors);
 
     const toggleEditLocations = () => {
         if (editLocations) saveLocations();
         else setEditLocations(true);
     }
 
+    const toggleEditContributors = () => {
+        if (editContributors) saveContributors();
+        else setEditContributors(true);
+    }
+
     const saveLocations = async () => {
-        console.log(locationsData);
         try{
             const res = await fetch(`/api/trips/editLocations/${trip._id}`, {
                 method: 'PUT',
@@ -43,6 +52,38 @@ const TripPage = ({owner}) => {
             console.error("error saving locations:" , err)
         }
     }  
+
+    const saveContributors = async () => {
+        try{
+            const res = await fetch(`/api/trips/editContributors/${trip._id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ contributors: contributorsData})
+            });
+            
+            if(!res.ok) throw new Error('Failed to save locations');
+            setEditContributors(false);
+        } 
+        catch(err) {
+            console.error("error saving locations:" , err)
+        }
+    }  
+
+    const deleteTrip = async () => {
+        try{
+            const res = await fetch(`/api/trips/delete/${trip._id}`, {
+                method: 'DELETE'
+            })
+
+            if (!res.ok) throw new Error (`Delete failed: ${res.status}`)
+        }
+        catch(err){
+            console.error(err)
+        }
+        finally{
+            nav('/dashboard')
+        }
+    }
 
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
@@ -93,20 +134,24 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"Who was there"}
-                        modifyText={editLocations ? "Save" : "Edit"}
-                        onToggleEdit={() => setEditLocations(prev => !prev)}
+                        modifyText={editContributors ? "Save" : "Edit"}
+                        onToggleEdit={toggleEditContributors}
                         />
-                    <List 
-                        arr={tripData.contributors}
-                        links={true}/>
+                    <Contributors 
+                        editMode={editContributors}
+                        contributors={contributorsData}
+                        setContributors={setContributorsData}/>
                 </section>
-
-                <Link 
-                    to={`/trips/edit/${tripData.trip._id}`}
-                    state={ {owner} }
-                    className="inline-block mt-4 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg transition"
-                >Edit this Trip</Link>
             </div>
+                {owner 
+                    ? <button 
+                        onClick={() => deleteTrip()}
+                        className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        >
+                            <FaTrash className="text-lg"/>
+                            Delete this trip</button> 
+                    : null
+                }
         </div>
     )
 }
