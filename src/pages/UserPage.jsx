@@ -23,6 +23,33 @@ const UserPage = () => {
     const [editEmail, setEditEmail] = useState(false);
     const [editBio, setEditBio] = useState(false);
 
+    const handleFileChange = async (e) => {
+        console.log('going to upload the photo')
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("profilePicture", file);
+
+        console.log(...formData);
+
+        try{
+            const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+            console.log(data.success);
+            if(data.success){
+                setProfilePictureURL(data.profilePictureURL)
+            } else throw data.message
+        }
+        catch(err){
+            console.error("Upload error: ", err)
+        }
+    }
+
     const handleSave = async (field, newValue) => {
         const editField = {
             field: newValue
@@ -58,14 +85,12 @@ const UserPage = () => {
         });
 
         const deleteRes = await deleteAccount.json();
-        console.log(`account deleting was a ${deleteRes.success}`)
         nav('/')
     };
 
     const handleLogout = async () => {
         const logout = await fetch(`/api/logout`)
         const logoutRes = await logout.json();
-        console.log(logoutRes.success);
         if(logoutRes.success) {
             console.log('gonna navigate home');
             nav('/')
@@ -89,34 +114,11 @@ const UserPage = () => {
                             >Edit Profile Photo</button>
                             <input 
                                 type="file"
+                                id="file"
                                 accept="image/*"
                                 ref={fileInputRef}
                                 style={{display: 'none'}}
-                                onChange={async (e) => {
-                                    const file = e.target.files[0];
-                                    if (!file) return;
-
-                                    const formData = new FormData();
-                                    formData.append("profilePicture", file);
-
-                                    try {
-                                        console.log(`going to try to upload photo: ${formData}`)
-                                        const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
-                                            method: "POST",
-                                            body: formData,
-                                        });
-
-                                        const data = await res.json();
-
-                                        if (!data.success) {
-                                            throw new Error(data.message || "Upload failed");
-                                        }
-
-                                        setProfilePictureURL(data.url);  // This updates the image
-                                    } catch (err) {
-                                        console.error("Upload failed:", err);
-                                    }
-                                }}
+                                onChange={handleFileChange}
                             />
                         </>
                     : null}

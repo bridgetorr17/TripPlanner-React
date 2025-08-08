@@ -1,5 +1,8 @@
 import Trip from '../models/Trip.js'
 import User from '../models/User.js'
+import formidable from 'formidable'
+import { put } from '@vercel/blob';
+import fs from 'fs'
 import mongoose from 'mongoose';
 
 const getDashboard = async (req, res) => {
@@ -64,7 +67,46 @@ const editProfileField = async (req, res) => {
 }
 
 const uploadProfilePicture = async (req, res) => {
-    console.log('here we are going to upload a profile picture')
+    try{
+        console.log('going to upload a photo')
+        const {fields, files} = await parseForm(req);
+        console.log(files);
+        console.log(files.profilePicture[0])
+        console.log(files.profilePicture[0].filepath);
+        console.log(files.profilePicture[0].originalFilename)
+
+        const readableStream = fs.createReadStream(files.profilePicture[0].filepath)
+
+        const blob = await put(files.profilePicture[0].originalFilename, readableStream, {
+            access: 'public',
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+            addRandomSuffix: true
+        })
+
+        console.log(blob.url);
+
+        res.json({
+            success: true,
+            profilePictureURL: blob.url
+        })
+    }
+    catch(err){
+        console.error("upload error: ", err)
+        res.json({
+            success: false,
+            message: 'error uploading photo'
+        })
+    }
+}
+
+function parseForm(req){
+    return new Promise((resolve, reject) => {
+        const form = formidable({multiples: false});
+        form.parse(req, (err, fields, files) => {
+            if(err) return reject(err);
+            resolve ({fields, files})
+        })
+    });
 }
 
 export { 
