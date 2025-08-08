@@ -76,7 +76,6 @@ const editContributors = async (req, res) => {
     }
 }
 
-export {editLocAndCont,
-        editLocations,
+export {editLocations,
         editContributors
 };
