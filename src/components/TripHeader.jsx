@@ -1,6 +1,6 @@
 import { FaPenToSquare, FaPlus } from "react-icons/fa6"
 
-const TripHeader = ({headerTitle, modifyText}) => {
+const TripHeader = ({headerTitle, modifyText, onToggleEdit}) => {
     let editIcon;
     if (modifyText==="Add") editIcon = <FaPlus className="w-4 h-4 mr-2" aria-hidden="true" />
     else editIcon = <FaPenToSquare className="w-4 h-4 mr-2" aria-hidden="true" />
@@ -10,6 +10,7 @@ const TripHeader = ({headerTitle, modifyText}) => {
             <h3 className="text-xl font-semibold text-blue-600 mr-4">{headerTitle}</h3>
             <button
                 type="button"
+                onClick={onToggleEdit}
                 className="
                 inline-flex items-center text-sm font-medium bg-blue-600 hover:bg-blue-700
                 text-white px-3 py-1.5 rounded-md shadow-sm

@@ -50,4 +50,35 @@ const editLocAndCont = async (req, res) => {
     }
 }
 
-export {editLocAndCont};
+const editLocations = async (req, res) => {
+    try{
+        const tripId = req.params.id;
+        const updatedLocations = req.body.locations;
+
+        await Trip.findByIdAndUpdate(
+            tripId,
+            {
+                $set: {
+                    locations: updatedLocations
+                }
+            },
+            {new: true}
+        );
+
+        return res.json({
+            success: true,
+            message: 'Successfully saved edits'
+        });
+    }
+    catch(err){
+        console.log(err);
+        return res.json({
+            success: false,
+            message: 'There was an error saving those edits'
+        });
+    }
+}
+
+export {editLocAndCont,
+        editLocations
+};

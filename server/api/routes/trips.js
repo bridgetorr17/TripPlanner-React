@@ -12,7 +12,7 @@ router.get('/:id', ensureAuth, tripController.getTrip);
 router.get('/sharedTrip/:id', tripController.getTrip);
 
 //editTripController
-router.put('/edit/:id', editTripController.editLocAndCont);
+router.put('/editLocations/:id', editTripController.editLocations);
 
 
 export {router};

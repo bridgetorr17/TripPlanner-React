@@ -80,8 +80,8 @@ const UserPage = () => {
                     className="w-24 h-24 rounded-full object-cover border-4 border-sky-300"
                 />
                 {isOwner 
-                    ? <span
-                        className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1">Edit Profile Photo</span>
+                    ? <button
+                        className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1">Edit Profile Photo</button>
                     : null}
                 <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
             </div>

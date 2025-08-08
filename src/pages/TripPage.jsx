@@ -1,8 +1,9 @@
 import { useLoaderData } from "react-router-dom"
+import { useState } from "react"
 import List from "../components/List"
 import { Link } from "react-router-dom"
-import mapPlaceholder from "../photos/mapPlaceholder.png"
 import TripHeader from "../components/TripHeader"
+import Locations from "../components/Locations"
 
 const tripLoader = async ({ request }) => {
     const tripId = request.url.slice(-24)
@@ -18,6 +19,31 @@ const TripPage = ({owner}) => {
     const tripData = useLoaderData().trip;
     const trip = tripData.trip;
 
+    const [editLocations, setEditLocations] = useState(false);
+    const [locationsData, setLocationsData] = useState(trip.locations);
+
+    const toggleEditLocations = () => {
+        if (editLocations) saveLocations();
+        else setEditLocations(true);
+    }
+
+    const saveLocations = async () => {
+        console.log(locationsData);
+        try{
+            const res = await fetch(`/api/trips/editLocations/${trip._id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ locations: locationsData})
+            });
+            
+            if(!res.ok) throw new Error('Failed to save locations');
+            setEditLocations(false);
+        } 
+        catch(err) {
+            console.error("error saving locations:" , err)
+        }
+    }  
+
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
             <div className="w-full max-w-3xl mb-2 flex flex-row items-center justify-between">
@@ -32,32 +58,20 @@ const TripPage = ({owner}) => {
             <div className="w-full max-w-3xl space-y-6">
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
-                        headerTitle={"Where we went"}
-                        modifyText={"Edit"}/>
-                    <div className="space-y-4 p-4 bg-sky-50 rounded-md">
-                        <div className="flex flex-row justify-center items-stretch space-x-4">
-                            <div className="flex-1 p-4">
-                                <div className="flex-1 h-full">
-                                    <List arr={trip.locations} links={false} />
-                                </div>
-                            </div>
-                            <div className="flex-1 p-2 rounded shadow-sm flex flex-col">
-                                <div className="flex-1 h-full flex justify-center">
-                                    <img
-                                    src={mapPlaceholder}
-                                    alt="Map"
-                                    className="w-full max-w-xs h-auto object-cover rounded"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        headerTitle={"Where we went"}                        
+                        modifyText={editLocations ? "Save" : "Edit"}
+                        onToggleEdit={toggleEditLocations} />
+                    <Locations 
+                        editMode={editLocations}
+                        locations={locationsData}
+                        setLocations={setLocationsData}/>
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
-                        headerTitle={"What we saw"}
-                        modifyText={"Add"}
+                        headerTitle={"What we saw"}                      
+                        modifyText={editLocations ? "Save" : "Add"}
+                        onToggleEdit={() => setEditLocations(prev => !prev)}
                         />
                     <div>
                         <span>put the photo album here</span>
@@ -67,7 +81,8 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"What we remember"}
-                        modifyText={"Add"}
+                        modifyText={editLocations ? "Save" : "Add"}
+                        onToggleEdit={() => setEditLocations(prev => !prev)}
                         />
                     <section>
                         <span>put the memory anecdotes here</span>
@@ -78,7 +93,8 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"Who was there"}
-                        modifyText={"Edit"}
+                        modifyText={editLocations ? "Save" : "Edit"}
+                        onToggleEdit={() => setEditLocations(prev => !prev)}
                         />
                     <List 
                         arr={tripData.contributors}
