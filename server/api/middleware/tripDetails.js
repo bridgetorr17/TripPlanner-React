@@ -13,12 +13,15 @@ const tripDetails = async (tripId) => {
             tripContributors.map(async (cont) => {
                 const contUser = await User.findById(cont);
                 if (contUser === null) return null;
-                else return contUser.userName;
+                else return {
+                        userName: contUser.userName, 
+                        profilePicture: contUser.profilePicture
+                }
             })
         )
     }
 
-    const existingUsers = contNames.filter(user => user !== null)
+    const existingUsers = contNames.filter(user => user !== null);
 
     return {
         trip: trip,

@@ -70,7 +70,6 @@ const editProfileField = async (req, res) => {
 const uploadProfilePicture = async (req, res) => {
     try{
         const userId = req.user._id.toString();
-        console.log(userId);
         const {fields, files} = await parseForm(req);
 
         const readableStream = fs.createReadStream(files.profilePicture[0].filepath)
@@ -92,7 +91,6 @@ const uploadProfilePicture = async (req, res) => {
             addRandomSuffix: true
         })
 
-        console.log(blob.url);
         await User.findByIdAndUpdate(
             userId,
             { $set: { profilePicture: blob.url }},

@@ -2,7 +2,6 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import ProfileField from "../components/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
-import { IoMdReturnLeft } from "react-icons/io";
 
 const UserPage = () => {
     const { isOwner,
