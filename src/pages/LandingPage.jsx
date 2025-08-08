@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import bg from '../photos/landingPageBackground.jpg'
+import bg from '../photos/landingPageBackground.avif'
 import VaraText from "../components/VaraText";
 
 const LandingPage = () => {
