@@ -3,21 +3,34 @@ import VaraText from "../components/VaraText";
 
 const LandingPage = () => {
     return (
-        <div className="flex flex-col justify-center items-center bg-blue-300 min-h-screen">
-            <div className="vara-wrapper flex justify-center items-center w-full h-ful"
+        <div className="flex flex-col justify-center items-center bg-blue-300 min-h-screen px-4 text-center">
+            <div className="vara-wrapper flex justify-center items-center w-full"
                 style={{
                     width: '100%',
                 }}>
                 <VaraText 
                     text="Triply"
                     fontURL="https://raw.githubusercontent.com/akzhy/Vara/master/fonts/Pacifico/PacificoSLO.json"
-                    options={{fontSize: 60, strokeWidth: 1, color: '#f0f0f0' }}
+                    options={{
+                        fontSize: window.innerWidth < 640 ? 36 : 60, 
+                        strokeWidth: 1, 
+                        color: '#f0f0f0' }}
                     />
             </div>
-            <span className="text-4xl p-2 text-gray-50">Record, Remember, Reminisce</span>
-            <Link to="/login" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300 p-2 m-2">Login</Link>
-            <Link to="/signup" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300 p-2 m-2">Signup</Link>
-            <Link to="/preview" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300 p-2 m-2">Explore</Link>
+            <span className="text-xl sm:text-2xl md:text-4xl p-4 text-gray-50 font-light leading-snug">
+                Record, Remember, Reminisce
+                </span>
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                <Link to="/login" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300">
+                    Login
+                </Link>
+                <Link to="/signup" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300">
+                    Signup
+                </Link>
+                <Link to="/preview" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300">
+                    Explore
+                </Link>
+            </div>
         </div> 
     )
 }
