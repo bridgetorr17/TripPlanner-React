@@ -1,8 +1,8 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ProfileField from "../components/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { IoMdReturnLeft } from "react-icons/io";
 
 const UserPage = () => {
     const { isOwner,
@@ -16,6 +16,8 @@ const UserPage = () => {
     const [userName, setUserName] = useState(initUserName);
     const [email, setEmail] = useState(initEmail);
     const [bio, setBio] = useState(initBio);
+    const [profilePictureURL, setProfilePictureURL] = useState(profilePicture || "");
+    const fileInputRef = useRef(null);
 
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
@@ -75,13 +77,48 @@ const UserPage = () => {
         <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
             <div className="flex flex-col items-center space-y-4 mb-8">
                 <img
-                    src={profilePicture || ""}
+                    src={profilePictureURL}
                     alt="Profile"
                     className="w-24 h-24 rounded-full object-cover border-4 border-sky-300"
                 />
                 {isOwner 
-                    ? <button
-                        className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1">Edit Profile Photo</button>
+                    ? <>
+                        <button
+                            className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1"
+                            onClick={() => fileInputRef.current.click()}
+                            >Edit Profile Photo</button>
+                            <input 
+                                type="file"
+                                accept="image/*"
+                                ref={fileInputRef}
+                                style={{display: 'none'}}
+                                onChange={async (e) => {
+                                    const file = e.target.files[0];
+                                    if (!file) return;
+
+                                    const formData = new FormData();
+                                    formData.append("profilePicture", file);
+
+                                    try {
+                                        console.log(`going to try to upload photo: ${formData}`)
+                                        const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
+                                            method: "POST",
+                                            body: formData,
+                                        });
+
+                                        const data = await res.json();
+
+                                        if (!data.success) {
+                                            throw new Error(data.message || "Upload failed");
+                                        }
+
+                                        setProfilePictureURL(data.url);  // This updates the image
+                                    } catch (err) {
+                                        console.error("Upload failed:", err);
+                                    }
+                                }}
+                            />
+                        </>
                     : null}
                 <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
             </div>

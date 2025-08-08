@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', ensureAuth, dashboardController.getDashboard);
 router.get('/:userName', dashboardController.getUser);
 router.put('/edit/:field', dashboardController.editProfileField);
+router.put('/uploadProfilePicture/:userName', dashboardController.uploadProfilePicture);
 
 
 export {router};

@@ -63,8 +63,13 @@ const editProfileField = async (req, res) => {
     })
 }
 
+const uploadProfilePicture = async (req, res) => {
+    console.log('here we are going to upload a profile picture')
+}
+
 export { 
     getDashboard,
     getUser,
-    editProfileField
+    editProfileField,
+    uploadProfilePicture
 }
