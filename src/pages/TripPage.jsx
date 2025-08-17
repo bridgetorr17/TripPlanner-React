@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/TripHeader"
 import Locations from "../components/Locations"
+import Memories from "../components/Memories"
 import Contributors from "../components/Contributors"
 import ConfirmDelete from "../components/ConfirmDelete"
 import { FaTrash } from "react-icons/fa6"
@@ -25,13 +26,12 @@ const TripPage = ({owner}) => {
     const nav = useNavigate();
     const reavlidator = useRevalidator();
 
-    console.log(`the trip was reloaded, the contributor names are ${tripData.contributorsNames}`)
-    console.log(`the trip was reloaded, the last contributor is ${tripData.contributors[tripData.contributors.length - 1].userName}`)
-
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
     const [contributorsName, setContributorsName] = useState(tripData.contributorsNames);
+    const [editMemories, setEditMemories] = useState(false);
+    const [memories, setMemories] = useState(trip.memories)
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
@@ -40,7 +40,6 @@ const TripPage = ({owner}) => {
     }
 
     const save = async (route, data, field, onSuccess) => {
-
         try{
             const res = await fetch(`/api/trips/${route}/${trip._id}`, {
                 method: 'PUT',
@@ -49,7 +48,6 @@ const TripPage = ({owner}) => {
             });
             
             if(!res.ok) throw new Error('Failed to save');
-            console.log('will call the onSuccess function now')
             onSuccess();
         } 
         catch(err) {
@@ -123,18 +121,19 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"What we remember"}
-                        modifyText={editLocations ? "Save" : "Add"}
+                        modifyText={editMemories ? "Save" : "Add"}
                         onToggleEdit={() => 
                             toggleEdit(
-                                editLocations, 
-                                () => save('editLocations', locationsData, 'locations', () => setEditLocations(false)),
-                                setEditLocations
+                                editMemories, 
+                                () => save('editMemories', memories, 'memories', () => setEditMemories(false)),
+                                setEditMemories
                                 )
                             }
                         />
-                    <section>
-                        <span>put the memory anecdotes here</span>
-                    </section>
+                    <Memories 
+                        editMode={editMemories}
+                        memories={memories}
+                        setMemories={setMemories}/>
                 </section>
 
 
