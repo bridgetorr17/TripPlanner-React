@@ -133,7 +133,8 @@ const TripPage = ({owner}) => {
                     <Memories 
                         editMode={editMemories}
                         memories={memories}
-                        setMemories={setMemories}/>
+                        setMemories={setMemories}
+                        tripId={trip._id}/>
                 </section>
 
 

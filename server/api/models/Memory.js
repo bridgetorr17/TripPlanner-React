@@ -15,6 +15,4 @@ const MemorySchema = new mongoose.Schema({
     }
 });
 
-const Memory = mongoose.model('Memory', MemorySchema);
-
 export default MemorySchema;

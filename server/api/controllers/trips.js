@@ -63,7 +63,6 @@ const postCreateNewTrip = async (req, res) => {
     }
 }
 const deleteTrip = async (req, res) => {
-    console.log('delete trip function reached');
     try{
         await Trip.findOneAndDelete({_id: req.params.id});
         
@@ -81,6 +80,29 @@ const deleteTrip = async (req, res) => {
     }
 }
 
+const postCreateNewMemory = async (req, res) => {
+    console.log('create memory function was reached')
+    const tripId = req.params.id;
+
+    try{
+        const trip = await Trip.findById(tripId);
+        trip.memories.push({
+            text: req.body.memory,
+            user: req.user._id,
+            location: req.body.location
+        });
+        await trip.save();
+    }
+    catch(err){
+        console.error(err);
+        return res.json({
+            success: false,
+            message: 'error adding the memory to the trip'
+        });  
+    }
+}
+
 export {getTrip, 
         postCreateNewTrip, 
-        deleteTrip};
+        deleteTrip,
+        postCreateNewMemory};

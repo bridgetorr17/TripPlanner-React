@@ -1,12 +1,34 @@
 import { useState } from "react";
 
-const Memories = ({editMode, memories, setMemories}) => {
+const Memories = ({editMode, memories, setMemories, tripId}) => {
 
     const [memory, setMemory] = useState('');
     const [location, setLocation] = useState('');
 
     const createMemory = async (e) => {
         e.preventDefault();
+
+        const newMemory = {
+            location,
+            memory
+        }
+
+        try{
+            const res = await fetch(`/api/trips/createNewMemory/${tripId}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newMemory)
+            });
+
+            const result = await res.json();
+            return result;
+        }
+        catch(err){
+            console.log(err);
+        }
 
         console.log(`want to create a new memory with ${location} location and ${memory} text.`)
     }
