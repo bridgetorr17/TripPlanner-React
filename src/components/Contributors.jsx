@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
 import DynamicListInput from "./DynamicListInput";
 
-const Contributors = ({editMode, contributors, setContributors}) => {
+const Contributors = ({editMode, contributors, setContributors, contributorsData}) => {
 
     return (
         <>
             { editMode ?
                 <DynamicListInput 
                     label='Contributor' 
-                    values={contributors.map(cont => cont.userName)} 
+                    values={contributors} 
                     setValues={setContributors} 
                     name='contributors'
                     color='teal'/>
             :  (
                 <div className="flex space-x-4 overflow-x-auto">
-                    {contributors.map((cont, ind) => (
+                    {contributorsData.map((cont, ind) => (
                         <Link to={`/dashboard/${cont.userName}`}>
                             <div key={ind} className="flex flex-col items-center">
                                 <img

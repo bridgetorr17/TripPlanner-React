@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData, useRevalidator } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/TripHeader"
@@ -21,14 +21,17 @@ const TripPage = ({owner}) => {
     
     const tripData = useLoaderData().trip;
     const trip = tripData.trip;
+    const contributorsData = tripData.contributors;
     const nav = useNavigate();
+    const reavlidator = useRevalidator();
 
-    console.log(`trip data avialable is ${trip.month}`)
+    console.log(`the trip was reloaded, the contributor names are ${tripData.contributorsNames}`)
+    console.log(`the trip was reloaded, the last contributor is ${tripData.contributors[tripData.contributors.length - 1].userName}`)
 
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
-    const [contributorsData, setContributorsData] = useState(tripData.contributors);
+    const [contributorsName, setContributorsName] = useState(tripData.contributorsNames);
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
@@ -37,6 +40,7 @@ const TripPage = ({owner}) => {
     }
 
     const save = async (route, data, field, onSuccess) => {
+
         try{
             const res = await fetch(`/api/trips/${route}/${trip._id}`, {
                 method: 'PUT',
@@ -44,7 +48,8 @@ const TripPage = ({owner}) => {
                 body: JSON.stringify({ [field]: data})
             });
             
-            if(!res.ok) throw new Error('Failed to save locations');
+            if(!res.ok) throw new Error('Failed to save');
+            console.log('will call the onSuccess function now')
             onSuccess();
         } 
         catch(err) {
@@ -140,15 +145,19 @@ const TripPage = ({owner}) => {
                         onToggleEdit={() => 
                             toggleEdit(
                                 editContributors, 
-                                () => save('editContributors', contributorsData, 'contributors', () => setEditContributors(false)),
+                                () => save('editContributors', contributorsName, 'contributors', () => {
+                                    setEditContributors(false);
+                                    reavlidator.revalidate();
+                                }),
                                 setEditContributors
                                 )
                             }
                         />
                     <Contributors 
                         editMode={editContributors}
-                        contributors={contributorsData}
-                        setContributors={setContributorsData}/>
+                        contributors={contributorsName}
+                        setContributors={setContributorsName}
+                        contributorsData={contributorsData}/>
                 </section>
                 {owner 
                     ?

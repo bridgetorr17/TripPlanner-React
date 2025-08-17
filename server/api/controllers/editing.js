@@ -36,22 +36,27 @@ const editContributors = async (req, res) => {
     try{
         const tripId = req.params.id;
         const updatedContributors = req.body.contributors;
+        console.log(`updated contributors are ${updatedContributors}`)
         const updatedContributorsIds = await Promise.all(
             updatedContributors.map(async (cont) => {
+                console.log(typeof cont)
                 const contUser = await User.findOne({ userName: cont });
                 if (contUser === null) return '';
                 else return contUser._id;
             })
         );
 
-        console.log(updatedContributorsIds)
+        console.log(`updated IDs are ${updatedContributorsIds}`)
+
         if (updatedContributorsIds.includes('')){
+            console.log(`${updatedContributors[updatedContributorsIds.indexOf('')]} does not exist as a user of Triply.`)
             return res.json({
                 success: false,
                 message: `${updatedContributors[updatedContributorsIds.indexOf('')]} does not exist as a user of Triply.`
             });
         }
 
+        console.log('those IDs look good, lets update the trip!')
         await Trip.findByIdAndUpdate(
             tripId,
             {

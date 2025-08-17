@@ -20,13 +20,20 @@ const tripDetails = async (tripId) => {
             })
         )
     }
+    console.log(`contributors names are ${contNames[0].userName}`)
 
-    const existingUsers = contNames.filter(user => user !== null);
+    const existingUsers = contNames.filter(user => user.userName !== null);
+    const existingUsersNames = existingUsers.map(user => user.userName);
+
+    console.log(`tripDetails was called. The contributor userNames are ${existingUsersNames}`);
+    console.log(`tripDetails was called. The last contributor is ${existingUsers[existingUsers.length-1].userName}`);
+
 
     return {
         trip: trip,
         creator: creatorName,
-        contributors: existingUsers
+        contributors: existingUsers,
+        contributorsNames: existingUsersNames
     }
 }
 
