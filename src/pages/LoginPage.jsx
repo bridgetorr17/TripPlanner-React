@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage = ({loginAttempt}) => {
@@ -105,6 +106,11 @@ const LoginPage = ({loginAttempt}) => {
                             : "Login"}
                     </button>
                 </form>
+                <Link
+                    to='/signup'
+                    className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center">
+                    Signup
+                </Link>
             </div>
         </div>
     )
