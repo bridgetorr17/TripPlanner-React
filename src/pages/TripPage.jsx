@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import TripHeader from "../components/TripHeader"
 import Locations from "../components/Locations"
 import Contributors from "../components/Contributors"
+import ConfirmDelete from "../components/ConfirmDelete"
 import { FaTrash } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 
@@ -26,6 +27,9 @@ const TripPage = ({owner}) => {
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
     const [contributorsData, setContributorsData] = useState(tripData.contributors);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    console.log(`from the trip component, the modal open is ${modalOpen}`)
 
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
@@ -145,16 +149,29 @@ const TripPage = ({owner}) => {
                         contributors={contributorsData}
                         setContributors={setContributorsData}/>
                 </section>
-            </div>
                 {owner 
-                    ? <button 
-                        onClick={() => deleteTrip()}
-                        className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                    ?
+                    <>
+                        <button
+                            onClick={() => setModalOpen(true)}
+                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
                         >
-                            <FaTrash className="text-lg"/>
-                            Delete this trip</button> 
-                    : null
-                }
+                        <FaTrash className="text-lg" />
+                        Delete this trip
+                        </button>
+                        <ConfirmDelete
+                            isOpen={modalOpen}
+                            onClose={() => setModalOpen(false)}
+                            onConfirm={() => {
+                                deleteTrip();
+                                setModalOpen(false);
+                            }}
+                            itemName={trip.name}
+                        /> 
+                    </>
+                    : null}
+                
+            </div>
         </div>
     )
 }
