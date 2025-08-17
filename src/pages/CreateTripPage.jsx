@@ -22,6 +22,7 @@ const newTripAttempt = async (tripInfo) => {
 const CreateTripPage = () => {
 
     const [name, setName] = useState('');
+    const [subtitle, setSubtitle] = useState('');
     const [locations, setLocations] = useState(['']);
     const [contributors, setContributors] = useState(['']);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -32,6 +33,7 @@ const CreateTripPage = () => {
 
         const tripInfo = {
             name,
+            subtitle,
             locations,
             contributors,
             month: selectedDate.getMonth(),
@@ -64,7 +66,7 @@ const CreateTripPage = () => {
                 className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 space-y-6">
                 <div className="flex flex-col">
                     <label className="mb-1 text-blue-700 font-semibold">Trip Name</label>
-                    <div className="flex flex-fow justify-between">
+                    <div className="flex flex-row justify-between">
                         <input 
                             type="text"
                             name="name" 
@@ -78,6 +80,13 @@ const CreateTripPage = () => {
                             className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
                         />
                     </div>
+                    <input 
+                        type="text"
+                        name="subtitle"
+                        placeholder="Add a short description"
+                        value={subtitle}
+                        onChange={(e) => setSubtitle(e.target.value)} 
+                        className="border border-blue-300 rounded-md px-3 py-2 mt-3 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
                 </div>
 
                 <DynamicListInput 

@@ -23,13 +23,13 @@ const TripPage = ({owner}) => {
     const trip = tripData.trip;
     const nav = useNavigate();
 
+    console.log(`trip data avialable is ${trip.month}`)
+
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
     const [contributorsData, setContributorsData] = useState(tripData.contributors);
     const [modalOpen, setModalOpen] = useState(false);
-
-    console.log(`from the trip component, the modal open is ${modalOpen}`)
 
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
@@ -71,13 +71,14 @@ const TripPage = ({owner}) => {
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
             <div className="w-full max-w-3xl mb-2 flex flex-row items-center justify-between">
-                <h1 className="text-6xl font-medium text-blue-700 p-3">{trip.name}</h1>
+                <h1 className="text-6xl font-medium text-blue-700 p-1">{trip.name}</h1>
                 <Link to='/dashboard'>
                     <h2 className="text-xl text-blue-500 hover:text-blue-600 ">DASHBOARD</h2>
                 </Link>
             </div>
-            <div className="w-full max-w-3xl mb-8 flex flex-row items-center justify-start">
-                <span className="text-2xl font-normal text-blue-600 p-3">Trip Subtitle | Month Year</span>
+            <div className="w-3xl mb-8 flex flex-col items-start justify-start">
+                <span className="text-2xl font-normal text-blue-600 p-2">{trip.subtitle}</span>
+                <span className="text-xl font-normal text-blue-600 p-2">{trip.month} {trip.year}</span>
             </div>
             <div className="w-full max-w-3xl space-y-6">
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">

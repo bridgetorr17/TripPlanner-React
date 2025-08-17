@@ -42,6 +42,7 @@ const postCreateNewTrip = async (req, res) => {
     try{
         await Trip.create({
             name: req.body.name,
+            subtitle: req.body.subtitle,
             owner: req.user._id,
             contributors: contributorIds,
             locations: Array.isArray(req.body.locations) ? req.body.locations : [req.body.locations],
