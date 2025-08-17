@@ -2,6 +2,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import ProfileField from "../components/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
+import ConfirmDelete from "../components/ConfirmDelete"
 
 const UserPage = () => {
     const { isOwner,
@@ -21,6 +22,7 @@ const UserPage = () => {
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [editBio, setEditBio] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const handleFileChange = async (e) => {
         console.log('going to upload the photo')
@@ -153,9 +155,9 @@ const UserPage = () => {
                 isOwner={isOwner}
                 save={handleSave}    
             />
-
             {isOwner 
-                ? <div>  
+                ?
+                <>
                     <button 
                         onClick={() => handleLogout()}
                         className="w-full flex justify-center items-center mb-3 gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
@@ -163,16 +165,24 @@ const UserPage = () => {
                         <FaSignOutAlt className="text-lg"/>
                         Logout
                     </button>
-                    <button 
-                        onClick={() => handleDelete()}
-                        className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition"
-                        >
-                        <FaTrash className="text-lg"/>
-                        Delete Account
-                    </button> 
-                </div>
-                : null
-            }
+                    <button
+                        onClick={() => setModalOpen(true)}
+                        className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                    >
+                    <FaTrash className="text-lg" />
+                    Delete Account
+                    </button>
+                    <ConfirmDelete
+                        isOpen={modalOpen}
+                        onClose={() => setModalOpen(false)}
+                        onConfirm={() => {
+                            handleDelete();
+                            setModalOpen(false);
+                        }}
+                        itemName={userName}
+                    /> 
+                </>
+                : null}
         </div>
     )
 }
