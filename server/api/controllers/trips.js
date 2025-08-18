@@ -81,14 +81,15 @@ const deleteTrip = async (req, res) => {
 }
 
 const postCreateNewMemory = async (req, res) => {
-    console.log('create memory function was reached')
     const tripId = req.params.id;
+    const user = await User.findById(req.user._id)
 
     try{
         const trip = await Trip.findById(tripId);
         trip.memories.push({
             text: req.body.memory,
-            user: req.user._id,
+            user: user._id,
+            userName: user.userName,
             location: req.body.location
         });
         await trip.save();

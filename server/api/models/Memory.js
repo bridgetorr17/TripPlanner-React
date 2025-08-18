@@ -10,6 +10,10 @@ const MemorySchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    userName: {
+        type: String,
+        required: true
+    },
     location: {
         type: String
     }

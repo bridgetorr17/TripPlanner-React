@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const Memories = ({editMode, memories, setMemories, tripId}) => {
 
@@ -22,15 +23,10 @@ const Memories = ({editMode, memories, setMemories, tripId}) => {
                 },
                 body: JSON.stringify(newMemory)
             });
-
-            const result = await res.json();
-            return result;
         }
         catch(err){
             console.log(err);
         }
-
-        console.log(`want to create a new memory with ${location} location and ${memory} text.`)
     }
 
     return (
@@ -64,11 +60,19 @@ const Memories = ({editMode, memories, setMemories, tripId}) => {
                         Create Memory
                     </button>
                 </form>
-            :   <div className="flex flex-col">
-                    {memories.map((mem, ind) => (
-                        <div>
-                            <span>{mem.text}</span>
-                            <span>{mem.user}</span>
+            :   <div className="flex flex-col space-y-3">
+                    {memories.map((mem) => (
+                        <div key={mem._id} className="relative box-content inline-block rounded-lg shadow-lg bg-gradient-to-tr from-teal-400 via-cyan-400 to-blue-400 text-white p-3">
+                            <div className="absolute top-2 left-2 flex items-center space-x-1">
+                                <FaMapMarkerAlt className="fas fa-map-marker-alt w-4 h-4 text-cyan-100"/>
+                                <span className="text-xs font-semibold">{mem.location}</span>
+                            </div>
+                            <div className="text-center py-2">
+                                <p className="inline-block">{mem.text}</p>
+                            </div>
+                            <div className="absolute bottom-2 right-2">
+                                <span className="text-xs italic text-blue-100">{mem.userName}</span>
+                            </div>
                         </div>
                     ))}
                 </div>
