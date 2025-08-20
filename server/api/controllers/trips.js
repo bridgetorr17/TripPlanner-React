@@ -30,6 +30,7 @@ const postCreateNewTrip = async (req, res) => {
         contributors = [contributors];
     }
 
+    contributors.unshift(req.user.userName)
     const contributorIds = 
         await Promise.all(
             contributors.map(async (cont) => {
