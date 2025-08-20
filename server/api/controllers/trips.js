@@ -24,7 +24,7 @@ const getTrip = async (req, res) => {
 }
 
 const postCreateNewTrip = async (req, res) => {
-    let contributors = req.body.tripContributors;
+    let contributors = req.body.contributors;
 
     if (!Array.isArray(contributors)) {
         contributors = [contributors];

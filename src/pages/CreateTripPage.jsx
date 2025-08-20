@@ -31,6 +31,8 @@ const CreateTripPage = () => {
     const createTrip = async (e) => {
         e.preventDefault();
 
+        console.log(contributors);
+
         const tripInfo = {
             name,
             subtitle,

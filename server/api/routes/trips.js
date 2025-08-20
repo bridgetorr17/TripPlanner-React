@@ -16,5 +16,4 @@ router.post('/createNewMemory/:id', tripController.postCreateNewMemory);
 router.put('/editLocations/:id', editTripController.editLocations);
 router.put('/editContributors/:id', editTripController.editContributors);
 
-
 export {router};
