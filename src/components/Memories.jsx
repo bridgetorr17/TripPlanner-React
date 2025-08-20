@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-const Memories = ({editMode, memories, setMemories, tripId}) => {
+const Memories = ({editMode, setEditMode, memoriesInit, tripId}) => {
 
     const [memory, setMemory] = useState('');
     const [location, setLocation] = useState('');
+    const [memories, setMemories] = useState(memoriesInit);
 
     const createMemory = async (e) => {
         e.preventDefault();
@@ -23,9 +24,17 @@ const Memories = ({editMode, memories, setMemories, tripId}) => {
                 },
                 body: JSON.stringify(newMemory)
             });
+
+            const created = await res.json();
+            setMemories(prev => [...prev, created])
         }
         catch(err){
             console.log(err);
+        }
+        finally{
+            setMemory('');
+            setLocation('');
+            setEditMode(false);
         }
     }
 

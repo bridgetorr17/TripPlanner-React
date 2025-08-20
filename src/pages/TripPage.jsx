@@ -31,7 +31,6 @@ const TripPage = ({owner}) => {
     const [editContributors, setEditContributors] = useState(false);
     const [contributorsName, setContributorsName] = useState(tripData.contributorsNames);
     const [editMemories, setEditMemories] = useState(false);
-    const [memories, setMemories] = useState(trip.memories)
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
@@ -121,19 +120,20 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"What we remember"}
-                        modifyText={editMemories ? "Save" : "Add"}
+                        modifyText={editMemories ? "Cancel" : "Add"}
                         onToggleEdit={() => 
                             toggleEdit(
                                 editMemories, 
-                                () => save('editMemories', memories, 'memories', () => setEditMemories(false)),
+                                //using "saveFn" as cancel, actual posting of a new memory is in Memories component
+                                () => {setEditMemories(false)},
                                 setEditMemories
                                 )
                             }
                         />
                     <Memories 
                         editMode={editMemories}
-                        memories={memories}
-                        setMemories={setMemories}
+                        setEditMode={setEditMemories}
+                        memoriesInit={trip.memories}
                         tripId={trip._id}/>
                 </section>
 

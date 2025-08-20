@@ -1,8 +1,9 @@
-import { FaPenToSquare, FaPlus } from "react-icons/fa6"
+import { FaPenToSquare, FaPlus, FaX } from "react-icons/fa6"
 
 const TripHeader = ({headerTitle, modifyText, onToggleEdit}) => {
     let editIcon;
     if (modifyText==="Add") editIcon = <FaPlus className="w-4 h-4 mr-2" aria-hidden="true" />
+    else if (modifyText==="Cancel") editIcon = <FaX className="w-4 h-4 mr-2" aria-hidden="true"/>
     else editIcon = <FaPenToSquare className="w-4 h-4 mr-2" aria-hidden="true" />
     
     return (
