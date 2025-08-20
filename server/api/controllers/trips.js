@@ -11,7 +11,8 @@ const getTrip = async (req, res) => {
 
         return res.json({
             success: true,
-            trip: details
+            trip: details,
+            requestingUser: req.user.userName
         });
     }
     catch(err){

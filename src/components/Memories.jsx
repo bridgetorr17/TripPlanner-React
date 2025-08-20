@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import Memory from "./Memory"
 
-const Memories = ({editMode, setEditMode, memoriesInit, tripId}) => {
+const Memories = ({editMode, setEditMode, memoriesInit, tripId, user}) => {
 
     const [memory, setMemory] = useState('');
     const [location, setLocation] = useState('');
@@ -56,6 +56,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId}) => {
                         />
                     <label className="mb-1 text-blue-700 font-semibold">Memory</label>
                     <textarea 
+                        required
                         rows={4}
                         name="memory"
                         placeholder="Write the details of this memory"
@@ -69,20 +70,11 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId}) => {
                         Create Memory
                     </button>
                 </form>
-            :   <div className="flex flex-col space-y-3">
+            :   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
                     {memories.map((mem) => (
-                        <div key={mem._id} className="relative box-content inline-block rounded-lg shadow-lg bg-gradient-to-tr from-teal-400 via-cyan-400 to-blue-400 text-white p-3">
-                            <div className="absolute top-2 left-2 flex items-center space-x-1">
-                                <FaMapMarkerAlt className="fas fa-map-marker-alt w-4 h-4 text-cyan-100"/>
-                                <span className="text-xs font-semibold">{mem.location}</span>
-                            </div>
-                            <div className="text-center py-2">
-                                <p className="inline-block">{mem.text}</p>
-                            </div>
-                            <div className="absolute bottom-2 right-2">
-                                <span className="text-xs italic text-blue-100">{mem.userName}</span>
-                            </div>
-                        </div>
+                        <Memory id={mem._id}
+                                memory={mem}
+                                user={user}/>
                     ))}
                 </div>
             }

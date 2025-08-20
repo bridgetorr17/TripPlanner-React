@@ -21,6 +21,7 @@ const tripLoader = async ({ request }) => {
 const TripPage = ({owner}) => {
     
     const tripData = useLoaderData().trip;
+    const thisUser = useLoaderData().requestingUser;
     const trip = tripData.trip;
     const contributorsData = tripData.contributors;
     const nav = useNavigate();
@@ -124,7 +125,7 @@ const TripPage = ({owner}) => {
                         onToggleEdit={() => 
                             toggleEdit(
                                 editMemories, 
-                                //using "saveFn" as cancel, actual posting of a new memory is in Memories component
+                                //using "saveFn" as cancel, actual posting of a new memory is in Memories
                                 () => {setEditMemories(false)},
                                 setEditMemories
                                 )
@@ -134,7 +135,8 @@ const TripPage = ({owner}) => {
                         editMode={editMemories}
                         setEditMode={setEditMemories}
                         memoriesInit={trip.memories}
-                        tripId={trip._id}/>
+                        tripId={trip._id}
+                        user={thisUser}/>
                 </section>
 
 
