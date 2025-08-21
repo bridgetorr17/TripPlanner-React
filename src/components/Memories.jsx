@@ -74,6 +74,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, user}) => {
                     {memories.map((mem) => (
                         <Memory id={mem._id}
                                 memory={mem}
+                                tripId={tripId}
                                 user={user}/>
                     ))}
                 </div>

@@ -85,7 +85,7 @@ const deleteTrip = async (req, res) => {
 const postCreateNewMemory = async (req, res) => {
     const tripId = req.params.id;
     const user = await User.findById(req.user._id)
-    console.log('gonna make a new memory')
+
     try{
         const trip = await Trip.findById(tripId);
         trip.memories.push({
@@ -95,12 +95,9 @@ const postCreateNewMemory = async (req, res) => {
             location: req.body.location
         });
         await trip.save();
-        return res.json({
-                text: req.body.memory,
-                user: user._id,
-                userName: user.userName,
-                location: req.body.location
-        }); 
+        
+        const lastMemory = trip.memories[trip.memories.length - 1]
+        return res.json(lastMemory);
     }
     catch(err){
         console.error(err);

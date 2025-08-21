@@ -81,6 +81,11 @@ const editContributors = async (req, res) => {
     }
 }
 
+const editMemory = async (req, res) => {
+    console.log(`want to update this memory ${req.body.updatedText}`)
+} 
+
 export {editLocations,
-        editContributors
+        editContributors,
+        editMemory
 };
