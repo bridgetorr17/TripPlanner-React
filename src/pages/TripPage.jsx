@@ -73,15 +73,23 @@ const TripPage = ({owner}) => {
 
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
-            <div className="w-full max-w-3xl mb-2 flex flex-row items-center justify-between">
-                <h1 className="text-6xl font-medium text-blue-700 p-1">{trip.name}</h1>
+            <div className="w-full max-w-3xl mb-2 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-blue-700 p-1">
+                    {trip.name}
+                </h1>
                 <Link to='/dashboard'>
-                    <h2 className="text-xl text-blue-500 hover:text-blue-600 ">DASHBOARD</h2>
+                    <h2 className="text-lg sm:text-xl text-blue-500 hover:text-blue-600">
+                    DASHBOARD
+                    </h2>
                 </Link>
             </div>
-            <div className="w-3xl mb-8 flex flex-col items-start justify-start">
-                <span className="text-2xl font-normal text-blue-600 p-2">{trip.subtitle}</span>
-                <span className="text-xl font-normal text-blue-600 p-2">{trip.month} {trip.year}</span>
+            <div className="w-full max-w-3xl mb-8 flex flex-col items-start overflow-x-hidden">
+                <span className="text-2xl font-normal text-blue-600 p-2 whitespace-normal break-words">
+                    {trip.subtitle}
+                </span>
+                <span className="text-xl font-normal text-blue-600 p-2 whitespace-normal break-words">
+                    {trip.month} {trip.year}
+                </span>
             </div>
             <div className="w-full max-w-3xl space-y-6">
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
