@@ -1,4 +1,4 @@
-import { FaMapMarkerAlt, FaEdit} from "react-icons/fa";
+import { FaMapMarkerAlt} from "react-icons/fa";
 import { useState } from "react";
 
 const Memory = ({memory, user, tripId}) => {
@@ -27,6 +27,11 @@ const Memory = ({memory, user, tripId}) => {
                 },
                 body: JSON.stringify(updatedMemory)
             });
+
+            const data = await res.json();
+
+            setEditMemory(false);
+
         }
         catch(err){
             console.log(err);
@@ -55,7 +60,7 @@ const Memory = ({memory, user, tripId}) => {
                         name="memory"
                         value={memoryText}
                         onChange={(e) => setMemoryText(e.target.value)} 
-                        className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                        className="border w-full p-2 border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                         />
                      : <p className="text-base font-semibold text-left leading-relaxed">
                         {memoryText}

@@ -82,7 +82,16 @@ const editContributors = async (req, res) => {
 }
 
 const editMemory = async (req, res) => {
-    console.log(`want to update this memory ${req.body.updatedText}`)
+    const tripId = req.params.id;
+
+    const trip = await Trip.findById(tripId);
+    const memory = trip.memories.id(req.body.id);
+
+    memory.text = req.body.updatedText;
+
+    await trip.save();
+
+    return res.json(memory);
 } 
 
 export {editLocations,
