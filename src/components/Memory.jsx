@@ -1,17 +1,18 @@
-import { FaMapMarkerAlt} from "react-icons/fa";
+import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
+import Modal from './Modal'
 
 const Memory = ({memory, user, tripId}) => {
 
     const [editMemory, setEditMemory] = useState(false);
     const [memoryText, setMemoryText] = useState(memory.text);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
         else setEdit(true);
     }
 
-    console.log(editMemory)
     const updateMemory = async () => {
         const updatedMemory = {
             id: memory._id,
@@ -38,16 +39,29 @@ const Memory = ({memory, user, tripId}) => {
         }
     }
 
+    const deleteMemory = () => {
+        console.log('memory deleted')
+        setModalOpen(false);
+    }
+
     return (
         <>
             <div
                 key={memory._id}
                 className="relative inline-block rounded-3xl p-4 bg-gradient-to-br to-sky-200 text-blue-900 shadow:md hover:shadow-lg transition-shadow w-full max-w-md">
                     {user === memory.userName && (
-                        <button className="absolute top-3 right-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
-                                onClick={() => toggleEdit(editMemory, updateMemory, setEditMemory)}>
-                            {editMemory ? "Save" : "Edit"}
-                        </button>
+                        <div className="absolute top-3 right-3 flex space-x-2">
+                            <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
+                                    onClick={() => toggleEdit(editMemory, updateMemory, setEditMemory)}>
+                                {editMemory ? "Save" : "Edit"}
+                            </button>
+                            <button
+                                className="bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
+                                onClick={() => setModalOpen(true)}
+                                >
+                                <FaTrash />
+                            </button>
+                        </div>
                     )}
                 <div className="absolute top-3 left-3 flex items-center text-xs text-blue-700 opacity-75">
                     <FaMapMarkerAlt className="w-4 h-4 mr-1" />
@@ -71,6 +85,25 @@ const Memory = ({memory, user, tripId}) => {
                     {memory.userName}
                 </div>
             </div>
+
+            <Modal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                title="Confirm Deletion">
+                    <p className="mb-4">Are you sure you want to delete this memory?</p>
+                    <div className="flex justify-end space-x-3">
+                    <button
+                        className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        onClick={() => setModalOpen(false)}>
+                        Cancel
+                    </button>
+                    <button
+                        className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600"
+                        onClick={() => deleteMemory()}>
+                        Delete
+                    </button>
+                    </div>
+            </Modal>
         </>
     )
 }
