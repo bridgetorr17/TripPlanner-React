@@ -87,6 +87,10 @@ const TripPage = ({owner}) => {
                 method: "POST",
                 body: formData
             });
+
+            const photo = await res.json();
+
+            console.log(photo);
         }
         catch(err){
             console.error("Upload error: ", err)

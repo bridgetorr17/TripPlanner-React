@@ -115,7 +115,10 @@ const postCreateNewMemory = async (req, res) => {
 
 const postNewPhoto = async (req, res) => {
     try{
-        const userId = req.user._id.toString();
+        const user = await User.findById(req.user._id)
+        const tripId = req.params.id;
+        const trip = await Trip.findById(tripId);
+
         const {fields, files} = await parseForm(req);
 
         const readableStream = fs.createReadStream(files.newPhoto[0].filepath)
@@ -131,11 +134,29 @@ const postNewPhoto = async (req, res) => {
         const pass = new PassThrough()
         optimizeStream.pipe(pass);
 
-        console.log('we made it here')
-        console.log(userId)
+        const blob = await put(files.newPhoto[0].originalFilename, pass, {
+            access: 'public',
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+            addRandomSuffix: true
+        });
+
+         trip.photos.push({
+            url: blob.url,
+            user: user._id,
+            userName: user.userName
+        });
+
+        await trip.save();
+        
+        const lastPhoto = trip.photos[trip.photos.length - 1]
+        return res.json(lastPhoto);
     }
     catch(err){
         console.log(err);
+        return res.json({
+            success: false,
+            message: 'error adding the photo to the trip'
+        });  
     }
 }
 
