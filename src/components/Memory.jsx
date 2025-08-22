@@ -1,6 +1,7 @@
 import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
 import Modal from './Modal'
+import { Link } from "react-router-dom";
 
 const Memory = ({memory, user, tripId, deleteMemory}) => {
 
@@ -82,9 +83,13 @@ const Memory = ({memory, user, tripId, deleteMemory}) => {
                     </p>}
                     
                 </div>
-                <div className="mt-2 text-right text-xs italic text-blue-800 opacity-90">
-                    {memory.userName}
-                </div>
+                <Link to={`/dashboard/${memory.userName}`}>
+                    <div className="mt-2 text-right text-xs italic text-blue-800 opacity-90">
+                        <span className="cursor-pointer hover:underline hover:text-blue-600 transition-colors duration-200 ease-in-out">
+                            {memory.userName}
+                        </span>
+                    </div>
+                </Link>
             </div>
 
             <Modal
