@@ -2,7 +2,7 @@ import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
 import Modal from './Modal'
 
-const Memory = ({memory, user, tripId}) => {
+const Memory = ({memory, user, tripId, deleteMemory}) => {
 
     const [editMemory, setEditMemory] = useState(false);
     const [memoryText, setMemoryText] = useState(memory.text);
@@ -39,10 +39,11 @@ const Memory = ({memory, user, tripId}) => {
         }
     }
 
-    const deleteMemory = () => {
-        console.log('memory deleted')
+    const handleDelete = () => {
+        deleteMemory(memory._id);
         setModalOpen(false);
     }
+
 
     return (
         <>
@@ -99,7 +100,7 @@ const Memory = ({memory, user, tripId}) => {
                     </button>
                     <button
                         className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600"
-                        onClick={() => deleteMemory()}>
+                        onClick={() => handleDelete()}>
                         Delete
                     </button>
                     </div>

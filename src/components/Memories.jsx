@@ -38,6 +38,28 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, user}) => {
         }
     }
 
+    const deleteMemory = async (id) => {
+        const memoryId = {
+            id: id
+        }
+        try{
+            const res = await fetch(`/api/trips/deleteMemory/${tripId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(memoryId)
+            });
+
+            const updatedMemories = await res.json();
+            setMemories(updatedMemories);
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
     return (
         <>
             { editMode ?
@@ -75,7 +97,8 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, user}) => {
                         <Memory id={mem._id}
                                 memory={mem}
                                 tripId={tripId}
-                                user={user}/>
+                                user={user}
+                                deleteMemory={deleteMemory}/>
                     ))}
                 </div>
             }
