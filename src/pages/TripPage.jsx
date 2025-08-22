@@ -1,5 +1,5 @@
 import { useLoaderData, useRevalidator } from "react-router-dom"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/TripHeader"
 import Locations from "../components/Locations"
@@ -26,12 +26,16 @@ const TripPage = ({owner}) => {
     const contributorsData = tripData.contributors;
     const nav = useNavigate();
     const reavlidator = useRevalidator();
+    const fileInputRef = useRef(null);
 
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
     const [contributorsName, setContributorsName] = useState(tripData.contributorsNames);
+    const [editPhotos, setEditPhotos] = useState(false);
+    const [selectedPhoto, setSelectedPhoto] = useState(null);
     const [editMemories, setEditMemories] = useState(false);
+
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
@@ -68,6 +72,24 @@ const TripPage = ({owner}) => {
         }
         finally{
             nav('/dashboard')
+        }
+    }
+
+    const uploadPhoto = async () => {
+        
+        const formData = new FormData();
+        formData.append("newPhoto", selectedPhoto);
+
+        console.log(...formData);
+
+        try{
+            const res = await fetch(`/api/trips/uploadPhoto/${trip._id}`, {
+                method: "POST",
+                body: formData
+            });
+        }
+        catch(err){
+            console.error("Upload error: ", err)
         }
     }
 
@@ -112,17 +134,42 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"What we saw"}                      
-                        modifyText={editLocations ? "Save" : "Add"}
+                        modifyText={editPhotos ? "Save" : "Add"}
                         onToggleEdit={() => 
                             toggleEdit(
-                                editLocations, 
-                                () => save('editLocations', locationsData, 'locations', () => setEditLocations(false)),
-                                setEditLocations
+                                editPhotos, 
+                                () => uploadPhoto('editPhotos', selectedPhoto, 'photos', () => setEditPhotos(false)),
+                                setEditPhotos
                                 )
                             }
                         />
                     <div>
-                        <span>put the photo album here</span>
+                        {
+                            editPhotos && (
+                                <div>
+                                    <div className="flex flex-col items-start space-y-2">
+                                        <input
+                                            type="file"
+                                            id="file"
+                                            accept="image/*"
+                                            ref={fileInputRef}
+                                            style={{display: 'none'}}
+                                            onChange={(e) => setSelectedPhoto(e.target.files?.[0] || null)}
+                                            />
+                                        <button
+                                            type="button"
+                                            className="px-4 py-2 bg-sky-100 text-blue-600 rounded hover:bg-sky-200 transition"
+                                            onClick={() => fileInputRef.current?.click()}
+                                            >
+                                            Choose Photo
+                                        </button>
+                                        {selectedPhoto && (
+                                            <p className="text-sm text-gray-600">{selectedPhoto.name}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                 </section>
 

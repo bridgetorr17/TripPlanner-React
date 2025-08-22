@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import MemorySchema from "./Memory"
+import PhotoSchema from "./Photo"
 
 const TripSchema = new mongoose.Schema({
     name:{
@@ -34,7 +35,7 @@ const TripSchema = new mongoose.Schema({
         type: [MemorySchema]
     },
     photos: {
-        type: [String]
+        type: [PhotoSchema]
     }
 });
 

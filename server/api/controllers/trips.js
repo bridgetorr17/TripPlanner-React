@@ -1,6 +1,11 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
 import {tripDetails} from '../middleware/tripDetails.js';
+import formidable from 'formidable'
+import { put } from '@vercel/blob';
+import { PassThrough } from 'stream';
+import fs from 'fs'
+import sharp from 'sharp'
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
@@ -108,7 +113,44 @@ const postCreateNewMemory = async (req, res) => {
     }
 }
 
+const postNewPhoto = async (req, res) => {
+    try{
+        const userId = req.user._id.toString();
+        const {fields, files} = await parseForm(req);
+
+        const readableStream = fs.createReadStream(files.newPhoto[0].filepath)
+
+        const resize = sharp()
+            .rotate()
+            .resize(800)
+            .jpeg({quality: 70})
+
+        const optimizeStream = readableStream
+            .pipe(resize);
+
+        const pass = new PassThrough()
+        optimizeStream.pipe(pass);
+
+        console.log('we made it here')
+        console.log(userId)
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+function parseForm(req){
+    return new Promise((resolve, reject) => {
+        const form = formidable({multiples: false});
+        form.parse(req, (err, fields, files) => {
+            if(err) return reject(err);
+            resolve ({fields, files})
+        })
+    });
+}
+
 export {getTrip, 
         postCreateNewTrip, 
         deleteTrip,
-        postCreateNewMemory};
+        postCreateNewMemory,
+        postNewPhoto};

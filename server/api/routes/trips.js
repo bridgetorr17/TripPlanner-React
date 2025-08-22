@@ -11,6 +11,7 @@ router.delete('/delete/:id', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
 router.get('/sharedTrip/:id', tripController.getTrip);
 router.post('/createNewMemory/:id', tripController.postCreateNewMemory);
+router.post('/uploadPhoto/:id', tripController.postNewPhoto)
 
 //editTripController
 router.put('/editLocations/:id', editTripController.editLocations);
