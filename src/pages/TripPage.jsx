@@ -1,5 +1,5 @@
 import { useLoaderData, useRevalidator } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/TripHeader"
 import Locations from "../components/Locations"
@@ -15,7 +15,6 @@ const tripLoader = async ({ request }) => {
     
     const trip = await fetch(`/api/trips/${tripId}`)
     const tripRes = await trip.json();
-
     return tripRes;
 }
 
@@ -23,10 +22,7 @@ const TripPage = ({owner}) => {
     
     const trip = useLoaderData().trip;
     const thisUser = useLoaderData().requestingUser;
-    const contributorsNamesLoader = useLoaderData().contributorsNames
-
-    console.log(trip);
-    console.log(contributorsNamesLoader);
+    const contributorNamesLoader = useLoaderData().contributorNames
 
     const nav = useNavigate();
     const reavlidator = useRevalidator();
@@ -34,7 +30,7 @@ const TripPage = ({owner}) => {
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
-    const [contributorsNames, setContributorsNames] = useState(trip.contributorsNames);
+    const [contributorNames, setContributorNames] = useState(contributorNamesLoader);
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
 
@@ -45,19 +41,25 @@ const TripPage = ({owner}) => {
         else setEdit(true);
     }
 
-    const save = async (route, data, field, onSuccess) => {
+    const save = async (route, data, field, onSuccess, setEdit) => {
         try{
             const res = await fetch(`/api/trips/${route}/${trip._id}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ [field]: data})
             });
-            
+
             if(!res.ok) throw new Error('Failed to save');
+
+            const response = await res.json();
+
+            if (!response.success) throw new Error (response.message)
+
             onSuccess();
         } 
         catch(err) {
             console.error("error saving locations:" , err)
+            setEdit(false);
         }
     }  
 
@@ -164,18 +166,18 @@ const TripPage = ({owner}) => {
                         onToggleEdit={() => 
                             toggleEdit(
                                 editContributors, 
-                                () => save('editContributors', contributorsNames, 'contributors', () => {
+                                () => save('editContributors', contributorNames, 'contributors', () => {
                                     setEditContributors(false);
                                     reavlidator.revalidate();
-                                }),
+                                }, setEditContributors),
                                 setEditContributors
                                 )
                             }
                         />
                     <Contributors 
                         editMode={editContributors}
-                        contributorsNames={contributorsNames}
-                        setContributorsNames={setContributorsNames}
+                        contributorNames={contributorNames}
+                        setContributorNames={setContributorNames}
                         contributors={trip.contributors}/>
                 </section>
                 {owner 

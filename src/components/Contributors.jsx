@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import DynamicListInput from "./DynamicListInput";
 
-const Contributors = ({editMode, contributorsNames, setContributorsNames, contributors}) => {
+const Contributors = ({editMode, contributorNames, setContributorNames, contributors}) => {
 
     return (
         <>
             { editMode ?
                 <DynamicListInput 
                     label='Contributor' 
-                    values={contributorsNames} 
-                    setValues={setContributorsNames} 
+                    values={contributorNames} 
+                    setValues={setContributorNames} 
                     name='contributors'
                     color='teal'/>
             :  (
