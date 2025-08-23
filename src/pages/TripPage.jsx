@@ -21,17 +21,20 @@ const tripLoader = async ({ request }) => {
 
 const TripPage = ({owner}) => {
     
-    const tripData = useLoaderData().trip;
+    const trip = useLoaderData().trip;
     const thisUser = useLoaderData().requestingUser;
-    const trip = tripData.trip;
-    const contributorsData = tripData.contributors;
+    const contributorsNamesLoader = useLoaderData().contributorsNames
+
+    console.log(trip);
+    console.log(contributorsNamesLoader);
+
     const nav = useNavigate();
     const reavlidator = useRevalidator();
 
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
-    const [contributorsName, setContributorsName] = useState(tripData.contributorsNames);
+    const [contributorsNames, setContributorsNames] = useState(trip.contributorsNames);
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
 
@@ -161,7 +164,7 @@ const TripPage = ({owner}) => {
                         onToggleEdit={() => 
                             toggleEdit(
                                 editContributors, 
-                                () => save('editContributors', contributorsName, 'contributors', () => {
+                                () => save('editContributors', contributorsNames, 'contributors', () => {
                                     setEditContributors(false);
                                     reavlidator.revalidate();
                                 }),
@@ -171,9 +174,9 @@ const TripPage = ({owner}) => {
                         />
                     <Contributors 
                         editMode={editContributors}
-                        contributors={contributorsName}
-                        setContributors={setContributorsName}
-                        contributorsData={contributorsData}/>
+                        contributorsNames={contributorsNames}
+                        setContributorsNames={setContributorsNames}
+                        contributors={trip.contributors}/>
                 </section>
                 {owner 
                     ?

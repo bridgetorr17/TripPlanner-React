@@ -15,9 +15,13 @@ const getTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
+        console.log(details.trip);
+        console.log(details.contributorNames)
+
         return res.json({
             success: true,
-            trip: details,
+            trip: details.trip,
+            contributorNames: details.contributorNames,
             requestingUser: req.user.userName
         });
     }
