@@ -15,9 +15,13 @@ const getTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
+        console.log(details.trip);
+        console.log(details.contributorNames)
+
         return res.json({
             success: true,
-            trip: details,
+            trip: details.trip,
+            contributorNames: details.contributorNames,
             requestingUser: req.user.userName
         });
     }
@@ -39,13 +43,19 @@ const postCreateNewTrip = async (req, res) => {
     }
 
     contributors.unshift(req.user.userName)
-    const contributorIds = 
-        await Promise.all(
-            contributors.map(async (cont) => {
-                const user = await User.findOne({ userName: cont })
-                return user ? user._id : null;
-            })
-        );
+
+    const users = await User.find({ userName: { $in: contributors}})
+    const foundName = users.map(u => u.userName);
+
+    //handle userNames submitted that are not users
+    const missing = contributors.filter(name => !foundName.includes(name));
+    if (missing.length > 0){
+        console.warn(`${missing[0]} does not exist as a user of Triply.`)
+    }
+
+    const userIds = users.map(u => u._id)
+    
+    console.log(userIds);
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     try{
@@ -53,7 +63,7 @@ const postCreateNewTrip = async (req, res) => {
             name: req.body.name,
             subtitle: req.body.subtitle,
             owner: req.user._id,
-            contributors: contributorIds,
+            contributors: userIds,
             locations: Array.isArray(req.body.locations) ? req.body.locations : [req.body.locations],
             month: monthNames[req.body.month],
             year: req.body.year

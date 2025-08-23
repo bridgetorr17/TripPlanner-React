@@ -16,9 +16,10 @@ const TripSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    contributors: {
-        type: [mongoose.Schema.Types.ObjectId]
-    },
+    contributors: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     locations: {
         type: [String],
         required: true
