@@ -31,10 +31,21 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
         }
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0] || null
+        setSelectedPhoto(file)
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setPreviewUrl(reader.result);
+            reader.readAsDataURL(file);
+            setButtonLabel("Upload this photo");
+        }
+    }
+
     const handleButtonClick = () => {
         if (!selectedPhoto) {
             fileInputRef.current?.click();
-            setButtonLabel('Upload Photo');
         } else {
             uploadPhoto();
         }
@@ -66,26 +77,18 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
             </div>
             { editMode && (
                 <>
-                    <div className="mt-4">
-                        <button
-                        className="px-4 py-2 bg-sky-100 text-blue-600 rounded hover:bg-sky-200 transition"
-                        onClick={() => setModalOpen(true)}
-                        >
-                        Add a Photo
-                        </button>
-                    </div>
                     <Modal
-                        isOpen={modalOpen}
+                        isOpen={true}
                         onClose={closeModal}
                         title="Upload a Photo">
-                        <div className="flex flex-col items-start space-y-2">
+                        <div className="flex flex-col items-center space-y-2">
                             <input
                                 type="file"
                                 id="file"
                                 accept="image/*"
                                 ref={fileInputRef}
                                 style={{display: 'none'}}
-                                onChange={(e) => setSelectedPhoto(e.target.files?.[0] || null)}
+                                onChange={handleFileChange}
                                 />
                             <button
                                 type="button"
@@ -95,11 +98,13 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
                                 {buttonLabel}
                             </button>
                             {previewUrl && (
-                                <img
-                                src={previewUrl}
-                                alt="Preview"
-                                className="w-full h-48 object-cover rounded-lg border"
-                                />
+                                <div className="flex items-center justify-center w-64 h-64 mx-auto">
+                                    <img
+                                    src={previewUrl}
+                                    alt="Preview"
+                                    className="max-w-full max-h-full object-contain rounded-lg border"
+                                    />
+                                </div>
                             )}
                         </div>
                     </Modal>
