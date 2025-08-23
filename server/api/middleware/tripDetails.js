@@ -3,33 +3,20 @@ import User from '../models/User.js';
 
 //gets trip details and formats for controllers
 const tripDetails = async (tripId) => {
-    const trip = await Trip.findById(tripId).lean();
-    const creator = await User.findById(trip.owner);
-    const creatorName = creator.userName;
-    const tripContributors = trip.contributors;
-
-    let contNames = [];
-    if(tripContributors[0] !== null) {
-        contNames = await Promise.all(
-            tripContributors.map(async (cont) => {
-                const contUser = await User.findById(cont);
-                if (contUser === null) return null;
-                else return {
-                        userName: contUser.userName, 
-                        profilePicture: contUser.profilePicture
-                }
-            })
-        )
+    const trip = await Trip.findById(tripId)
+        .populate('owner', 'userName')
+        .populate('contributors', 'userName profilePicture')
+        .lean();
+    
+    if (!trip) {
+        throw new Error('Trip not found');
     }
 
-    const existingUsers = contNames.filter(user => user.userName !== null);
-    const existingUsersNames = existingUsers.map(user => user.userName);
+    const contributorNames = trip.contributors.map(c => c.userName)
 
     return {
-        trip: trip,
-        creator: creatorName,
-        contributors: existingUsers,
-        contributorsNames: existingUsersNames
+        trip,
+        contributorNames
     }
 }
 
