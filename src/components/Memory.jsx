@@ -8,6 +8,10 @@ const Memory = ({memory, user, tripId, deleteMemory}) => {
     const [editMemory, setEditMemory] = useState(false);
     const [memoryText, setMemoryText] = useState(memory.text);
     const [modalOpen, setModalOpen] = useState(false);
+    const [seeMore, setSeeMore] = useState(false);
+
+    const longLength = memoryText.length > 200;
+    const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
 
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
@@ -45,7 +49,6 @@ const Memory = ({memory, user, tripId, deleteMemory}) => {
         setModalOpen(false);
     }
 
-
     return (
         <>
             <div
@@ -79,7 +82,14 @@ const Memory = ({memory, user, tripId, deleteMemory}) => {
                         className="border w-full p-2 border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                         />
                      : <p className="text-base font-semibold text-left leading-relaxed">
-                        {memoryText}
+                        {displayText}
+                        {longLength && (
+                            <button
+                                onClick={() => setSeeMore(prev => !prev)}
+                                className="ml-2 text-xs text-blue-600 hover:underline">
+                                {seeMore ? "see less" : "see more"}
+                            </button>
+                        )}
                     </p>}
                     
                 </div>
