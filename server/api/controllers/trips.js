@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
+//GET - trip information for trip page (request comes from react loader)
 const getTrip = async (req, res) => {
     try{
         const tripId = req.params.id;
@@ -29,6 +30,7 @@ const getTrip = async (req, res) => {
     }
 }
 
+//POST - creates new trip. 
 const postCreateNewTrip = async (req, res) => {
     let contributors = req.body.contributors;
 
@@ -69,6 +71,8 @@ const postCreateNewTrip = async (req, res) => {
         })
     }
 }
+
+//DELETE - deletes trip 
 const deleteTrip = async (req, res) => {
     try{
         await Trip.findOneAndDelete({_id: req.params.id});
@@ -87,6 +91,7 @@ const deleteTrip = async (req, res) => {
     }
 }
 
+//POST - creates new memory in the trip
 const postCreateNewMemory = async (req, res) => {
     const tripId = req.params.id;
     const user = await User.findById(req.user._id)
@@ -113,6 +118,7 @@ const postCreateNewMemory = async (req, res) => {
     }
 }
 
+//POST - creates new photo in the trip
 const postNewPhoto = async (req, res) => {
     try{
         const user = await User.findById(req.user._id)
@@ -160,6 +166,7 @@ const postNewPhoto = async (req, res) => {
     }
 }
 
+//helper function for processing picture through form
 function parseForm(req){
     return new Promise((resolve, reject) => {
         const form = formidable({multiples: false});

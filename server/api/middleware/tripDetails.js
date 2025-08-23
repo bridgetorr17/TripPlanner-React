@@ -1,6 +1,7 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
 
+//gets trip details and formats for controllers
 const tripDetails = async (tripId) => {
     const trip = await Trip.findById(tripId).lean();
     const creator = await User.findById(trip.owner);

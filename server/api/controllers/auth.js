@@ -2,6 +2,7 @@ import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
 
+//GET - login page. Redirects user to dashboard if session cookie exists
 const getLogin = (req, res) => {
     if (req.isAuthenticated()) {
       console.log(`this user is already logged in!`)
@@ -11,6 +12,7 @@ const getLogin = (req, res) => {
     } else res.json({success: false})
   }
 
+//POST - login request. Validates user account and redirects to dashboard
 const postLogin = (req, res, next) => {
     const validationErrors = []
     if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
@@ -47,6 +49,7 @@ const postLogin = (req, res, next) => {
     })(req, res, next)
   }
   
+//GET - logout. Ends the user's session. User will have to re-login.
 const getlogout = (req, res) => {
   console.log('about to logout the user');
   //req.clearCookie('connect.sid');
@@ -61,6 +64,7 @@ const getlogout = (req, res) => {
   })
 }
   
+//POST - signup. Creates new user with valid username, password and email.
 const postSignup = async (req, res, next) => {
     try{
       req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
@@ -118,6 +122,8 @@ const postSignup = async (req, res, next) => {
     }
   }
 
+//DELETE - account. Deletes user's account. 
+//TODO: remove user as contributor from all trips before deleting.
   const deleteAccount = async (req, res) => {
     console.log('in the backend gonna try to delete this account');
 

@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
+//PUT - update location array in a trip
 const editLocations = async (req, res) => {
     try{
         const tripId = req.params.id;
@@ -32,6 +33,8 @@ const editLocations = async (req, res) => {
     }
 }
 
+//PUT - update the contributors array in a trip. 
+//TODO: better error handling for users that do not exist. 
 const editContributors = async (req, res) => {
     try{
         const tripId = req.params.id;
@@ -81,6 +84,7 @@ const editContributors = async (req, res) => {
     }
 }
 
+//PUT - edit a memory in a trip
 const editMemory = async (req, res) => {
     const tripId = req.params.id;
 
@@ -94,6 +98,7 @@ const editMemory = async (req, res) => {
     return res.json(memory);
 } 
 
+//DELETE - delete a memory in a trip
 const deleteMemory = async (req, res) => {
     const tripId = req.params.id;
     const memoryId = req.body.id;

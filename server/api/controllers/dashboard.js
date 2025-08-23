@@ -6,6 +6,7 @@ import { PassThrough } from 'stream';
 import fs from 'fs'
 import sharp from 'sharp'
 
+//GET - dashboard. Sorts user owned trips and shared trips. Provides user information
 const getDashboard = async (req, res) => {
     try{
 
@@ -31,6 +32,9 @@ const getDashboard = async (req, res) => {
     }
 }
 
+//GET - user profile page. 
+//TODO: Allow logged in users to edit their password
+//      for logged in users view thier profile page, send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
 const getUser = async (req, res) => {
 
     let isOwner = false;
@@ -39,17 +43,16 @@ const getUser = async (req, res) => {
     }
     const userProfile = await User.findOne({userName: req.params.userName})
 
-    //TODO: send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
     res.json({
         isOwner,
         userName: userProfile.userName,
         email: userProfile.email,
         profilePicture: userProfile.profilePicture,
         bio: userProfile.bio
-    }
-)
+    })
 }
 
+//PUT - allows users to edit username, email or biography through their profile page
 const editProfileField = async (req, res) => {
     const field = req.params.field;
     const data = req.body;
@@ -67,6 +70,7 @@ const editProfileField = async (req, res) => {
     })
 }
 
+//POST - upload user profile picture 
 const uploadProfilePicture = async (req, res) => {
     try{
         const userId = req.user._id.toString();
@@ -111,6 +115,7 @@ const uploadProfilePicture = async (req, res) => {
     }
 }
 
+//helper function for processing picture through form
 function parseForm(req){
     return new Promise((resolve, reject) => {
         const form = formidable({multiples: false});
