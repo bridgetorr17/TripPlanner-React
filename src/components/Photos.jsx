@@ -4,14 +4,15 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
 
     const fileInputRef = useRef(null);
     const [selectedPhoto, setSelectedPhoto] = useState(null);
+    const [photos, setPhotos] = useState(photosInit)
     const [buttonLabel, setButtonLabel] = useState('Choose Photo')
+
+    console.log(photosInit)
 
     const uploadPhoto = async () => {
         
         const formData = new FormData();
         formData.append("newPhoto", selectedPhoto);
-
-        console.log(...formData);
 
         try{
             const res = await fetch(`/api/trips/uploadPhoto/${tripId}`, {
@@ -21,11 +22,10 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
 
             const photo = await res.json();
 
-            console.log(photo);
-
+            setPhotos(prev => [...prev, photo])
             setSelectedPhoto(null);
-            setButtonLabel('Choose Photo');
             setEditMode(false);
+            setButtonLabel('Choose Photo');
         }
         catch(err){
             console.error("Upload error: ", err)
@@ -43,7 +43,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
 
     return (
         <>
-            { editMode && (
+            { editMode ? (
                 <div>
                     <div className="flex flex-col items-start space-y-2">
                         <input
@@ -66,7 +66,21 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
                         )}
                     </div>
                 </div>
-            )}
+            ) :  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {photos.map((photo) => (
+                        <div key={photo._id} className="flex flex-col items-center">
+                        <img
+                            src={photo.url}
+                            alt={`Posted by ${photo.userName}`}
+                            className="w-full h-48 object-cover rounded-lg"
+                        />
+                        <span className="mt-2 text-xs text-gray-700 italic">
+                            {photo.userName}
+                        </span>
+                        </div>
+                    ))}
+                </div>
+            }
         </>
     )
 }
