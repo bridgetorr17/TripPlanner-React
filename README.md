@@ -3,17 +3,17 @@
 Triply is a web application powered by **Node.js (Express)**, **React**, **Vite**, **Vercel**, and **MongoDB**. Users can create accounts, make trips with friends, and share photos and memories. It's designed to make reliving your adventures easy and fun.
 
 ##  Features
-- **User Accounts**: Secure sign-up and authentication.
-- **Trip Creation**: Plan trips and invite friends.
+- **User Accounts**: Sign-up, login/logout, session cookies, customize account page
+- **Trip Creation**: Create solo or shared trips
 - **Media Sharing**: Upload photos and share memories.
-- **Interactive Maps**: Integrates Google Maps for location-based features.
+- **Interactive Maps**: Integrates Google Maps for trip location viewing
 
 ---
 
 ##  Tech Stack
 - **Server**: Node.js with Express
-- **Client**: React (via Vite)
-- **DB**: MongoDB
+- **Client**: React (using Vite)
+- **DB**: MongoDB/Mongoose
 - **Deployment**: Vercel
 
 ---
