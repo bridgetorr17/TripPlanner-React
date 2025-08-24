@@ -2,11 +2,6 @@ import { useCallback, useRef, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import SearchBox from "./SearchBox";
 
-const containerStyle = {
-    width: '100%',
-    height: '600px'
-}
-
 const center = {
     lat: 40.7128,
     lng: -74.0060
@@ -30,7 +25,7 @@ const Map = () => {
     const [markers, setMarkers] = useState([]);
 
     const handleAddMarker = (location) => {
-        setMarkers((prev) => [...prev, location]);
+        setMarkers((current) => [...current, location]);
         mapRef.current.panTo(location);
         mapRef.current.setZoom(15);
     }
