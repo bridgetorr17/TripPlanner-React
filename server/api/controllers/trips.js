@@ -15,14 +15,11 @@ const getTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId);
 
-        console.log(details.trip);
-        console.log(details.contributorNames)
-
         return res.json({
             success: true,
             trip: details.trip,
             contributorNames: details.contributorNames,
-            requestingUser: req.user.userName
+            loggedInUser: req.user.userName
         });
     }
     catch(err){
@@ -106,12 +103,15 @@ const postCreateNewMemory = async (req, res) => {
     const tripId = req.params.id;
     const user = await User.findById(req.user._id)
 
+    console.log(user.profilePicture);
+
     try{
         const trip = await Trip.findById(tripId);
         trip.memories.push({
             text: req.body.memory,
             user: user._id,
             userName: user.userName,
+            userProfilePicture: user.profilePicture,
             location: req.body.location
         });
         await trip.save();

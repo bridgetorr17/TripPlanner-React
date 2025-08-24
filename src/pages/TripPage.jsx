@@ -21,7 +21,7 @@ const tripLoader = async ({ request }) => {
 const TripPage = ({owner}) => {
     
     const trip = useLoaderData().trip;
-    const thisUser = useLoaderData().requestingUser;
+    const loggedInUser = useLoaderData().loggedInUser;
     const contributorNamesLoader = useLoaderData().contributorNames
 
     const nav = useNavigate();
@@ -155,7 +155,7 @@ const TripPage = ({owner}) => {
                         setEditMode={setEditMemories}
                         memoriesInit={trip.memories}
                         tripId={trip._id}
-                        user={thisUser}/>
+                        loggedInUser={loggedInUser}/>
                 </section>
 
 

@@ -14,6 +14,10 @@ const MemorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    userProfilePicture: {
+        type: String,
+        required: true
+    },
     location: {
         type: String
     }

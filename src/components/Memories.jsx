@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Memory from "./Memory"
 
-const Memories = ({editMode, setEditMode, memoriesInit, tripId, user}) => {
+const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) => {
 
     const [memory, setMemory] = useState('');
     const [location, setLocation] = useState('');
@@ -97,7 +97,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, user}) => {
                         <Memory id={mem._id}
                                 memory={mem}
                                 tripId={tripId}
-                                user={user}
+                                loggedInUser={loggedInUser}
                                 deleteMemory={deleteMemory}/>
                     ))}
                 </div>
