@@ -1,4 +1,4 @@
-import mapPlaceholder from "../photos/mapPlaceholder.png"
+import Map from "./Map";
 import List from "./List";
 import DynamicListInput from "./DynamicListInput";
 
@@ -24,13 +24,9 @@ const Locations = ({editMode, locations, setLocations}) => {
                                 <List arr={locations} links={false} />
                             </div>
                         </div>}
-                <div className="flex-1 p-2 rounded shadow-sm flex flex-col">
+                <div className="flex-1 p-2 rounded shadow-sm flex flex-col h-[200px]">
                     <div className="flex-1 h-full flex justify-center">
-                        <img
-                        src={mapPlaceholder}
-                        alt="Map"
-                        className="w-full max-w-xs h-auto object-cover rounded"
-                        />
+                        <Map />
                     </div>
                 </div>
             </div>
