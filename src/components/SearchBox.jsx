@@ -1,7 +1,13 @@
 import { useRef, useEffect } from 'react';
+import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
 
-const SearchBox = ({ onSelect }) => {
+const SearchBox = ({ onSelect, googleMapsKey}) => {
+
     const inputRef = useRef(null);
+    const placesLibrary = useMapsLibrary('places')
+    const pickerRef = useRef(null);
+    const [apiLoaded, setApiLoaded] = useState(false)
+
     useEffect(() => {
         const el = inputRef.current;
 
@@ -25,16 +31,30 @@ const SearchBox = ({ onSelect }) => {
         return () => {el.removeEventListener('place_changed', handlePlaceChange)};
     }, [onSelect]);
 
-    return (
-        <div className="w-full mb-4">
-            <gmpx-place-autocomplete ref={inputRef} class="w-full">
-                <input
-                placeholder="Search for places"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-            </gmpx-place-autocomplete>
-        </div>
-    );
+  return (
+    <>
+      <APILoader
+        apiKey={googleMapsKey}
+        version="beta"
+        onLoad={() => setApiLoaded(true)}
+      />
+      {apiLoaded && (
+        <PlacePicker
+          ref={pickerRef}
+          placeholder="Enter a place"
+          onPlaceChange={() => {
+            const place = pickerRef.current?.value;
+            if (place?.geometry?.location) {
+              onSelect({
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+              });
+            }
+          }}
+        />
+      )}
+    </>
+  );
 }
 
 export default SearchBox

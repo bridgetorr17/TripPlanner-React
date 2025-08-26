@@ -2,11 +2,6 @@ import { useCallback, useRef, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import SearchBox from "./SearchBox";
 
-const containerStyle = {
-    width: '100%',
-    height: '600px'
-}
-
 const center = {
     lat: 40.7128,
     lng: -74.0060
@@ -15,7 +10,7 @@ const center = {
 const libraries = ['places']
 const googleMapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const Map = () => {
+const Map = async () => {
 
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: googleMapsKey,
@@ -30,7 +25,7 @@ const Map = () => {
     const [markers, setMarkers] = useState([]);
 
     const handleAddMarker = (location) => {
-        setMarkers((prev) => [...prev, location]);
+        setMarkers((current) => [...current, location]);
         mapRef.current.panTo(location);
         mapRef.current.setZoom(15);
     }
@@ -40,7 +35,8 @@ const Map = () => {
 
     return (
         <div className="flex flex-col h-full w-full space-y-2">
-            <SearchBox onSelect={handleAddMarker} />
+            
+            <SearchBox onSelect={handleAddMarker} googleMapsKey={googleMapsKey}/>
             <div className="flex-1 rounded-md overflow-hidden shadow">
                 <GoogleMap
                     mapContainerStyle={{ width: '100%', height: '100%' }}
