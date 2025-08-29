@@ -24,8 +24,6 @@ import {router as homeRoutes} from './routes/home.js';
 import {router as dashboardRoutes} from './routes/dashboard.js';
 import {router as tripRoutes} from './routes/trips.js';
 
-
-console.log('starting the backed')
 connectDB();
 
 app.set('view engine', 'ejs')
