@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react"
 
-const PlaceAutocomplete = () => {
+const PlaceAutocomplete = ({editMode, handleSelect}) => {
 
     const [place, setPlace] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-    const [newPlace, setNewPlace] = useState({});
 
     useEffect(() => {
         if (!place) {
@@ -13,30 +12,6 @@ const PlaceAutocomplete = () => {
         }
         POSTreq();
     }, [place])
-
-    const handleSelect = async (selectedPlace) => {
-        // setNewPlace(selectedPlace);
-        // setPlace('');
-        // setSuggestions([]);
-
-        // const placeId = selectedPlace.placePrediction.placeId;
-
-        // const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
-        //     {
-        //         method: "GET",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             "X-Goog-Api-Key": import.meta.env.VITE_GOOGLE_API_KEY,
-        //             "X-Goog-FieldMask": "location"
-        //         },
-        //     }
-        // );
-
-        // const result = await response.json();
-        // console.log(result);
-
-        console.log(selectedPlace)
-    }
 
     const POSTreq = async ()  => {
 
@@ -80,34 +55,41 @@ const PlaceAutocomplete = () => {
 
     return (
         <>
-            <div className="relative mb-2 z-30">
-                <input
-                    type="text"
-                    aria-autocomplete="list"
-                    aria-expanded={true}
-                    aria-controls="suggestion-list"
-                    onChange={(e) => {setPlace(e.target.value)}}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {suggestions.length > 0 && (
-                    <ul
-                        id="suggestion-list"
-                        role="listbox"
-                        className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-48 overflow-y-auto z-20 rounded text-xs"
-                        >
-                        {suggestions.map((sug, index) => (
-                            <li
-                            key={index}
-                            role="option"
-                            onClick={() => handleSelect(sug)}
-                            className="px-2 py-2 hover:bg-gray-200 cursor-pointer"
+            {editMode && (
+                <div className="relative mb-2 z-30">
+                    <input
+                        type="text"
+                        aria-autocomplete="list"
+                        aria-expanded={true}
+                        aria-controls="suggestion-list"
+                        onChange={(e) => {setPlace(e.target.value)}}
+                        placeholder="Search for a new location"
+                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {suggestions.length > 0 && (
+                        <ul
+                            id="suggestion-list"
+                            role="listbox"
+                            className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-48 overflow-y-auto z-20 rounded text-xs"
                             >
-                                {sug.placePrediction?.text?.text}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+                            {suggestions.map((sug, index) => (
+                                <li
+                                key={index}
+                                role="option"
+                                onClick={() => {
+                                    setPlace('');
+                                    setSuggestions([]);
+                                    handleSelect(sug)
+                                }}
+                                className="px-2 py-2 hover:bg-gray-200 cursor-pointer"
+                                >
+                                    {sug.placePrediction?.text?.text}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            )}
         </>
     )
 }
