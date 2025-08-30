@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
-import DynamicListInput from "./DynamicListInput";
+import ContributorsInput from "./ContributorsInput";
 
 const Contributors = ({editMode, contributorNames, setContributorNames, contributors}) => {
 
     return (
         <>
             { editMode ?
-                <DynamicListInput 
-                    label='Contributor' 
-                    values={contributorNames} 
-                    setValues={setContributorNames} 
-                    name='contributors'
-                    color='teal'/>
+                <ContributorsInput 
+                    contributorNames={contributorNames} 
+                    setContributorNames={setContributorNames} />
             :  (
                 <div className="flex space-x-4 overflow-x-auto">
                     {contributors?.map((cont, ind) => (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DynamicListInput from "../components/DynamicListInput";
+import ContributorsInput from "../components/Contributors/ContributorsInput";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/Trip/MonthYear";
@@ -98,12 +98,9 @@ const CreateTripPage = () => {
                 <CreateTripLocationAutocomplete 
                     locations={locations} 
                     setLocations={setLocations} />
-                <DynamicListInput 
-                    label='Contributor' 
-                    values={contributors} 
-                    setValues={setContributors} 
-                    name='contributors'
-                    color='teal'/>
+                <ContributorsInput 
+                    contributorNames={contributors} 
+                    setContributorNames={setContributors} />
                 <button 
                     type="submit"
                     className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
