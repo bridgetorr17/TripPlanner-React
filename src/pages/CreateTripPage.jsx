@@ -3,6 +3,7 @@ import DynamicListInput from "../components/DynamicListInput";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/MonthYear";
+import CreateTripLocationAutocomplete from "../components/CreateTripLocationAutocomplete";
 
 const newTripAttempt = async (tripInfo) => {
 
@@ -23,7 +24,7 @@ const CreateTripPage = () => {
 
     const [name, setName] = useState('');
     const [subtitle, setSubtitle] = useState('');
-    const [locations, setLocations] = useState(['']);
+    const [locations, setLocations] = useState([{}]);
     const [contributors, setContributors] = useState(['']);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const navigate = useNavigate();
@@ -31,7 +32,10 @@ const CreateTripPage = () => {
     const createTrip = async (e) => {
         e.preventDefault();
 
+        locations.shift();
+        console.log('SENDING POST REQUEST TO MAKE NEW TRIP')
         console.log(contributors);
+        console.log(locations);
 
         const tripInfo = {
             name,
@@ -91,12 +95,9 @@ const CreateTripPage = () => {
                         className="border border-blue-300 rounded-md px-3 py-2 mt-3 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
                 </div>
 
-                <DynamicListInput 
-                    label='Stop' 
-                    values={locations} 
-                    setValues={setLocations} 
-                    name='locations'
-                    color='blue'/>
+                <CreateTripLocationAutocomplete 
+                    locations={locations} 
+                    setLocations={setLocations} />
                 <DynamicListInput 
                     label='Contributor' 
                     values={contributors} 

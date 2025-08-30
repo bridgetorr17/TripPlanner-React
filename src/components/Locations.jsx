@@ -1,33 +1,153 @@
 import Map from "./Map";
 import List from "./List";
-import DynamicListInput from "./DynamicListInput";
+import { useState } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
+import { FaTrash } from "react-icons/fa6";
 
-const Locations = ({editMode, locations, setLocations}) => {
+const Locations = ({editMode, locations, setLocations, tripId}) => {
+
+    const [newPlace, setNewPlace] = useState(null);
+    const [coords, setCoords] = useState({
+        lat: locations[0]?.coordinates?.latitude,
+        lng: locations[0]?.coordinates?.longitude
+    });
+
+    console.log(coords)
+
+    const selectNewPlace = async (selectedPlace) => {
+
+        setNewPlace(selectedPlace);
+        const placeId = selectedPlace.placePrediction.placeId;
+
+        const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Goog-Api-Key": import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+                    "X-Goog-FieldMask": "location"
+                },
+            }
+        );
+
+        const result = await response.json();
+        setCoords({
+            lat: result.location?.latitude,
+            lng: result.location?.longitude
+        })
+    }
+
+    const addLocation = async () => {
+        const addPlace = {
+            name: {
+                mainText: newPlace.placePrediction.structuredFormat.mainText.text,
+                secondaryText: newPlace.placePrediction.structuredFormat.secondaryText.text,
+            },
+            coordinates: {
+                latitude: coords.lat,
+                longitude: coords.lng
+            }
+        }
+
+        try{
+            const res = await fetch(`/api/trips/addPlace/${tripId}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(addPlace)
+            });
+
+            const created = await res.json();
+            setLocations(prev => [...prev, created])
+        }
+        catch(err){
+            console.log(err);
+        }
+        finally{
+            setNewPlace(null);
+        }
+    }
+
+    const deleteLocation = async (id) => {
+
+        const locationId = {
+            id: id
+        }
+
+        try{
+            const res = await fetch(`/api/trips/deleteLocation/${tripId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(locationId)
+            });
+
+            const updatedLocations = await res.json();
+            setLocations(updatedLocations);
+            setCoords({
+                lat: updatedLocations[0].coordinates.latitude,
+                lng: updatedLocations[0].coordinates.longitude
+            });
+
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
 
     return (
         <div className="space-y-4 p-4 bg-sky-50 rounded-md">
             <div className="flex flex-row justify-around items-stretch space-x-4">
-                {editMode ? 
-                    <div className="flex-1 p-4">
-                        <div className="flex-1 h-full">
-                            <DynamicListInput 
-                                label='Stop' 
-                                values={locations} 
-                                setValues={setLocations} 
-                                name='locations'
-                                color='blue'
-                            />
-                        </div>
-                    </div>
-                    :   <div className="flex-1 p-4">
-                            <div className="flex-1 h-full">
-                                <List arr={locations} links={false} />
+                <div className="flex-1 p-4">
+                    <ul className="space-y-1 text-gray-800">
+                        {locations.map((el, ind) => (
+                            <li 
+                                key={ind} 
+                                className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
+                                onClick={() => setCoords({
+                                    lat: el.coordinates.latitude,
+                                    lng: el.coordinates.longitude
+                                })}>
+                                <div className="flex items-center space-x-2">
+                                    <span className="font-medium">{el.name.mainText}</span>
+                                </div>
+                                { editMode && (
+                                    <span 
+                                        className="text-red-500 hover:text-red-700 focus:outline-none"
+                                        onClick={() => deleteLocation(el._id)}>
+                                        <FaTrash />
+                                    </span>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                    {newPlace && editMode && (
+                        <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg">
+                            <div className="mb-3 text-lg font-semibold text-green-800">
+                                {newPlace.placePrediction?.structuredFormat?.mainText?.text}
                             </div>
-                        </div>}
+                            <div className="mb-3 text-md font-medium text-green-800">
+                                {newPlace.placePrediction?.structuredFormat?.secondaryText?.text}
+                            </div>
+                            <button
+                                className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white font-semibold py-3 rounded-lg transition"
+                                onClick={addLocation}>
+                                Add this Location
+                            </button>
+                        </div>
+                    )}
+                </div>
                 <div className="flex-1 flex flex-col p-2 rounded shadow-sm relative h-[200px]">
-                        <PlaceAutocomplete />
-                        <Map />
+                        <PlaceAutocomplete 
+                            editMode={editMode}
+                            handleSelect={selectNewPlace}/>
+                        <Map 
+                            center={coords.lat ? coords : {lat: 38.7946, lng: -99.5142}}
+                            zoom={coords.lat ? 10 : 2}/>
                 </div>
             </div>
         </div>

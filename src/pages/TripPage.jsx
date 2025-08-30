@@ -103,18 +103,19 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"Where we went"}                        
-                        modifyText={editLocations ? "Save" : "Edit"}
+                        modifyText={editLocations ? "Cancel" : "Edit"}
                         onToggleEdit={() => 
                             toggleEdit(
                                 editLocations, 
-                                () => save('editLocations', locationsData, 'locations', () => setEditLocations(false)),
+                                () => {setEditLocations(false)},
                                 setEditLocations
                                 )
                             } />
                     <Locations 
                         editMode={editLocations}
                         locations={locationsData}
-                        setLocations={setLocationsData}/>
+                        setLocations={setLocationsData}
+                        tripId={trip._id}/>
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">

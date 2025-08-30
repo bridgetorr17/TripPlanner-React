@@ -1,15 +1,11 @@
-import { useCallback, useRef, useState } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { useCallback, useRef } from "react";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 
-const center = {
-    lat: 40.7128,
-    lng: -74.0060
-}
 
 const libraries = ['places']
 const googleMapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const Map = () => {
+const Map = ({center, zoom}) => {
 
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: googleMapsKey,
@@ -28,7 +24,7 @@ const Map = () => {
         <GoogleMap
             mapContainerStyle={{ width: '100%', height: '100%' }}
             center={center}
-            zoom={10}
+            zoom={zoom}
             onLoad={onMapLoad}>
         </GoogleMap>
     )
