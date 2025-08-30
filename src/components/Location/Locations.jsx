@@ -1,5 +1,4 @@
 import Map from "./Map";
-import List from "./List";
 import { useState } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";

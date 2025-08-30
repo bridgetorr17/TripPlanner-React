@@ -3,7 +3,7 @@ import DynamicListInput from "../components/DynamicListInput";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/MonthYear";
-import CreateTripLocationAutocomplete from "../components/CreateTripLocationAutocomplete";
+import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
 
 const newTripAttempt = async (tripInfo) => {
 
