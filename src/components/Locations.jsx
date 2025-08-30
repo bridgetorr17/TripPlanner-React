@@ -2,11 +2,15 @@ import Map from "./Map";
 import List from "./List";
 import { useState } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
+import { FaTrash } from "react-icons/fa6";
 
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
-    const [coords, setCoords] = useState({lat: 40.7128, lng: -74.0060});
+    const [coords, setCoords] = useState({
+        lat: locations[0].coordinates.latitude,
+        lng: locations[0].coordinates.longitude
+    });
 
     const selectNewPlace = async (selectedPlace) => {
 
@@ -60,6 +64,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             console.log(err);
         }
         finally{
+            setNewPlace(null);
         }
     }
 
@@ -67,14 +72,31 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         <div className="space-y-4 p-4 bg-sky-50 rounded-md">
             <div className="flex flex-row justify-around items-stretch space-x-4">
                 <div className="flex-1 p-4">
-                    <div className="flex-1 h-full">
-                        {locations.map((el, ind) => <li key={ind}> {el.name.mainText} </li>)}
-                    </div>
-                    {newPlace && (
-                        <div>
-                            {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                    <ul className="space-y-1 text-gray-800">
+                        {locations.map((el, ind) => (
+                            <li 
+                                key={ind} 
+                                className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
+                                onClick={() => setCoords({
+                                    lat: el.coordinates.latitude,
+                                    lng: el.coordinates.longitude
+                                })}>
+                                <div className="flex items-center space-x-2">
+                                    <span className="font-medium">{el.name.mainText}</span>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                    {newPlace && editMode && (
+                        <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg">
+                            <div className="mb-3 text-lg font-semibold text-green-800">
+                                {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                            </div>
+                            <div className="mb-3 text-md font-medium text-green-800">
+                                {newPlace.placePrediction?.structuredFormat?.secondaryText?.text}
+                            </div>
                             <button
-                                className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
+                                className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white font-semibold py-3 rounded-lg transition"
                                 onClick={addLocation}>
                                 Add this Location
                             </button>
