@@ -4,13 +4,21 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
 
     const [place, setPlace] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [selectMode, setSelectMode] = useState(false);
 
     useEffect(() => {
         if (!place) {
             setSuggestions([]);
             return;
         }
+        
+        if (selectMode){
+            setSelectMode(false);
+            return
+        }
+
         POSTreq();
+        
     }, [place])
 
     const POSTreq = async ()  => {
@@ -41,7 +49,6 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
             const result = await response.json();
             if (result.suggestions){
                 setSuggestions(result.suggestions)
-                console.log(result.suggestions);
             } else{
                 setSuggestions([])
             }
@@ -78,6 +85,7 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
                                 key={index}
                                 role="option"
                                 onClick={() => {
+                                    setSelectMode(true);
                                     setSuggestions([]);
                                     setPlace(sug.placePrediction.structuredFormat.mainText.text);
                                     handleSelect(sug)
