@@ -25,9 +25,11 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
             },
             coordinates: {
                 latitude: result.location?.latitude,
-                longitude: result.location?.latitude
+                longitude: result.location?.longitude
             }
         }
+
+        console.log(created);
         
         setLocations(prev => [...prev, created])
     }
