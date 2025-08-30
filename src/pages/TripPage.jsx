@@ -1,7 +1,7 @@
 import { useLoaderData, useRevalidator } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import TripHeader from "../components/TripHeader"
+import TripHeader from "../components/Trip/TripHeader"
 import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
