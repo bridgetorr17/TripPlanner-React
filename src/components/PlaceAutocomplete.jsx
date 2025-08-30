@@ -47,7 +47,7 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
             }
         }
         catch(err){
-            console.error("Autocomplete request failed:", error);
+            console.error("Autocomplete request failed:", err);
             setSuggestions([]);
         }
         
@@ -63,6 +63,7 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
                         aria-expanded={true}
                         aria-controls="suggestion-list"
                         onChange={(e) => {setPlace(e.target.value)}}
+                        value={place}
                         placeholder="Search for a new location"
                         className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -77,8 +78,8 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
                                 key={index}
                                 role="option"
                                 onClick={() => {
-                                    setPlace('');
                                     setSuggestions([]);
+                                    setPlace(sug.placePrediction.structuredFormat.mainText.text);
                                     handleSelect(sug)
                                 }}
                                 className="px-2 py-2 hover:bg-gray-200 cursor-pointer"
