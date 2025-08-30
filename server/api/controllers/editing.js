@@ -106,8 +106,23 @@ const deleteMemory = async (req, res) => {
 
 }
 
+//DELETE - delete a location in a trip
+const deleteLocation = async (req, res) => {
+    const tripId = req.params.id;
+    const locationId = req.body.id;
+
+    const trip = await Trip.findById(tripId);
+
+    trip.locations.pull({_id: locationId})
+    await trip.save();
+
+    return res.json(trip.locations)
+
+}
+
 export {editLocations,
         editContributors,
         editMemory,
-        deleteMemory
+        deleteMemory,
+        deleteLocation
 };

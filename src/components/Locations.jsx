@@ -68,6 +68,35 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         }
     }
 
+    const deleteLocation = async (id) => {
+
+        const locationId = {
+            id: id
+        }
+
+        try{
+            const res = await fetch(`/api/trips/deleteLocation/${tripId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(locationId)
+            });
+
+            const updatedLocations = await res.json();
+            setLocations(updatedLocations);
+            setCoords({
+                lat: updatedLocations[0].coordinates.latitude,
+                lng: updatedLocations[0].coordinates.longitude
+            });
+
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
     return (
         <div className="space-y-4 p-4 bg-sky-50 rounded-md">
             <div className="flex flex-row justify-around items-stretch space-x-4">
@@ -84,6 +113,13 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                                 <div className="flex items-center space-x-2">
                                     <span className="font-medium">{el.name.mainText}</span>
                                 </div>
+                                { editMode && (
+                                    <span 
+                                        className="text-red-500 hover:text-red-700 focus:outline-none"
+                                        onClick={() => deleteLocation(el._id)}>
+                                        <FaTrash />
+                                    </span>
+                                )}
                             </li>
                         ))}
                     </ul>
