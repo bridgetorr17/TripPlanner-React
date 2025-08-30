@@ -41,28 +41,6 @@ const TripPage = ({owner}) => {
         else setEdit(true);
     }
 
-    const save = async (route, data, field, onSuccess, setEdit) => {
-        try{
-            const res = await fetch(`/api/trips/${route}/${trip._id}`, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ [field]: data})
-            });
-
-            if(!res.ok) throw new Error('Failed to save');
-
-            const response = await res.json();
-
-            if (!response.success) throw new Error (response.message)
-
-            onSuccess();
-        } 
-        catch(err) {
-            console.error("error saving locations:" , err)
-            setEdit(false);
-        }
-    }  
-
     const deleteTrip = async () => {
         try{
             const res = await fetch(`/api/trips/delete/${trip._id}`, {
@@ -163,23 +141,23 @@ const TripPage = ({owner}) => {
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
                     <TripHeader 
                         headerTitle={"Who was there"}
-                        modifyText={editContributors ? "Save" : "Edit"}
+                        modifyText={editContributors ? "Cancel" : "Edit"}
                         onToggleEdit={() => 
                             toggleEdit(
                                 editContributors, 
-                                () => save('editContributors', contributorNames, 'contributors', () => {
-                                    setEditContributors(false);
-                                    reavlidator.revalidate();
-                                }, setEditContributors),
+                                () => {setEditContributors(false)},
                                 setEditContributors
                                 )
                             }
                         />
                     <Contributors 
                         editMode={editContributors}
+                        setEditMode={setEditContributors}
                         contributorNames={contributorNames}
                         setContributorNames={setContributorNames}
-                        contributors={trip.contributors}/>
+                        contributors={trip.contributors}
+                        tripId={trip._id}
+                        reavlidator={reavlidator}/>
                 </section>
                 {owner 
                     ?

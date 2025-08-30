@@ -10,9 +10,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         lat: locations[0]?.coordinates?.latitude,
         lng: locations[0]?.coordinates?.longitude
     });
-
-    console.log(coords)
-
+    
     const selectNewPlace = async (selectedPlace) => {
 
         setNewPlace(selectedPlace);
