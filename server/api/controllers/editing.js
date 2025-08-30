@@ -98,7 +98,7 @@ const deleteMemory = async (req, res) => {
     const memoryId = req.body.id;
 
     const trip = await Trip.findById(tripId);
-
+    
     trip.memories.pull({_id: memoryId})
     await trip.save();
 

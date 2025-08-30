@@ -95,6 +95,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
             :   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
                     {memories.map((mem) => (
                         <Memory id={mem._id}
+                                key={mem._id}
                                 memory={mem}
                                 tripId={tripId}
                                 loggedInUser={loggedInUser}

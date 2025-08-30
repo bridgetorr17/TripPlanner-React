@@ -1,6 +1,6 @@
 import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
-import Modal from './Modal'
+import Modal from '../Modal'
 import { Link } from "react-router-dom";
 
 const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
@@ -12,8 +12,6 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
 
     const longLength = memoryText.length > 200;
     const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
-
-    console.log(memory.userProfilePicture);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
