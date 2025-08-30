@@ -8,9 +8,11 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
     const [coords, setCoords] = useState({
-        lat: locations[0].coordinates.latitude,
-        lng: locations[0].coordinates.longitude
+        lat: locations[0]?.coordinates?.latitude,
+        lng: locations[0]?.coordinates?.longitude
     });
+
+    console.log(coords)
 
     const selectNewPlace = async (selectedPlace) => {
 
@@ -144,7 +146,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             editMode={editMode}
                             handleSelect={selectNewPlace}/>
                         <Map 
-                            center={coords}/>
+                            center={coords.lat ? coords : {lat: 38.7946, lng: -99.5142}}
+                            zoom={coords.lat ? 10 : 2}/>
                 </div>
             </div>
         </div>
