@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import Modal from "./Modal";
+import Modal from "../Modal";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
 
