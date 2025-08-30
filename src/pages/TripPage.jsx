@@ -114,7 +114,8 @@ const TripPage = ({owner}) => {
                     <Locations 
                         editMode={editLocations}
                         locations={locationsData}
-                        setLocations={setLocationsData}/>
+                        setLocations={setLocationsData}
+                        tripId={trip._id}/>
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">

@@ -176,6 +176,29 @@ const postNewPhoto = async (req, res) => {
     }
 }
 
+const postNewPlace = async (req, res) => {
+    const tripId = req.params.id;
+    const user = await User.findById(req.user._id)
+
+    try{
+        const trip = await Trip.findById(tripId);
+
+        console.log(req.body);
+        trip.locations.push(req.body);
+        await trip.save();
+        
+        const lastLocation = trip.locations[trip.locations.length - 1]
+        return res.json(lastLocation);
+    }
+    catch(err){
+        console.error(err);
+        return res.json({
+            success: false,
+            message: 'error adding the location to the trip'
+        });  
+    }
+}
+
 //helper function for processing picture through form
 function parseForm(req){
     return new Promise((resolve, reject) => {
@@ -191,4 +214,5 @@ export {getTrip,
         postCreateNewTrip, 
         deleteTrip,
         postCreateNewMemory,
-        postNewPhoto};
+        postNewPhoto,
+        postNewPlace};

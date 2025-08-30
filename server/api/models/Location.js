@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const LocationSchema = new mongoose.Schema({
     name: {
-        type: String,
+        type: {
+            mainText: String,
+            secondaryText: String
+        },
         required: true
     },
     coordinates: {
