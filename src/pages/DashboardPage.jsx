@@ -1,4 +1,4 @@
-import { useLoaderData, useLocation } from "react-router-dom"
+import { useLoaderData } from "react-router-dom"
 import { useState } from "react";
 import TripList from '../components/TripList'
 import NavLinks from "../components/NavLinks";

@@ -10,7 +10,7 @@ import UserPage from './pages/UserPage';
 import PreviewPage from './pages/PreviewPage';
 import CreateTripPage from './pages/CreateTripPage';
 import TripPage from './pages/TripPage';
-import PageWrapper from './components/PageWrapper';
+import PageWrapper from './components/Utlities/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';

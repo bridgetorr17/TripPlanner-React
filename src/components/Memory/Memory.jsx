@@ -1,6 +1,6 @@
 import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
-import Modal from '../Modal'
+import Modal from "../Utlities/Modal"
 import { Link } from "react-router-dom";
 
 const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {

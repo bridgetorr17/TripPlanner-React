@@ -6,7 +6,7 @@ import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
-import ConfirmDelete from "../components/ConfirmDelete"
+import ConfirmDelete from "../components/Utlities/ConfirmDelete"
 import { FaTrash } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 
