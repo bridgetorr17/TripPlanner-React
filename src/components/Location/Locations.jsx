@@ -98,7 +98,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     return (
         <div className="space-y-4 p-4 bg-sky-50 rounded-md">
-            <div className="flex flex-row justify-around items-stretch space-x-4">
+            <div className="flex flex-col sm:flex-row justify-around items-stretch space-y-4 md:space-y-0 md:space-x-4">
                 <div className="flex-1 p-4">
                     <ul className="space-y-1 text-gray-800">
                         {locations.map((el, ind) => (
@@ -138,7 +138,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                         </div>
                     )}
                 </div>
-                <div className="flex-1 flex flex-col p-2 rounded shadow-sm relative h-[200px]">
+                <div className="sm:flex-1 flex flex-col p-2 rounded shadow-sm relative h-64 md:h-[200px]">
                         <PlaceAutocomplete 
                             editMode={editMode}
                             handleSelect={selectNewPlace}/>
