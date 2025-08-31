@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom"
 import { useState } from "react";
-import TripList from '../components/TripList'
-import NavLinks from "../components/NavLinks";
+import TripList from '../components/Dashboard/TripList'
+import NavLinks from "../components/Dashboard/NavLinks";
 import { Link } from "react-router-dom";
 
 const DashboardPage = () => {

@@ -3,7 +3,7 @@ const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, sa
         <>
             <form onSubmit={(e) => {
                     e.preventDefault();
-                    save(name, value);
+                    save(name, value, setEdit);
                 }} className="mb-6">
                  <label className="block text-teal-800 font-semibold mb-1">{label}</label>
                 {edit ? (

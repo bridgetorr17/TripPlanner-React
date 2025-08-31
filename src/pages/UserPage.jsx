@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-import ProfileField from "../components/ProfileField";
+import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
 
@@ -51,7 +51,7 @@ const UserPage = () => {
         }
     }
 
-    const handleSave = async (field, newValue) => {
+    const handleSave = async (field, newValue, setEdit) => {
         const editField = {
             field: newValue
         }
@@ -69,13 +69,13 @@ const UserPage = () => {
 
             if (!data.success){
                 throw data.message
-            } else console.log(data.message);
+            } 
         }
         catch (err){
             console.err(err);
         }
         finally{
-            nav('/dashboard')
+            setEdit(false);
         }
     }
 
