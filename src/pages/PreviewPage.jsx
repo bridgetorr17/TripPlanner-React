@@ -1,4 +1,3 @@
-import signupPrev from '../photos/signupExample.jpg'
 import loginPrev from '../photos/loginExample.png'
 import createTripPrev from '../photos/createTripExample.png'
 import dashboardPrev from '../photos/dashboardExample.png'

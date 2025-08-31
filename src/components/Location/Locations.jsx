@@ -1,5 +1,4 @@
 import Map from "./Map";
-import List from "./List";
 import { useState } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";
@@ -11,9 +10,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         lat: locations[0]?.coordinates?.latitude,
         lng: locations[0]?.coordinates?.longitude
     });
-
-    console.log(coords)
-
+    
     const selectNewPlace = async (selectedPlace) => {
 
         setNewPlace(selectedPlace);

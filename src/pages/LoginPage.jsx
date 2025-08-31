@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/Utlities/Spinner";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
