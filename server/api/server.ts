@@ -35,7 +35,9 @@ app.use(express.json())
 app.use(methodOverride("_method"));
 
 //sessions
+console.log("BEFORE MONGO CONNECT")
 const store = MongoStore.create({mongoUrl: process.env.DB_STRING})
+console.log("CONNECTED TO MONGO")
 app.use(
     session({
         secret: 'keyboard cat',
