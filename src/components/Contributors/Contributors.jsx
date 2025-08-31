@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import ContributorsInput from "./ContributorsInput";
+import Modal from "../Utlities/Modal";
 
 const Contributors = ({editMode, setEditMode, contributorNames, setContributorNames, contributors, tripId, reavlidator}) => {
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('')
 
     const editContributors = async () => {
         try{
@@ -19,6 +24,9 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
         }
         catch(err) {
             console.error("error saving locations:" , err)
+            setErrorMessage(err.message);
+            setModalOpen(true);
+
         }
         finally{
             setEditMode(false);
@@ -28,6 +36,12 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
 
     return (
         <>
+            <Modal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                title="Error Updating Contributors">
+                    <span>{errorMessage}</span>
+                </Modal>
             { editMode ?
                 <div>
                     <ContributorsInput 

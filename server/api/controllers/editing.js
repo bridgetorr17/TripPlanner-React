@@ -46,7 +46,6 @@ const editContributors = async (req, res) => {
         //handle userNames submitted that are not users
         const missing = updatedContributors.filter(name => !foundName.includes(name));
         if (missing.length > 0){
-            console.log(`${missing[0]} does not exist as a user of Triply.`)
             return res.json({
                 success: false,
                 message: `${missing[0]} does not exist as a user of Triply.`
