@@ -67,7 +67,15 @@ const CreateTripPage = () => {
 
     return (
         <div className="flex flex-col justify-center items-center pt-8 bg-sky-100 min-h-screen px-4">
-            <h1 className="text-2xl font-bold text-cyan-700 text-center">Start a new adventure here</h1>
+            <div className="w-full max-w-lg p-8 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-bold text-cyan-700">Make a new trip</h1>
+                        <span
+                            className="text-sm text-cyan-600 hover:text-cyan-800 cursor-pointer"
+                            onClick={() => navigate('/dashboard')}>
+                                Back to dashboard
+                        </span>
+                    </div>
             <form onSubmit={createTrip}
                 className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 space-y-6">
                 <div className="flex flex-col">
@@ -108,6 +116,7 @@ const CreateTripPage = () => {
                     <FaPlus className="text-lg"/>
                     Create Trip</button>
             </form>
+            </div>
         </div>
     )
 }
