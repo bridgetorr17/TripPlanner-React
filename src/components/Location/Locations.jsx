@@ -12,6 +12,12 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         lng: locations[0]?.coordinates?.longitude
     });
     const navigate = useNavigate()
+    const [newCoords, setNewCoords] = useState({});
+    const [centerCoords, setCenterCoords] = 
+        useState(locations[0] 
+            ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
+            : [38.7946, -100.534]
+    )
     
     const selectNewPlace = async (selectedPlace) => {
 
@@ -30,13 +36,14 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         );
 
         const result = await response.json();
-        setCoords({
+        setNewCoords({
             lat: result.location?.latitude,
             lng: result.location?.longitude
         })
     } catch {
         navigate('/errorpage')
     }
+        setCenterCoords([result.location?.latitude, result.location?.longitude]);
     }
 
     const addLocation = async () => {
@@ -46,8 +53,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                 secondaryText: newPlace.placePrediction.structuredFormat.secondaryText.text,
             },
             coordinates: {
-                latitude: coords.lat,
-                longitude: coords.lng
+                latitude: newCoords.lat,
+                longitude: newCoords.lng
             }
         }
 
@@ -90,11 +97,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
             const updatedLocations = await res.json();
             setLocations(updatedLocations);
-            setCoords({
-                lat: updatedLocations[0].coordinates.latitude,
-                lng: updatedLocations[0].coordinates.longitude
-            });
-
         }
         catch(err){
             navigate('/errorpage')
@@ -104,17 +106,14 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     return (
         <div className="space-y-4 p-4 bg-sky-50 rounded-md">
-            <div className="flex flex-row justify-around items-stretch space-x-4">
+            <div className="flex flex-col sm:flex-row justify-around items-stretch space-y-4 md:space-y-0 md:space-x-4">
                 <div className="flex-1 p-4">
                     <ul className="space-y-1 text-gray-800">
                         {locations.map((el, ind) => (
                             <li 
                                 key={ind} 
                                 className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
-                                onClick={() => setCoords({
-                                    lat: el.coordinates.latitude,
-                                    lng: el.coordinates.longitude
-                                })}>
+                                onClick={() => setCenterCoords([ el.coordinates.latitude, el.coordinates.longitude ])}>
                                 <div className="flex items-center space-x-2">
                                     <span className="font-medium">{el.name.mainText}</span>
                                 </div>
@@ -144,13 +143,13 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                         </div>
                     )}
                 </div>
-                <div className="flex-1 flex flex-col p-2 rounded shadow-sm relative h-[200px]">
+                <div className="sm:flex-1 flex flex-col p-2 rounded shadow-sm relative h-64 md:h-[200px]">
                         <PlaceAutocomplete 
                             editMode={editMode}
                             handleSelect={selectNewPlace}/>
                         <Map 
-                            center={coords.lat ? coords : {lat: 38.7946, lng: -99.5142}}
-                            zoom={coords.lat ? 10 : 2}/>
+                            locations={locations}
+                            coords={centerCoords}/>
                 </div>
             </div>
         </div>

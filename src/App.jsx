@@ -16,8 +16,12 @@ import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';
 import { loginLoader } from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
+import { configureMarkers } from './components/Utlities/ConfigureMarkerStyles'
 
 const App = () => {
+    //configure styles for markers ono the map
+    configureMarkers();
+
     //Login POST 
     const loginAttempt = async (loginInfo) => {
     

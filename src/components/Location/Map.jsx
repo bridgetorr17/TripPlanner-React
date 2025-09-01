@@ -1,32 +1,90 @@
-import { useCallback, useRef } from "react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { useRef } from "react";
+import { useState, useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
+const ZoomTo = ({ coords, zoom }) => {
+    const map = useMap();
+    useEffect(() => {
+        if (coords?.[0] != null && coords?.[1] != null) {
+            map.setView(coords, zoom, { animate: true });
+        }
+    }, [coords, zoom, map]);
+    return null;
+};
 
-const libraries = ['places']
-const googleMapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const Map = ({locations, coords}) => {
 
-const Map = ({center, zoom}) => {
+    const mapRef = useRef(null);
+    const [centerCoords, setCenterCoords] = useState(coords);
+    const [zoom, setZoom] = useState(2);
 
-    const {isLoaded, loadError} = useLoadScript({
-        googleMapsApiKey: googleMapsKey,
-        libraries
-    });
+    console.log(zoom);
 
-    const mapRef = useRef();
-    const onMapLoad = useCallback((map) => {
-        mapRef.current = map;
-    }, [])
+    useEffect(() => { 
+        setCenterCoords(coords) 
+        if (locations[0]) setZoom(13) 
+    }, [coords])
 
-    if (loadError) return <div>Error loading maps</div>;
-    if (!isLoaded) return <div>Loading...</div>;
+    const seeAllMarkers = () => {
+        const map = mapRef.current;
+        if (!map) return;
 
+        const leafletMap = map;
+
+        if (!locations || locations.length === 0) return;
+
+        let minLat = Infinity,
+            maxLat = -Infinity,
+            minLng = Infinity,
+            maxLng = -Infinity;
+
+        locations.forEach(loc => {
+            const { latitude, longitude } = loc.coordinates;
+            if (latitude < minLat) minLat = latitude;
+            if (latitude > maxLat) maxLat = latitude;
+            if (longitude < minLng) minLng = longitude;
+            if (longitude > maxLng) maxLng = longitude;
+        });
+
+        const bounds = [
+            [minLat, minLng],
+            [maxLat, maxLng]
+        ];
+
+        leafletMap.fitBounds(bounds, { padding: [50, 50], animate: true })
+    }
+    
     return (
-        <GoogleMap
-            mapContainerStyle={{ width: '100%', height: '100%' }}
-            center={center}
-            zoom={zoom}
-            onLoad={onMapLoad}>
-        </GoogleMap>
+        <>
+            <div className="flex-1 flex flex-col h-full z-0">
+                <button
+                    onClick={seeAllMarkers}
+                    className="bg-blue-500 text-white text-xs mb-1 px-3 py-1 rounded shadow hover:bg-blue-600 transition duration-200">
+                    See all places
+                </button>
+                <div className="flex-1 h-64 md:h-80 lg:h-96">
+                    <MapContainer
+                        center={centerCoords}
+                        zoom={zoom}
+                        ref={mapRef}
+                        className="h-full w-full">
+                            <TileLayer 
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                                {locations.map((loc, idx) => {
+                                    return (
+                                        <Marker
+                                            key={`${loc.coordinates?.latitude}-${loc.coordinates?.longitude}-${idx}`}
+                                            position={[loc.coordinates?.latitude, loc.coordinates?.longitude]}>
+                                            <Popup>{loc.name?.mainText}</Popup>
+                                        </Marker>
+                                    )
+                                })}
+                                <ZoomTo coords={centerCoords} zoom={zoom} />
+                    </MapContainer>
+                </div>
+            </div>
+        </>
     )
 }
 
