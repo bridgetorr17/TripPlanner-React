@@ -54,30 +54,35 @@ const Map = ({locations, coords}) => {
     
     return (
         <>
-            <MapContainer
-                center={centerCoords}
-                zoom={zoom}
-                ref={mapRef}
-                className="h-full w-full">
-                    <TileLayer 
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-                        {locations.map((loc, idx) => {
-                            return (
-                                <Marker
-                                    key={`${loc.coordinates?.latitude}-${loc.coordinates?.longitude}-${idx}`}
-                                    position={[loc.coordinates?.latitude, loc.coordinates?.longitude]}>
-                                    <Popup>{loc.name?.mainText}</Popup>
-                                </Marker>
-                            )
-                        })}
-                        <ZoomTo coords={centerCoords} zoom={zoom} />
-            </MapContainer>
-            <span
-                onClick={seeAllMarkers}
-                className="mt-2 inline-block cursor-pointer text-blue-600 hover:underline">
-                See all places
-            </span>
+            <div className="flex-1 flex flex-col h-full z-0">
+                <button
+                    onClick={seeAllMarkers}
+                    className="bg-blue-500 text-white text-xs mb-1 px-3 py-1 rounded shadow hover:bg-blue-600 transition duration-200">
+                    See all places
+                </button>
+                <div className="flex-1 h-64 md:h-80 lg:h-96">
+                    <MapContainer
+                        center={centerCoords}
+                        zoom={zoom}
+                        ref={mapRef}
+                        className="h-full w-full">
+                            <TileLayer 
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                                {locations.map((loc, idx) => {
+                                    return (
+                                        <Marker
+                                            key={`${loc.coordinates?.latitude}-${loc.coordinates?.longitude}-${idx}`}
+                                            position={[loc.coordinates?.latitude, loc.coordinates?.longitude]}>
+                                            <Popup>{loc.name?.mainText}</Popup>
+                                        </Marker>
+                                    )
+                                })}
+                                <ZoomTo coords={centerCoords} zoom={zoom} />
+                    </MapContainer>
+                </div>
+                
+            </div>
         </>
     )
 }

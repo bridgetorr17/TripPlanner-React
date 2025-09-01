@@ -138,12 +138,9 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                         <PlaceAutocomplete 
                             editMode={editMode}
                             handleSelect={selectNewPlace}/>
-                        <div className="flex-1 h-full z-0">
-                            <Map 
-                                locations={locations}
-                                coords={centerCoords}/>
-                        </div>
-                        
+                        <Map 
+                            locations={locations}
+                            coords={centerCoords}/>
                 </div>
             </div>
         </div>
