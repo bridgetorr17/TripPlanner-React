@@ -2,30 +2,25 @@ import { useRef } from "react";
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
-const Recenter = ({coords}) => {
+const ZoomTo = ({ coords, zoom }) => {
     const map = useMap();
-
     useEffect(() => {
-        if (coords[0] && coords[1]) {
-            map.setView(coords)
+        if (coords?.[0] != null && coords?.[1] != null) {
+            map.setView(coords, zoom, { animate: true });
         }
-    }, [coords, map]);
-
-    return null
-}
+    }, [coords, zoom, map]);
+    return null;
+};
 
 const Map = ({locations, coords}) => {
 
-
-    console.log(`the new center coords are ${coords[0]} ${coords[1]}`)
     const mapRef = useRef(null);
     const [centerCoords, setCenterCoords] = useState(coords);
     const [zoom, setZoom] = useState(13);
 
-
-    useEffect(() => {
-        setCenterCoords(coords)
-        setZoom(13)
+    useEffect(() => { 
+        setCenterCoords(coords) 
+        setZoom(13) 
     }, [coords])
 
     const seeAllMarkers = () => {
@@ -76,7 +71,7 @@ const Map = ({locations, coords}) => {
                                 </Marker>
                             )
                         })}
-                        <Recenter coords={centerCoords}/>
+                        <ZoomTo coords={centerCoords} zoom={zoom} />
             </MapContainer>
             <span
                 onClick={seeAllMarkers}
