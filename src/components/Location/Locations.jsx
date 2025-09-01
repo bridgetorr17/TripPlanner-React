@@ -7,7 +7,11 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
     const [newCoords, setNewCoords] = useState({});
-    const [centerCoords, setCenterCoords] = useState([locations[0].coordinates.latitude, locations[0].coordinates.longitude])
+    const [centerCoords, setCenterCoords] = 
+        useState(locations[0] 
+            ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
+            : [38.7946, -100.534]
+    )
     
     const selectNewPlace = async (selectedPlace) => {
 
@@ -84,11 +88,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
             const updatedLocations = await res.json();
             setLocations(updatedLocations);
-            // setNewCoords({
-            //     lat: updatedLocations[0].coordinates.latitude,
-            //     lng: updatedLocations[0].coordinates.longitude
-            // });
-
         }
         catch(err){
             console.log(err);

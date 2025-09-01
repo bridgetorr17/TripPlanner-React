@@ -16,11 +16,13 @@ const Map = ({locations, coords}) => {
 
     const mapRef = useRef(null);
     const [centerCoords, setCenterCoords] = useState(coords);
-    const [zoom, setZoom] = useState(13);
+    const [zoom, setZoom] = useState(2);
+
+    console.log(zoom);
 
     useEffect(() => { 
         setCenterCoords(coords) 
-        setZoom(13) 
+        if (locations[0]) setZoom(13) 
     }, [coords])
 
     const seeAllMarkers = () => {
@@ -81,7 +83,6 @@ const Map = ({locations, coords}) => {
                                 <ZoomTo coords={centerCoords} zoom={zoom} />
                     </MapContainer>
                 </div>
-                
             </div>
         </>
     )
