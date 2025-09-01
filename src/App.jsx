@@ -15,8 +15,11 @@ import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';
 import { loginLoader } from './pages/LoginPage';
+import { configureMarkers } from './components/Utlities/ConfigureMarkerStyles'
 
 const App = () => {
+    configureMarkers();
+
     //Login POST 
     const loginAttempt = async (loginInfo) => {
     

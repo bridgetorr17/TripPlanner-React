@@ -1,32 +1,46 @@
-import { useCallback, useRef } from "react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { useRef } from "react";
+import { useState, useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 
+const Recenter = ({coords}) => {
+    const map = useMap();
 
-const libraries = ['places']
-const googleMapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    useEffect(() => {
+        if (coords[0] && coords[1]) {
+            map.setView(coords)
+        }
+    }, [coords, map]);
 
-const Map = ({center, zoom}) => {
+    return null
+}
 
-    const {isLoaded, loadError} = useLoadScript({
-        googleMapsApiKey: googleMapsKey,
-        libraries
-    });
+const Map = ({locations, coords}) => {
 
-    const mapRef = useRef();
-    const onMapLoad = useCallback((map) => {
-        mapRef.current = map;
-    }, [])
-
-    if (loadError) return <div>Error loading maps</div>;
-    if (!isLoaded) return <div>Loading...</div>;
-
+    console.log(`the coords are ${coords.lat}`)
+    const mapRef = useRef(null);
+    const [centerCoords, setCenterCoords] = useState([coords.lat, coords.lng]);
+    const [zoom, setZoom] = useState(13);
+    
     return (
-        <GoogleMap
-            mapContainerStyle={{ width: '100%', height: '100%' }}
-            center={center}
+        <MapContainer
+            center={centerCoords}
             zoom={zoom}
-            onLoad={onMapLoad}>
-        </GoogleMap>
+            ref={mapRef}
+            className="h-full w-full">
+                <TileLayer 
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                    {locations.map((loc, idx) => {
+                        return (
+                            <Marker
+                                key={`${loc.coordinates?.latitude}-${loc.coordinates?.longitude}-${idx}`}
+                                position={[loc.coordinates?.latitude, loc.coordinates?.longitude]}>
+                                <Popup>{loc.name?.mainText}</Popup>
+                            </Marker>
+                        )
+                    })}
+                    <Recenter coords={centerCoords}/>
+        </MapContainer>
     )
 }
 

@@ -6,10 +6,7 @@ import { FaTrash } from "react-icons/fa6";
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
-    const [coords, setCoords] = useState({
-        lat: locations[0]?.coordinates?.latitude,
-        lng: locations[0]?.coordinates?.longitude
-    });
+    const [newCoords, setNewCoords] = useState({lat: locations[0].coordinates.latitude, lng: locations[0].coordinates.longitude});
     
     const selectNewPlace = async (selectedPlace) => {
 
@@ -28,7 +25,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         );
 
         const result = await response.json();
-        setCoords({
+        setNewCoords({
             lat: result.location?.latitude,
             lng: result.location?.longitude
         })
@@ -41,8 +38,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                 secondaryText: newPlace.placePrediction.structuredFormat.secondaryText.text,
             },
             coordinates: {
-                latitude: coords.lat,
-                longitude: coords.lng
+                latitude: newCoords.lat,
+                longitude: newCoords.lng
             }
         }
 
@@ -85,7 +82,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
             const updatedLocations = await res.json();
             setLocations(updatedLocations);
-            setCoords({
+            setNewCoords({
                 lat: updatedLocations[0].coordinates.latitude,
                 lng: updatedLocations[0].coordinates.longitude
             });
@@ -105,7 +102,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             <li 
                                 key={ind} 
                                 className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
-                                onClick={() => setCoords({
+                                onClick={() => setNewCoords({
                                     lat: el.coordinates.latitude,
                                     lng: el.coordinates.longitude
                                 })}>
@@ -142,9 +139,12 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                         <PlaceAutocomplete 
                             editMode={editMode}
                             handleSelect={selectNewPlace}/>
-                        <Map 
-                            center={coords.lat ? coords : {lat: 38.7946, lng: -99.5142}}
-                            zoom={coords.lat ? 10 : 2}/>
+                        <div className="flex-1 h-full">
+                            <Map 
+                                locations={locations}
+                                coords={newCoords}/>
+                        </div>
+                        
                 </div>
             </div>
         </div>
