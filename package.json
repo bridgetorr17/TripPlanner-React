@@ -30,16 +30,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mgwismer/TripPlanner-React.git"
+    "url": "git+https://github.com/bridgetorr17/TripPlanner-React.git"
   },
   "bugs": {
-    "url": "https://github.com/mgwismer/TripPlanner-React/issues"
+    "url": "https://github.com/bridgetorr17/TripPlanner-React/issues"
   },
-  "homepage": "https://github.com/mgwismer/TripPlanner-React#readme",
+  "homepage": "https://github.com/bridgetorr17/TripPlanner-React#readme",
   "devDependencies": {
-    "@types/node": "^24.3.0",
     "@vitejs/plugin-react": "^4.6.0",
-    "typescript": "^5.9.2",
     "vite": "^7.0.4"
   }
 }
