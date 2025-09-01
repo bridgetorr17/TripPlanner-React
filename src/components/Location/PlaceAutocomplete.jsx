@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom";
+
 
 const PlaceAutocomplete = ({editMode, handleSelect}) => {
 
     const [place, setPlace] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [selectMode, setSelectMode] = useState(false);
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!place) {
@@ -54,6 +57,7 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
             }
         }
         catch(err){
+            navigate('/errorpage')
             console.error("Autocomplete request failed:", err);
             setSuggestions([]);
         }

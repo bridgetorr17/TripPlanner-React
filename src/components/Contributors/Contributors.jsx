@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ContributorsInput from "./ContributorsInput";
 
 const Contributors = ({editMode, setEditMode, contributorNames, setContributorNames, contributors, tripId, reavlidator}) => {
-
+    const navigate = useNavigate()
     const editContributors = async () => {
         try{
             const res = await fetch(`/api/trips/editContributors/${tripId}`, {
@@ -19,6 +19,7 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
         }
         catch(err) {
             console.error("error saving locations:" , err)
+            navigate('/errorpage')
         }
         finally{
             setEditMode(false);

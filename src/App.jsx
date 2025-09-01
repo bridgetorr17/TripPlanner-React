@@ -15,6 +15,7 @@ import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';
 import { loginLoader } from './pages/LoginPage';
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
     //Login POST 
@@ -60,6 +61,7 @@ const App = () => {
                 <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
                 <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
                 <Route path='/logout' element={<LandingPage/>} />
+                <Route path='/errorpage' element={<ErrorPage/>} />
             </Route>
         )
     )

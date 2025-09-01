@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Memory from "./Memory"
+import { useNavigate } from "react-router-dom";
 
 const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) => {
 
     const [memory, setMemory] = useState('');
     const [location, setLocation] = useState('');
     const [memories, setMemories] = useState(memoriesInit);
-
+    const navigate = useNavigate()
     const createMemory = async (e) => {
         e.preventDefault();
 
@@ -29,6 +30,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
             setMemories(prev => [...prev, created])
         }
         catch(err){
+            navigate('/errorpage')
             console.log(err);
         }
         finally{
@@ -56,6 +58,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
             setMemories(updatedMemories);
         }
         catch(err){
+            navigate('/errorpage')
             console.log(err);
         }
     }

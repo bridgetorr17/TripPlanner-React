@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "../Utlities/Modal";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
@@ -9,6 +10,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [buttonLabel, setButtonLabel] = useState('Choose Photo')
     const [modalOpen, setModalOpen] = useState(false);
+    const navigate = useNavigate()
 
     const uploadPhoto = async () => {
         
@@ -27,6 +29,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
             closeModal();
         }
         catch(err){
+            navigate('/errorpage')
             console.error("Upload error: ", err)
         }
     }
