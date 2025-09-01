@@ -6,7 +6,8 @@ import { FaTrash } from "react-icons/fa6";
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
-    const [newCoords, setNewCoords] = useState({lat: locations[0].coordinates.latitude, lng: locations[0].coordinates.longitude});
+    const [newCoords, setNewCoords] = useState({});
+    const [centerCoords, setCenterCoords] = useState([locations[0].coordinates.latitude, locations[0].coordinates.longitude])
     
     const selectNewPlace = async (selectedPlace) => {
 
@@ -29,6 +30,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             lat: result.location?.latitude,
             lng: result.location?.longitude
         })
+        setCenterCoords([result.location?.latitude, result.location?.longitude]);
     }
 
     const addLocation = async () => {
@@ -82,10 +84,10 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
             const updatedLocations = await res.json();
             setLocations(updatedLocations);
-            setNewCoords({
-                lat: updatedLocations[0].coordinates.latitude,
-                lng: updatedLocations[0].coordinates.longitude
-            });
+            // setNewCoords({
+            //     lat: updatedLocations[0].coordinates.latitude,
+            //     lng: updatedLocations[0].coordinates.longitude
+            // });
 
         }
         catch(err){
@@ -102,10 +104,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             <li 
                                 key={ind} 
                                 className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
-                                onClick={() => setNewCoords({
-                                    lat: el.coordinates.latitude,
-                                    lng: el.coordinates.longitude
-                                })}>
+                                onClick={() => setCenterCoords([ el.coordinates.latitude, el.coordinates.longitude ])}>
                                 <div className="flex items-center space-x-2">
                                     <span className="font-medium">{el.name.mainText}</span>
                                 </div>
@@ -142,7 +141,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                         <div className="flex-1 h-full">
                             <Map 
                                 locations={locations}
-                                coords={newCoords}/>
+                                coords={centerCoords}/>
                         </div>
                         
                 </div>

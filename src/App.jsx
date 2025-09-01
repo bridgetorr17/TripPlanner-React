@@ -18,6 +18,7 @@ import { loginLoader } from './pages/LoginPage';
 import { configureMarkers } from './components/Utlities/ConfigureMarkerStyles'
 
 const App = () => {
+    //configure styles for markers ono the map
     configureMarkers();
 
     //Login POST 
