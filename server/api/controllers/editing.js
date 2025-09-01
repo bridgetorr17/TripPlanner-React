@@ -46,7 +46,6 @@ const editContributors = async (req, res) => {
         //handle userNames submitted that are not users
         const missing = updatedContributors.filter(name => !foundName.includes(name));
         if (missing.length > 0){
-            console.log(`${missing[0]} does not exist as a user of Triply.`)
             return res.json({
                 success: false,
                 message: `${missing[0]} does not exist as a user of Triply.`
@@ -98,7 +97,7 @@ const deleteMemory = async (req, res) => {
     const memoryId = req.body.id;
 
     const trip = await Trip.findById(tripId);
-
+    
     trip.memories.pull({_id: memoryId})
     await trip.save();
 
@@ -106,8 +105,23 @@ const deleteMemory = async (req, res) => {
 
 }
 
+//DELETE - delete a location in a trip
+const deleteLocation = async (req, res) => {
+    const tripId = req.params.id;
+    const locationId = req.body.id;
+
+    const trip = await Trip.findById(tripId);
+
+    trip.locations.pull({_id: locationId})
+    await trip.save();
+
+    return res.json(trip.locations)
+
+}
+
 export {editLocations,
         editContributors,
         editMemory,
-        deleteMemory
+        deleteMemory,
+        deleteLocation
 };

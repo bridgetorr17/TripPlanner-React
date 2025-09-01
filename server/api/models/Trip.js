@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import MemorySchema from "./Memory"
 import PhotoSchema from "./Photo"
+import LocationSchema from './Location';
 
 const TripSchema = new mongoose.Schema({
     name:{
@@ -21,7 +22,7 @@ const TripSchema = new mongoose.Schema({
         ref: 'User'
     }],
     locations: {
-        type: [String],
+        type: [LocationSchema],
         required: true
     },
     month: {

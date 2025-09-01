@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/Utlities/Spinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignupPage = ({signupAttempt}) => {

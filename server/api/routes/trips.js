@@ -12,11 +12,13 @@ router.get('/:id', ensureAuth, tripController.getTrip);
 router.get('/sharedTrip/:id', tripController.getTrip);
 router.post('/createNewMemory/:id', tripController.postCreateNewMemory);
 router.post('/uploadPhoto/:id', tripController.postNewPhoto)
+router.post('/addPlace/:id', tripController.postNewPlace)
 
 //editTripController
 router.put('/editLocations/:id', editTripController.editLocations);
 router.put('/editContributors/:id', editTripController.editContributors);
 router.put('/editMemory/:id', editTripController.editMemory);
 router.delete('/deleteMemory/:id', editTripController.deleteMemory);
+router.delete('/deleteLocation/:id', editTripController.deleteLocation);
 
 export {router};
