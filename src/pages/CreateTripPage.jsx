@@ -6,18 +6,22 @@ import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
 
 const newTripAttempt = async (tripInfo) => {
+    navigate = useNavigate()
+    try {
+        const res = await fetch('/api/trips/createNew', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tripInfo)
+        });
 
-    const res = await fetch('/api/trips/createNew', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tripInfo)
-    });
-
-    const result = await res.json();
-    return result;
+        const result = await res.json();
+        return result;
+    } catch {
+        navigate('/errorpage')
+    }
 }
 
 const CreateTripPage = () => {
@@ -57,6 +61,7 @@ const CreateTripPage = () => {
             }
         }
         catch (err){
+            navigate('/errorpage')
             console.log(err);
         }
         finally{

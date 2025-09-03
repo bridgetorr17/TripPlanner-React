@@ -1,11 +1,12 @@
 import { FaTrash } from "react-icons/fa"
 import PlaceAutocomplete from "./PlaceAutocomplete";
+import { useNavigate } from "react-router-dom";
 
 const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
-
+    const navigate = useNavigate()
     const handleSelect = async (selected) => {
         const placeId = selected.placePrediction.placeId;
-
+        try {
         const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
             {
                 method: "GET",
@@ -32,6 +33,9 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
         console.log(created);
         
         setLocations(prev => [...prev, created])
+    } catch {
+        navigate('/errorpage')
+    }
     }
 
     return (
