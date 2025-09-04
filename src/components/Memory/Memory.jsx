@@ -26,7 +26,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
         }
 
         try{
-            const res = await fetch(`/api/trips/editMemory/${tripI}`, {
+            const res = await fetch(`/api/trips/editMemory/${tripId}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
