@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import Modal from "../Utlities/Modal";
 
-const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
+const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 
     const fileInputRef = useRef(null);
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -71,6 +71,9 @@ const Photos = ({tripId, editMode, setEditMode, photosInit}) => {
                             />
                         <span className="mt-2 text-xs text-gray-700 italic">
                             {photo.userName}
+                            {loggedInUser === photo.userName && (
+                                <span> delete </span>
+                            )}
                         </span>
                     </div>
                 ))}

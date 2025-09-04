@@ -113,6 +113,7 @@ const TripPage = ({owner}) => {
                         editMode={editPhotos}
                         setEditMode={setEditPhotos}
                         photosInit={trip.photos}
+                        loggedInUser={loggedInUser}
                         />
                 </section>
 
