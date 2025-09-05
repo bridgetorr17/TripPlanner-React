@@ -4,6 +4,7 @@ import {  Route,
           RouterProvider } from 'react-router-dom'
 import LandingPage from "./pages/LandingPage";
 import LoginPage from './pages/LoginPage';
+import ErrorPage from './pages/ErrorPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import UserPage from './pages/UserPage';
@@ -64,6 +65,7 @@ const App = () => {
                 <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
                 <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
                 <Route path='/logout' element={<LandingPage/>} />
+                <Route path='/errorpage' element={<ErrorPage/>} />
             </Route>
         )
     )

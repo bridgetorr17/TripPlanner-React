@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "../Utlities/Modal";
 import { FaTrash } from "react-icons/fa6";
 import Spinner from "../Utlities/Spinner";
@@ -12,6 +13,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
     const [buttonLabel, setButtonLabel] = useState('Choose Photo')
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const navigate = useNavigate()
 
     const uploadPhoto = async () => {
         setLoading(true);
@@ -31,6 +33,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
             closeModal();
         }
         catch(err){
+            navigate('/errorpage')
             console.error("Upload error: ", err)
         }
     }
