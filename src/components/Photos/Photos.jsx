@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import Modal from "../Utlities/Modal";
 import { FaTrash } from "react-icons/fa6";
+import Spinner from "../Utlities/Spinner";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 
@@ -9,9 +10,11 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
     const [photos, setPhotos] = useState(photosInit)
     const [previewUrl, setPreviewUrl] = useState(null);
     const [buttonLabel, setButtonLabel] = useState('Choose Photo')
+    const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
     const uploadPhoto = async () => {
+        setLoading(true);
         
         const formData = new FormData();
         formData.append("newPhoto", selectedPhoto);
@@ -75,6 +78,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
     }
 
     const closeModal = () => {
+        setLoading(false);
         setModalOpen(false);
         setPreviewUrl(null);
         setSelectedPhoto(null);
@@ -115,7 +119,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
                         isOpen={true}
                         onClose={closeModal}
                         title="Upload a Photo">
-                        <div className="flex flex-col items-center space-y-2">
+                        <div className="flex flex-col items-center p-2 sm:p-4 md:p-6 space-y-2">
                             <input
                                 type="file"
                                 id="file"
@@ -129,7 +133,9 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
                                 className="px-4 py-2 bg-sky-100 text-blue-600 rounded hover:bg-sky-200 transition"
                                 onClick={handleButtonClick}
                                 >
-                                {buttonLabel}
+                                {loading ?
+                                    <Spinner loading={loading}/> 
+                                    : buttonLabel}
                             </button>
                             {previewUrl && (
                                 <div className="flex items-center justify-center w-64 h-64 mx-auto">
