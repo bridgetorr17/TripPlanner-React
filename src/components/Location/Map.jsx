@@ -62,7 +62,7 @@ const Map = ({locations, coords}) => {
                     className="bg-blue-500 text-white text-xs mb-1 px-3 py-1 rounded shadow hover:bg-blue-600 transition duration-200">
                     See all places
                 </button>
-                <div className="flex-1 h-64 md:h-80 lg:h-96">
+                <div className="flex flex-1 w-full">
                     <MapContainer
                         center={centerCoords}
                         zoom={zoom}
