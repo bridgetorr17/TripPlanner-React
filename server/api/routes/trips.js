@@ -19,6 +19,7 @@ router.put('/editLocations/:id', editTripController.editLocations);
 router.put('/editContributors/:id', editTripController.editContributors);
 router.put('/editMemory/:id', editTripController.editMemory);
 router.delete('/deleteMemory/:id', editTripController.deleteMemory);
+router.delete('/deletePhoto/:id', editTripController.deletePhoto);
 router.delete('/deleteLocation/:id', editTripController.deleteLocation);
 
 export {router};
