@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import Modal from "../Utlities/Modal";
+import { FaTrash } from "react-icons/fa6";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 
@@ -28,6 +29,28 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
         }
         catch(err){
             console.error("Upload error: ", err)
+        }
+    }
+
+    const deletePhoto = async (id) => {
+        const photoId = {
+            id: id
+        }
+        try{
+            const res = await fetch(`/api/trips/deletePhoto/${tripId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(photoId)
+            });
+
+            const updatedPhotos = await res.json();
+            setPhotos(updatedPhotos);
+        }
+        catch(err){
+            console.log(err);
         }
     }
 
@@ -69,12 +92,20 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
                             alt={`Posted by ${photo.userName}`}
                             className="w-full h-48 object-cover rounded-lg"
                             />
-                        <span className="mt-2 text-xs text-gray-700 italic">
-                            {photo.userName}
-                            {loggedInUser === photo.userName && (
-                                <span> delete </span>
-                            )}
-                        </span>
+                        <div className="flex items-center space-x-2">
+                            <span className="text-xs text-gray-700 italic">
+                                {photo.userName}
+                            </span>
+                            <div>
+                                {loggedInUser === photo.userName && (
+                                    <button
+                                        className="text-red-600 hover:text-red-800 focus:outline-none"
+                                        onClick={() => deletePhoto(photo._id)}>
+                                        <FaTrash/>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
