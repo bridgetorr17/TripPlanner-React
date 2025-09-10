@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ContributorsInput from "../components/Contributors/ContributorsInput";
 import { useNavigate } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+// import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
 

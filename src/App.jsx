@@ -1,7 +1,8 @@
 import {  Route, 
           createBrowserRouter, 
           createRoutesFromElements, 
-          RouterProvider } from 'react-router-dom'
+          RouterProvider,
+          Outlet } from 'react-router-dom'
 import LandingPage from "./pages/LandingPage";
 import LoginPage from './pages/LoginPage';
 import ErrorPage from './pages/ErrorPage';
@@ -16,6 +17,7 @@ import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
 import { tripLoader } from './pages/TripPage';
 import { loginLoader } from './pages/LoginPage';
+import { ErrorBoundary } from "react-error-boundary";
 import { configureMarkers } from './components/Utlities/ConfigureMarkerStyles'
 
 const App = () => {
@@ -52,21 +54,30 @@ const App = () => {
         return result;
     }
 
+    const ErrorBoundaryLayout = () => {
+        return (
+        <ErrorBoundary FallbackComponent={ErrorPage}>
+            <Outlet />
+        </ErrorBoundary>
+    )};
+
     const router = createBrowserRouter(
         createRoutesFromElements(
-            <Route path='/' element={<PageWrapper />}>
-                <Route index element={<LandingPage />} />
-                <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} loader={loginLoader} />
-                <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} />
-                <Route path='/preview' element={<PreviewPage/>}/>
-                <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader}/>
-                <Route path='/dashboard/:userName' element={<UserPage/>} loader={userLoader}/>
-                <Route path='/trips/createNew' element={<CreateTripPage />}/>
-                <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader}/>
-                <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader}/>
-                <Route path='/logout' element={<LandingPage/>} />
+        <Route element={<ErrorBoundaryLayout />} errorElement={<ErrorPage/>}>
+            <Route path='/' element={<PageWrapper />} errorElement={<ErrorPage/>}>
+                <Route index element={<LandingPage />} errorElement={<ErrorPage/>}/>
+                <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} loader={loginLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} errorElement={<ErrorPage/>}/>
+                <Route path='/preview' element={<PreviewPage/>} errorElement={<ErrorPage/>}/>
+                <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/dashboard/:userName' element={<UserPage/>} loader={userLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/trips/createNew' element={<CreateTripPage />} errorElement={<ErrorPage/>}/>
+                <Route path='/trips/:id' element={<TripPage owner={true} />} loader={tripLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/trips/sharedTrip/:id' element={<TripPage owner={false}/>} loader={tripLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/logout' element={<LandingPage/>} errorElement={<ErrorPage/>}/>
                 <Route path='/errorpage' element={<ErrorPage/>} />
             </Route>
+        </Route>
         )
     )
 
