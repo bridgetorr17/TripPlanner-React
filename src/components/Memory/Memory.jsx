@@ -1,7 +1,7 @@
 import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
 import Modal from "../Utlities/Modal"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
 
@@ -9,6 +9,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
     const [memoryText, setMemoryText] = useState(memory.text);
     const [modalOpen, setModalOpen] = useState(false);
     const [seeMore, setSeeMore] = useState(false);
+    const navigate = useNavigate()
 
     const longLength = memoryText.length > 200;
     const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
@@ -40,6 +41,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
 
         }
         catch(err){
+            navigate('/errorpage')
             console.log(err);
         }
     }

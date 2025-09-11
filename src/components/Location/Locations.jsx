@@ -2,10 +2,16 @@ import Map from "./Map";
 import { useState } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
+    const [coords, setCoords] = useState({
+        lat: locations[0]?.coordinates?.latitude,
+        lng: locations[0]?.coordinates?.longitude
+    });
+    const navigate = useNavigate()
     const [newCoords, setNewCoords] = useState({});
     const [centerCoords, setCenterCoords] = 
         useState(locations[0] 
@@ -17,7 +23,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
         setNewPlace(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
-
+        try {
         const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
             {
                 method: "GET",
@@ -34,6 +40,9 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             lat: result.location?.latitude,
             lng: result.location?.longitude
         })
+    } catch {
+        navigate('/errorpage')
+    }
         setCenterCoords([result.location?.latitude, result.location?.longitude]);
     }
 
@@ -62,8 +71,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             const created = await res.json();
             setLocations(prev => [...prev, created])
         }
-        catch(err){
-            console.log(err);
+        catch {
+            navigate('/errorpage')
         }
         finally{
             setNewPlace(null);
@@ -90,6 +99,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             setLocations(updatedLocations);
         }
         catch(err){
+            navigate('/errorpage')
             console.log(err);
         }
     }
