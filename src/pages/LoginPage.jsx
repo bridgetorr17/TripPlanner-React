@@ -3,6 +3,7 @@ import { useNavigate, useLoaderData } from "react-router-dom";
 import Spinner from "../components/Utlities/Spinner";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Modal from "../components/Utlities/Modal"
 
 const LoginPage = ({loginAttempt}) => {
     const navigate = useNavigate();
@@ -17,10 +18,13 @@ const LoginPage = ({loginAttempt}) => {
     }, [isAlreadyLoggedIn])
 
     const [email, setEmail] = useState('');
+    const [emailReset, setEmailReset] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
     const [loginError, setLoginError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [emailSent, setEmailSent] = useState(false);
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -47,6 +51,15 @@ const LoginPage = ({loginAttempt}) => {
             setLoading(false);
             navigate(nav);
         }
+    }
+
+    const sendEmail = () => {
+        console.log('sending email');
+        setEmailSent(true);
+    }
+
+    const closeModal = () => {
+        setModalOpen(false);
     }
 
     return (
@@ -92,8 +105,14 @@ const LoginPage = ({loginAttempt}) => {
                         </div>
                     )}
                     <button
+                        className="text-sm text-stone-500 mt-2" 
+                        type="button"
+                        onClick={() => setModalOpen(true)}>
+                        Forgot Password?
+                    </button>
+                    <button
                         type="submit"
-                        className={`mt-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
+                        className={`mt-2 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
                                     ${loading 
                                         ? "bg-blue-400 cursor-not-allowed"
                                         : "bg-blue-600 hover:bg-blue-700 text-white"
@@ -111,6 +130,44 @@ const LoginPage = ({loginAttempt}) => {
                     Signup
                 </Link>
             </div>
+            { modalOpen && (<Modal
+                isOpen={true}
+                onClose={closeModal}
+                title="Reset Password">
+                    { emailSent ? (
+                        <div className="p-4">
+                            <p>Thank you! If that email address is registered, you’ll receive a reset link shortly.</p>
+                            <button
+                                onClick={closeModal}
+                                className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    )
+                    : (
+                        <form onSubmit={sendEmail} className="p-4">
+                            <div className="mb-4">
+                                <label htmlFor="resetEmail" className="block mb-1 font-semibold">
+                                    Email Address
+                                </label>
+                                <input 
+                                    type="email"
+                                    id="resetEmail"
+                                    value={emailReset}
+                                    onChange={(e) => setEmailReset(e.target.value)}
+                                    placeholder="Enter your email"
+                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    required />
+                                <button
+                                    type="submit"
+                                    className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center">
+                                        Send Reset Email
+                                </button>
+                            </div>
+                        </form>
+                        )}
+                </Modal>)}
         </div>
     )
 }
