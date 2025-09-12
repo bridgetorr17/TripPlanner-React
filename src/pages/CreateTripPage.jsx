@@ -1,12 +1,11 @@
 import { useState } from "react";
 import ContributorsInput from "../components/Contributors/ContributorsInput";
 import { useNavigate } from "react-router-dom";
-// import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
 
 const newTripAttempt = async (tripInfo) => {
-    navigate = useNavigate()
     try {
         const res = await fetch('/api/trips/createNew', {
             method: 'POST',
@@ -20,7 +19,7 @@ const newTripAttempt = async (tripInfo) => {
         const result = await res.json();
         return result;
     } catch {
-        navigate('/errorpage')
+        throw err;
     }
 }
 
@@ -37,9 +36,6 @@ const CreateTripPage = () => {
         e.preventDefault();
 
         locations.shift();
-        console.log('SENDING POST REQUEST TO MAKE NEW TRIP')
-        console.log(contributors);
-        console.log(locations);
 
         const tripInfo = {
             name,
@@ -50,23 +46,18 @@ const CreateTripPage = () => {
             year: selectedDate.getFullYear()
         }
 
-        const nav = '/dashboard'
-
         try{
             const result = await newTripAttempt(tripInfo);
-            console.log(result);
-
+            
             if (!result.success){
                 throw result.message
             }
+
+            navigate('/dashboard')
         }
         catch (err){
             navigate('/errorpage')
             console.log(err);
-        }
-        finally{
-            console.log('navigating to dashboard');
-            navigate(nav)
         }
     }
 

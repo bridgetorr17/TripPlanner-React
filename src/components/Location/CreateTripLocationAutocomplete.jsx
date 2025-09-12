@@ -30,8 +30,6 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
             }
         }
 
-        console.log(created);
-        
         setLocations(prev => [...prev, created])
     } catch {
         navigate('/errorpage')

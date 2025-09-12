@@ -177,12 +177,9 @@ const postNewPhoto = async (req, res) => {
 
 const postNewPlace = async (req, res) => {
     const tripId = req.params.id;
-    const user = await User.findById(req.user._id)
 
     try{
         const trip = await Trip.findById(tripId);
-
-        console.log(req.body);
         trip.locations.push(req.body);
         await trip.save();
         

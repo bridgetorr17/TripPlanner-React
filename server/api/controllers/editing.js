@@ -69,7 +69,6 @@ const editContributors = async (req, res) => {
         });
     }
     catch(err){
-        console.log(err);
         return res.json({
             success: false,
             message: 'There was an error saving those edits'
