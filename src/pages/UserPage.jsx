@@ -25,14 +25,11 @@ const UserPage = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleFileChange = async (e) => {
-        console.log('going to upload the photo')
         const file = e.target.files?.[0];
         if (!file) return;
 
         const formData = new FormData();
         formData.append("profilePicture", file);
-
-        console.log(...formData);
 
         try{
             const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
@@ -41,7 +38,6 @@ const UserPage = () => {
             });
 
             const data = await res.json();
-            console.log(data.success);
             if(data.success){
                 setProfilePictureURL(data.profilePictureURL)
             } else throw data.message
@@ -80,7 +76,6 @@ const UserPage = () => {
     }
 
     const handleDelete = async () => {
-        console.log('pressed delete')
         const deleteAccount = await fetch('/api/delete', {
             method: 'DELETE'
         });
@@ -93,10 +88,8 @@ const UserPage = () => {
         const logout = await fetch(`/api/logout`)
         const logoutRes = await logout.json();
         if(logoutRes.success) {
-            console.log('gonna navigate home');
             nav('/')
         }
-        else console.log('logout was pressed but there was an error')
     }
 
     return (

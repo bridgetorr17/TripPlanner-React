@@ -18,8 +18,6 @@ const Map = ({locations, coords}) => {
     const [centerCoords, setCenterCoords] = useState(coords);
     const [zoom, setZoom] = useState(2);
 
-    console.log(zoom);
-
     useEffect(() => { 
         setCenterCoords(coords) 
         if (locations[0]) setZoom(13) 

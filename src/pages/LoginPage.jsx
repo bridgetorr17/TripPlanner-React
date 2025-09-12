@@ -12,7 +12,6 @@ const LoginPage = ({loginAttempt}) => {
 
     useEffect(() => {
         if (isAlreadyLoggedIn) {
-            console.log('this user is already logged in');
             navigate('/dashboard')
         }
     }, [isAlreadyLoggedIn])
@@ -121,7 +120,6 @@ const loginLoader = async () => {
     const login = await fetch(`/api/login`)
     const loginRes = await login.json();
 
-    console.log(`login success was ${loginRes.success}`)
     return loginRes.success;
 }
 

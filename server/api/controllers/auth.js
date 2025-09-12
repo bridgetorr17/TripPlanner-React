@@ -5,7 +5,6 @@ import User from '../models/User.js';
 //GET - login page. Redirects user to dashboard if session cookie exists
 const getLogin = (req, res) => {
     if (req.isAuthenticated()) {
-      console.log(`this user is already logged in!`)
       res.json({
         success: true
       })
@@ -51,15 +50,12 @@ const postLogin = (req, res, next) => {
   
 //GET - logout. Ends the user's session. User will have to re-login.
 const getlogout = (req, res) => {
-  console.log('about to logout the user');
-  //req.clearCookie('connect.sid');
   req.session.destroy((err2) => {
     if (err2) {
       console.log('Error destroying session: ', err2)
       return res.json({success: false})
     }
     req.user = null;
-    console.log('session destroyed')
     return res.json({success: true})
   })
 }
@@ -92,7 +88,6 @@ const postSignup = async (req, res, next) => {
         if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match.' })
     
         if (validationErrors.length > 0) {
-            console.log(validationErrors)
             return res.json({
               success: false,
               message: validationErrors
@@ -125,8 +120,6 @@ const postSignup = async (req, res, next) => {
 //DELETE - account. Deletes user's account. 
 //TODO: remove user as contributor from all trips before deleting.
   const deleteAccount = async (req, res) => {
-    console.log('in the backend gonna try to delete this account');
-
     const userId = req.user._id;
 
     try{

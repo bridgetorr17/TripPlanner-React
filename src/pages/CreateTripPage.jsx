@@ -48,8 +48,7 @@ const CreateTripPage = () => {
 
         try{
             const result = await newTripAttempt(tripInfo);
-            console.log(result);
-
+            
             if (!result.success){
                 throw result.message
             }
