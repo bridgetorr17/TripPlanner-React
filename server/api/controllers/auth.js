@@ -1,7 +1,9 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
-import crypto from 'crypto'
+import ResetToken from '../models/ResetToken.js';
+import { sendEmail } from '../middleware/sendEmail.js';
+import crypto from 'crypto';
 
 //GET - login page. Redirects user to dashboard if session cookie exists
 const getLogin = (req, res) => {
@@ -119,14 +121,66 @@ const postSignup = async (req, res, next) => {
   }
 
   const sendResetPasswordEmail = async (req, res) => {
-    console.log('going to send the email soon')
-    console.log(req.body.email)
 
-    const user = await User.findOne({ email: req.body.email })
+    try{
+      console.log('Received reset request for:', req.body.email);
 
-    console.log(user.userName);
+      const { email } = req.body;
+      if (!email) { 
+        return res.status(400).json({ success: false, message: 'Email is required' });
+      }
 
-    res.json({success: true})
+      const user = await User.findOne({ email: req.body.email })
+
+      if (!user) {
+        console.log('No user found with email:', email);
+        // Respond success anyway (security) but email won't be sent
+        return res.json({ success: true, message: 'If that email is registered, a reset link will be sent.' });
+      }
+
+      await ResetToken.deleteMany({ userId: user._id });
+
+      const token = crypto.randomBytes(32).toString('hex');
+      await ResetToken.create({ 
+        userId : user._id,
+        token
+      });
+
+      const resetUrl = `http://localhost:3000/resetPassword?token=${token}&id=${user._id}`
+
+      try{
+        const emailResult = await sendEmail( 
+          'bridgetorr1902@gmail.com',
+          'Triply Password Reset',
+          user.email,
+          user.userName,
+          'Reset your Triply Password',
+          `You requested a password reset. Please click the link below to set a new password:\n\n` +
+          `${resetUrl}\n\n` +
+          `If you didn’t request this, you can safely ignore this email.`,
+          `<strong>Reset your password</strong><br/><br/>` +
+          `You requested a password reset for your Triply account.<br/>` +
+          `Click the button below to reset your password:<br/><br/>` +
+          `<a href="${resetUrl}" style="display:inline-block;padding:12px 24px;background-color:#1D4ED8;color:white;text-decoration:none;border-radius:4px;">Reset Password</a><br/><br/>` +
+          `If the button doesn’t work, copy and paste the following link into your browser:<br/>` +
+          `<a href="${resetUrl}">${resetUrl}</a><br/><br/>` +
+          `If you did not request a password reset, no action is needed.<br/><br/>` +
+          `Thanks,<br/>The Triply Team`,
+        );
+
+        console.log('Mailjet send result: ', emailResult)
+      }
+      catch(err) {
+        console.error('Error sending email with sendEmail(): ', err)
+        return res.status(500).json({ success: false, message: 'Failed to send reset email' });
+      }
+
+      return res.json({ success: true, message: 'Reset email sent (if that email is registered).' });
+    }
+    catch(err) {
+      console.error('sendResetPasswordEmail caught error:', err);
+      return res.status(500).json({ success: false, message: 'Server error' });
+    }
   }
 
 //DELETE - account. Deletes user's account. 

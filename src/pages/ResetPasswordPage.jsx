@@ -1,8 +1,12 @@
 import { useState } from "react";
-import Spinner from "../components/Utlities/Spinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
 
 const ResetPasswordPage = () => {
+
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
+    const id = searchParams.get('id')
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
