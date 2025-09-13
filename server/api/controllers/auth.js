@@ -146,7 +146,7 @@ const postSignup = async (req, res, next) => {
         token
       });
 
-      const resetUrl = `http://localhost:3000/resetPassword?token=${token}&id=${user._id}`
+      const resetUrl = `https://triplytravel.vercel.app/resetPassword?token=${token}&id=${user._id}`
 
       try{
         const emailResult = await sendEmail( 
@@ -221,7 +221,7 @@ const postSignup = async (req, res, next) => {
           await user.save();
         } else return res.status(400).json({ success: false, message: 'Invalid email' });
 
-        return res.status(200).json({ success: true })
+        return res.status(200).json({ success: true, message: 'Password reset successful. You can now login with your new password.' })
     }
     catch(err){
       console.error(err);
