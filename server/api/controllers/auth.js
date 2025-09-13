@@ -1,6 +1,7 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
+import crypto from 'crypto'
 
 //GET - login page. Redirects user to dashboard if session cookie exists
 const getLogin = (req, res) => {
@@ -117,6 +118,17 @@ const postSignup = async (req, res, next) => {
     }
   }
 
+  const sendResetPasswordEmail = async (req, res) => {
+    console.log('going to send the email soon')
+    console.log(req.body.email)
+
+    const user = await User.findOne({ email: req.body.email })
+
+    console.log(user.userName);
+
+    res.json({success: true})
+  }
+
 //DELETE - account. Deletes user's account. 
 //TODO: remove user as contributor from all trips before deleting.
   const deleteAccount = async (req, res) => {
@@ -137,5 +149,6 @@ const postSignup = async (req, res, next) => {
             postLogin, 
             getlogout, 
             postSignup,
+            sendResetPasswordEmail,
             deleteAccount
   }
