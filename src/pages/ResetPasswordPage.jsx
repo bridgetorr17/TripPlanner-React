@@ -6,7 +6,7 @@ const ResetPasswordPage = () => {
 
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
-    const id = searchParams.get('id')
+    const userId = searchParams.get('id');
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,8 +17,34 @@ const ResetPasswordPage = () => {
     const submitForm = async (e) => {
         e.preventDefault();
 
-        console.log('requesting a reset password')
-        
+        const resetPasswordDetails = {
+            token, 
+            userId,
+            email,
+            password,
+            confirmPassword
+        }
+
+        try{
+            console.log('requesting reset password, here is the token ' + token)
+            
+            const result = await fetch(`/api/resetPassword`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(resetPasswordDetails)
+            });
+
+            const data = await result.json();
+
+            //display message depending on backend result (use state variable)
+            //either the requirements of the password
+            //or link to the login page
+        }
+        catch(err){
+
+        }
     }
 
     return (

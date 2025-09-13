@@ -183,6 +183,14 @@ const postSignup = async (req, res, next) => {
     }
   }
 
+  const resetPassword = async (req, res) => {
+    //validate email with userId and active token
+    //if expried token => send that message
+    //validate password - is strong password, and password confirmation matches
+    //hash the password, and save into User profile
+    //send success message to frontend
+  }
+
 //DELETE - account. Deletes user's account. 
 //TODO: remove user as contributor from all trips before deleting.
   const deleteAccount = async (req, res) => {
@@ -204,5 +212,6 @@ const postSignup = async (req, res, next) => {
             getlogout, 
             postSignup,
             sendResetPasswordEmail,
+            resetPassword,
             deleteAccount
   }
