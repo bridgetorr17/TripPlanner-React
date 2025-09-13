@@ -68,6 +68,8 @@ const LoginPage = ({loginAttempt}) => {
 
             const response = await res.json();
 
+            console.log(response);
+
             setEmailSent(true);
         }
         catch(err){

@@ -28,7 +28,7 @@ const ResetPasswordPage = () => {
         try{
             console.log('requesting reset password, here is the token ' + token)
             
-            const result = await fetch(`/api/resetPassword`, {
+            const res = await fetch(`/api/resetPassword`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -36,7 +36,9 @@ const ResetPasswordPage = () => {
                 body: JSON.stringify(resetPasswordDetails)
             });
 
-            const data = await result.json();
+            const result = await res.json();
+
+            console.log(result)
 
             //display message depending on backend result (use state variable)
             //either the requirements of the password

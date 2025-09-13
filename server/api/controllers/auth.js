@@ -189,6 +189,44 @@ const postSignup = async (req, res, next) => {
     //validate password - is strong password, and password confirmation matches
     //hash the password, and save into User profile
     //send success message to frontend
+
+    try{
+      const { token, userId, email, password, confirmPassword } = req.body;
+
+      const resetToken = await ResetToken.findOne({ userId: userId, token: token});
+      if (!resetToken){
+        return res.status(400).json({ success: false, message: 'Invalid or expired reset token.' });
+      }
+
+      const validationErrors = [];
+      if (!validator.isStrongPassword(password, {
+          minLength: 8,
+          minLowercase: 0,
+          minUppercase: 0,
+          minNumbers: 1,
+          minSymbols: 1
+        })) {validationErrors.push({ msg: 'Password be at least 8 characters and must contain at least 1 number and 1 special character.'})}
+        if (password !== confirmPassword) validationErrors.push({ msg: 'Passwords do not match.' })
+    
+        if (validationErrors.length > 0) {
+            return res.json({
+              success: false,
+              message: validationErrors
+            })
+        }
+
+        const user = await User.findById(userId);
+        if (user.email === email) {
+          user.password = password;
+          await user.save();
+        } else return res.status(400).json({ success: false, message: 'Invalid email' });
+
+        return res.status(200).json({ success: true })
+    }
+    catch(err){
+      console.error(err);
+
+    }
   }
 
 //DELETE - account. Deletes user's account. 
