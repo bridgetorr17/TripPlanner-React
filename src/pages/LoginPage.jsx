@@ -53,9 +53,29 @@ const LoginPage = ({loginAttempt}) => {
         }
     }
 
-    const sendEmail = () => {
-        console.log('sending email');
-        setEmailSent(true);
+    const sendEmail = async (e) => {
+        e.preventDefault();
+        console.log('sending request to backend for ' + emailReset)
+        try{
+            const res = await fetch ('/api/resetPasswordEmail', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: emailReset})
+            })
+
+            const response = await res.json();
+
+            console.log(response);
+
+            setEmailSent(true);
+        }
+        catch(err){
+            console.error(err);
+        }
+
     }
 
     const closeModal = () => {
@@ -136,7 +156,11 @@ const LoginPage = ({loginAttempt}) => {
                 title="Reset Password">
                     { emailSent ? (
                         <div className="p-4">
-                            <p>Thank you! If that email address is registered, you’ll receive a reset link shortly.</p>
+                            <p> Thank you! If that email address is registered, you’ll receive a reset link shortly. 
+                                <br />
+                                <br />
+                                Make sure to check you spam folder if you don't see the email in your inbox.
+                            </p>
                             <button
                                 onClick={closeModal}
                                 className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center"

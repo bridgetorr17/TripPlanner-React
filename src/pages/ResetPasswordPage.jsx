@@ -1,20 +1,60 @@
 import { useState } from "react";
-import Spinner from "../components/Utlities/Spinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ResetPasswordPage = () => {
+
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
+    const userId = searchParams.get('id');
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
     const [confirmPassword, setConfrimPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState('');
+    const [statusColor, setStatusColor] = useState('');
 
     const submitForm = async (e) => {
         e.preventDefault();
 
-        console.log('requesting a reset password')
-        
+        const resetPasswordDetails = {
+            token, 
+            userId,
+            email,
+            password,
+            confirmPassword
+        }
+
+        try{
+            console.log('requesting reset password, here is the token ' + token)
+            
+            const res = await fetch(`/api/resetPassword`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(resetPasswordDetails)
+            });
+
+            const result = await res.json();
+
+            console.log(result)
+            
+            if (!result.success) {
+                setStatus(result.message[0].msg)
+                setStatusColor('red')
+            }
+            else {
+                setStatus(result.message);
+                setStatusColor('gray')
+            }
+        }
+        catch(err){
+            console.error(err);
+        }
     }
 
     return (
@@ -57,6 +97,11 @@ const ResetPasswordPage = () => {
                         onChange={(e) => setConfrimPassword(e.target.value)} 
                         className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
                     />
+                    {status && (
+                        <div className="text-center">
+                            <p className={`text-${statusColor}-600 font-semibold`}>{status}</p>
+                        </div>
+                    )}
                     <button type="submit"
                             className={`mt-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
                                         ${loading
@@ -66,6 +111,11 @@ const ResetPasswordPage = () => {
                         Reset Password
                     </button>
                 </form>
+                <Link
+                    to='/login'
+                    className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center">
+                    Login
+                </Link>
             </div>
         </div>
 
