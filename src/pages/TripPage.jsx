@@ -22,11 +22,13 @@ const tripLoader = async ({ request }) => {
     return tripRes;
 }
 
-const TripPage = ({owner}) => {
+const TripPage = () => {
     
     const trip = useLoaderData().trip;
-    const loggedInUser = useLoaderData().loggedInUser;
     const contributorNamesLoader = useLoaderData().contributorNames
+    const currentUser = useLoaderData().currentUser;
+
+    console.log(`is the Trip page, we got that var ${currentUser.userStatus}`)
 
     const nav = useNavigate();
     const reavlidator = useRevalidator();
@@ -117,7 +119,7 @@ const TripPage = ({owner}) => {
                         editMode={editPhotos}
                         setEditMode={setEditPhotos}
                         photosInit={trip.photos}
-                        loggedInUser={loggedInUser}
+                        loggedInUser={currentUser.userName}
                         />
                 </section>
 
@@ -139,7 +141,7 @@ const TripPage = ({owner}) => {
                         setEditMode={setEditMemories}
                         memoriesInit={trip.memories}
                         tripId={trip._id}
-                        loggedInUser={loggedInUser}/>
+                        loggedInUser={currentUser.userName}/>
                 </section>
 
 
@@ -164,8 +166,6 @@ const TripPage = ({owner}) => {
                         tripId={trip._id}
                         reavlidator={reavlidator}/>
                 </section>
-                {owner 
-                    ?
                     <>
                         <button
                             onClick={() => setModalOpen(true)}
@@ -184,8 +184,6 @@ const TripPage = ({owner}) => {
                             itemName={trip.name}
                         /> 
                     </>
-                    : null}
-                
             </div>
         </div>
     )

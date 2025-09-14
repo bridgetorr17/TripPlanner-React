@@ -6,16 +6,15 @@ import { Link } from "react-router-dom";
 import { redirect } from "react-router-dom";
 
 const DashboardPage = () => {
-    console.log('trying to load dahsboard')
     const { userTrips, sharedTrips, userName, profilePicture } = useLoaderData();
     const [activeTab, setActiveTab] = useState('my');
 
     let content = null;
 
     if (activeTab === 'my'){
-        content = <TripList owner={true} trips={userTrips} />
+        content = <TripList trips={userTrips} />
     } else if (activeTab === 'shared'){
-        content = <TripList owner={false} trips={sharedTrips} />
+        content = <TripList trips={sharedTrips} />
     } 
 
     return (
