@@ -18,10 +18,8 @@ const getTrip = async (req, res) => {
         console.log(details.success);
 
         if (!details.success){
-            console.log('from the controller, this user should not be able to get the trip')
             return res.json({
                 success: false,
-                message: 'This user does not have viewing permissions',
                 redirect: '/dashboard'
             })
         }
