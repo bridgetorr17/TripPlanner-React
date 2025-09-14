@@ -187,7 +187,11 @@ const userLoader = async ({params}) => {
     const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
 
+    console.log(data);
+    console.log(data.success);
+
     if (!data.success) {
+        console.log('redirecting to landing page on frontend')
         return redirect('/')
     }
 

@@ -44,9 +44,11 @@ const getUser = async (req, res) => {
     if(req.user.userName === req.params.userName) {
         isOwner = true;
     }
+
     const userProfile = await User.findOne({userName: req.params.userName})
 
     res.json({
+        success: true,
         isOwner,
         userName: userProfile.userName,
         email: userProfile.email,

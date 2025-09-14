@@ -1,5 +1,6 @@
 const ensureAuth = (req, res, next) => {
     if(req.isAuthenticated()){
+        console.log('user IS logged in')
         return next();
     }
     else{
