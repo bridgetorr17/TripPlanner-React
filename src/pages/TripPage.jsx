@@ -9,12 +9,16 @@ import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
 import { FaTrash } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
+import { redirect } from "react-router-dom"
 
 const tripLoader = async ({ request }) => {
     const tripId = request.url.slice(-24)
-    
     const trip = await fetch(`/api/trips/${tripId}`)
     const tripRes = await trip.json();
+
+    if (!tripRes.success) {
+        return redirect('/')
+    }
     return tripRes;
 }
 

@@ -3,8 +3,10 @@ import { useState } from "react";
 import TripList from '../components/Dashboard/TripList'
 import NavLinks from "../components/Dashboard/NavLinks";
 import { Link } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 const DashboardPage = () => {
+    console.log('trying to load dahsboard')
     const { userTrips, sharedTrips, userName, profilePicture } = useLoaderData();
     const [activeTab, setActiveTab] = useState('my');
 
@@ -46,6 +48,10 @@ const DashboardPage = () => {
 const dashboardLoader = async () => {
     const trips = await fetch(`/api/dashboard`)
     const tripsRes = await trips.json();
+
+    if (!tripsRes.success) {
+        return redirect('/')
+    }
 
     const userName = tripsRes.userName;
     const profilePicture = tripsRes.profilePicture;

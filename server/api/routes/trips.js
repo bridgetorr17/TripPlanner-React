@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/createNew', tripController.postCreateNewTrip);
 router.delete('/delete/:id', tripController.deleteTrip);
 router.get('/:id', ensureAuth, tripController.getTrip);
-router.get('/sharedTrip/:id', tripController.getTrip);
+router.get('/sharedTrip/:id', ensureAuth, tripController.getTrip);
 router.post('/createNewMemory/:id', tripController.postCreateNewMemory);
 router.post('/uploadPhoto/:id', tripController.postNewPhoto)
 router.post('/addPlace/:id', tripController.postNewPlace)

@@ -3,7 +3,7 @@ const ensureAuth = (req, res, next) => {
         return next();
     }
     else{
-        res.redirect('/')
+        res.json({success: false, message: 'user not logged in'})
     }
 }
 
