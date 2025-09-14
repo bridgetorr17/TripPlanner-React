@@ -7,22 +7,28 @@ import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
-import { FaTrash } from "react-icons/fa6"
+import { FaTrash, FaUserPlus } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
+import { redirect } from "react-router-dom"
 
 const tripLoader = async ({ request }) => {
     const tripId = request.url.slice(-24)
-    
     const trip = await fetch(`/api/trips/${tripId}`)
     const tripRes = await trip.json();
+
+    if (!tripRes.success) {
+        return redirect(tripRes.redirect)
+    }
+
     return tripRes;
 }
 
-const TripPage = ({owner}) => {
+const TripPage = () => {
     
     const trip = useLoaderData().trip;
-    const loggedInUser = useLoaderData().loggedInUser;
     const contributorNamesLoader = useLoaderData().contributorNames
+    const currentUser = useLoaderData().currentUser;
+    const userStatus = currentUser.userStatus;
 
     const nav = useNavigate();
     const reavlidator = useRevalidator();
@@ -33,7 +39,6 @@ const TripPage = ({owner}) => {
     const [contributorNames, setContributorNames] = useState(contributorNamesLoader);
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
-
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
@@ -113,7 +118,7 @@ const TripPage = ({owner}) => {
                         editMode={editPhotos}
                         setEditMode={setEditPhotos}
                         photosInit={trip.photos}
-                        loggedInUser={loggedInUser}
+                        loggedInUser={currentUser.userName}
                         />
                 </section>
 
@@ -135,7 +140,7 @@ const TripPage = ({owner}) => {
                         setEditMode={setEditMemories}
                         memoriesInit={trip.memories}
                         tripId={trip._id}
-                        loggedInUser={loggedInUser}/>
+                        loggedInUser={currentUser.userName}/>
                 </section>
 
 
@@ -160,28 +165,27 @@ const TripPage = ({owner}) => {
                         tripId={trip._id}
                         reavlidator={reavlidator}/>
                 </section>
-                {owner 
-                    ?
-                    <>
-                        <button
-                            onClick={() => setModalOpen(true)}
-                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
-                        >
-                        <FaTrash className="text-lg" />
-                        Delete this trip
-                        </button>
-                        <ConfirmDelete
-                            isOpen={modalOpen}
-                            onClose={() => setModalOpen(false)}
-                            onConfirm={() => {
-                                deleteTrip();
-                                setModalOpen(false);
-                            }}
-                            itemName={trip.name}
-                        /> 
-                    </>
-                    : null}
-                
+                    {(userStatus === 'owner') ? 
+                        <>
+                            <button
+                                onClick={() => setModalOpen(true)}
+                                className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                            >
+                            <FaTrash className="text-lg" />
+                            Delete this trip
+                            </button>
+                            <ConfirmDelete
+                                isOpen={modalOpen}
+                                onClose={() => setModalOpen(false)}
+                                onConfirm={() => {
+                                    deleteTrip();
+                                    setModalOpen(false);
+                                }}
+                                itemName={trip.name}
+                            /> 
+                        </>
+                        : null
+                    }
             </div>
         </div>
     )

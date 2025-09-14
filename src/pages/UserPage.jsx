@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
+import { redirect } from "react-router-dom";
 
 const UserPage = () => {
     const { isOwner,
@@ -185,6 +186,14 @@ const userLoader = async ({params}) => {
     const {userName} = params;
     const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
+
+    console.log(data);
+    console.log(data.success);
+
+    if (!data.success) {
+        console.log('redirecting to landing page on frontend')
+        return redirect('/')
+    }
 
     return data;
 }

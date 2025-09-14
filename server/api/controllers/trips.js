@@ -13,13 +13,20 @@ dotenv.config({path: './config/.env'})
 const getTrip = async (req, res) => {
     try{
         const tripId = req.params.id;
-        const details = await tripDetails(tripId);
+        const details = await tripDetails(tripId, req.user);
+
+        if (!details.success){
+            return res.json({
+                success: false,
+                redirect: '/dashboard'
+            })
+        }
 
         return res.json({
             success: true,
             trip: details.trip,
             contributorNames: details.contributorNames,
-            loggedInUser: req.user.userName
+            currentUser: details.currentUser
         });
     }
     catch(err){

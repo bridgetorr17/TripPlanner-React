@@ -1,9 +1,14 @@
 const ensureAuth = (req, res, next) => {
     if(req.isAuthenticated()){
+        console.log('user IS logged in')
         return next();
     }
     else{
-        res.redirect('/')
+        res.json({
+            success: false, 
+            message: 'user not logged in',
+            redirect: '/'
+        })
     }
 }
 

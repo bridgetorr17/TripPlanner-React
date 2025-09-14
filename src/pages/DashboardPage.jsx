@@ -3,6 +3,7 @@ import { useState } from "react";
 import TripList from '../components/Dashboard/TripList'
 import NavLinks from "../components/Dashboard/NavLinks";
 import { Link } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 const DashboardPage = () => {
     const { userTrips, sharedTrips, userName, profilePicture } = useLoaderData();
@@ -11,9 +12,9 @@ const DashboardPage = () => {
     let content = null;
 
     if (activeTab === 'my'){
-        content = <TripList owner={true} trips={userTrips} />
+        content = <TripList trips={userTrips} />
     } else if (activeTab === 'shared'){
-        content = <TripList owner={false} trips={sharedTrips} />
+        content = <TripList trips={sharedTrips} />
     } 
 
     return (
@@ -46,6 +47,10 @@ const DashboardPage = () => {
 const dashboardLoader = async () => {
     const trips = await fetch(`/api/dashboard`)
     const tripsRes = await trips.json();
+
+    if (!tripsRes.success) {
+        return redirect('/')
+    }
 
     const userName = tripsRes.userName;
     const profilePicture = tripsRes.profilePicture;
