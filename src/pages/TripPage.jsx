@@ -16,8 +16,11 @@ const tripLoader = async ({ request }) => {
     const trip = await fetch(`/api/trips/${tripId}`)
     const tripRes = await trip.json();
 
+    console.log(`this trip loader info is ${tripRes.success}`);
+    console.log(`this trip loader info is ${tripRes.message}`);
+    console.log(`this trip loader info is ${tripRes.redirect}`);
     if (!tripRes.success) {
-        return redirect('/')
+        return redirect(tripRes.redirect)
     }
     return tripRes;
 }
