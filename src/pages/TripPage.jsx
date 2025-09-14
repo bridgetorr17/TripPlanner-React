@@ -27,6 +27,7 @@ const TripPage = () => {
     const trip = useLoaderData().trip;
     const contributorNamesLoader = useLoaderData().contributorNames
     const currentUser = useLoaderData().currentUser;
+    const userStatus = currentUser.userStatus;
 
     console.log(`is the Trip page, we got that var ${currentUser.userStatus}`)
 
@@ -39,7 +40,6 @@ const TripPage = () => {
     const [contributorNames, setContributorNames] = useState(contributorNamesLoader);
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
-
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, saveFn, setEdit) => {
@@ -166,24 +166,27 @@ const TripPage = () => {
                         tripId={trip._id}
                         reavlidator={reavlidator}/>
                 </section>
-                    <>
-                        <button
-                            onClick={() => setModalOpen(true)}
-                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
-                        >
-                        <FaTrash className="text-lg" />
-                        Delete this trip
-                        </button>
-                        <ConfirmDelete
-                            isOpen={modalOpen}
-                            onClose={() => setModalOpen(false)}
-                            onConfirm={() => {
-                                deleteTrip();
-                                setModalOpen(false);
-                            }}
-                            itemName={trip.name}
-                        /> 
-                    </>
+                    {(userStatus === 'owner') ? 
+                        <>
+                            <button
+                                onClick={() => setModalOpen(true)}
+                                className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                            >
+                            <FaTrash className="text-lg" />
+                            Delete this trip
+                            </button>
+                            <ConfirmDelete
+                                isOpen={modalOpen}
+                                onClose={() => setModalOpen(false)}
+                                onConfirm={() => {
+                                    deleteTrip();
+                                    setModalOpen(false);
+                                }}
+                                itemName={trip.name}
+                            /> 
+                        </>
+                        : null
+                    }
             </div>
         </div>
     )
