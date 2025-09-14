@@ -15,8 +15,6 @@ const getTrip = async (req, res) => {
         const tripId = req.params.id;
         const details = await tripDetails(tripId, req.user);
 
-        console.log(details.success);
-
         if (!details.success){
             return res.json({
                 success: false,

@@ -19,7 +19,7 @@ const tripLoader = async ({ request }) => {
     if (!tripRes.success) {
         return redirect(tripRes.redirect)
     }
-    
+
     return tripRes;
 }
 
@@ -29,8 +29,6 @@ const TripPage = () => {
     const contributorNamesLoader = useLoaderData().contributorNames
     const currentUser = useLoaderData().currentUser;
     const userStatus = currentUser.userStatus;
-
-    console.log(`is the Trip page, we got that var ${currentUser.userStatus}`)
 
     const nav = useNavigate();
     const reavlidator = useRevalidator();
