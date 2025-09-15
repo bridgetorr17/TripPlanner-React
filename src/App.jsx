@@ -12,7 +12,7 @@ import DashboardPage from './pages/DashboardPage';
 import UserPage from './pages/UserPage';
 import PreviewPage from './pages/PreviewPage';
 import CreateTripPage from './pages/CreateTripPage';
-import TripPage from './pages/TripPage';
+import TripPage, { authTripLoader, viewerTripLoader } from './pages/TripPage';
 import PageWrapper from './components/Utlities/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
@@ -74,7 +74,8 @@ const App = () => {
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/dashboard/:userName' element={<UserPage/>} loader={userLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/createNew' element={<CreateTripPage />} errorElement={<ErrorPage/>}/>
-                <Route path='/trips/:id' element={<TripPage/>} loader={tripLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/trips/viewer/:id' element={<TripPage/>} loader={viewerTripLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/trips/:id' element={<TripPage/>} loader={authTripLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/logout' element={<LandingPage/>} errorElement={<ErrorPage/>}/>
                 <Route path='/errorpage' element={<ErrorPage/>} />
             </Route>

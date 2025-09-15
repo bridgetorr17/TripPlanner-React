@@ -7,13 +7,25 @@ import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
-import { FaTrash, FaUserPlus } from "react-icons/fa6"
+import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 
-const tripLoader = async ({ request }) => {
+const authTripLoader = async ({ request }) => {
     const tripId = request.url.slice(-24)
     const trip = await fetch(`/api/trips/${tripId}`)
+    const tripRes = await trip.json();
+
+    if (!tripRes.success) {
+        return redirect(tripRes.redirect)
+    }
+
+    return tripRes;
+}
+
+const viewerTripLoader = async ({ request }) => {
+    const tripId = request.url.slice(-24)
+    const trip = await fetch(`/api/trips/viewer/${tripId}`)
     const tripRes = await trip.json();
 
     if (!tripRes.success) {
@@ -44,6 +56,23 @@ const TripPage = () => {
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
         else setEdit(true);
+    }
+
+    const shareTrip = async () => {
+        if (!navigator.share){
+            alert('sharing not supported on this browser')
+            return;
+        }
+
+        try{
+            await navigator.share({
+                title: `Hi! Checkout out my ${trip.name} adventure on triply.`,
+                url: `https://triplytravel.vercel.app/trips/viewer/${trip._id}`
+            });
+        }
+        catch(err) {
+            console.error('sharing failed', err)
+        }
     }
 
     const deleteTrip = async () => {
@@ -84,7 +113,7 @@ const TripPage = () => {
             </div>
             <div className="w-full max-w-3xl space-y-6">
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    <TripHeader 
+                    {(userStatus !== 'viewer') && <TripHeader 
                         headerTitle={"Where we went"}                        
                         modifyText={editLocations ? "Cancel" : "Edit"}
                         onToggleEdit={() => 
@@ -93,7 +122,7 @@ const TripPage = () => {
                                 () => {setEditLocations(false)},
                                 setEditLocations
                                 )
-                            } />
+                            } />}
                     <Locations 
                         editMode={editLocations}
                         locations={locationsData}
@@ -102,7 +131,7 @@ const TripPage = () => {
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    <TripHeader 
+                    {(userStatus !== 'viewer') && <TripHeader 
                         headerTitle={"What we saw"}                      
                         modifyText={editPhotos ? "Cancel" : "Add"}
                         onToggleEdit={() => 
@@ -112,7 +141,7 @@ const TripPage = () => {
                                 setEditPhotos
                                 )
                             }
-                        />
+                        />}
                     <Photos 
                         tripId={trip._id}
                         editMode={editPhotos}
@@ -123,7 +152,7 @@ const TripPage = () => {
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    <TripHeader 
+                    {(userStatus !== 'viewer') && <TripHeader 
                         headerTitle={"What we remember"}
                         modifyText={editMemories ? "Cancel" : "Add"}
                         onToggleEdit={() => 
@@ -134,7 +163,7 @@ const TripPage = () => {
                                 setEditMemories
                                 )
                             }
-                        />
+                        />}
                     <Memories 
                         editMode={editMemories}
                         setEditMode={setEditMemories}
@@ -145,7 +174,7 @@ const TripPage = () => {
 
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    <TripHeader 
+                    {(userStatus !== 'viewer') && <TripHeader 
                         headerTitle={"Who was there"}
                         modifyText={editContributors ? "Cancel" : "Edit"}
                         onToggleEdit={() => 
@@ -155,7 +184,7 @@ const TripPage = () => {
                                 setEditContributors
                                 )
                             }
-                        />
+                        />}
                     <Contributors 
                         editMode={editContributors}
                         setEditMode={setEditContributors}
@@ -165,32 +194,55 @@ const TripPage = () => {
                         tripId={trip._id}
                         reavlidator={reavlidator}/>
                 </section>
-                    {(userStatus === 'owner') ? 
-                        <>
-                            <button
-                                onClick={() => setModalOpen(true)}
-                                className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
-                            >
+                {(userStatus !== 'viewer') &&
+                    <>
+                        <button
+                            onClick={shareTrip}
+                            className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        >
+                            <FaShare className="text-lg" />
+                            Share this trip
+                        </button>
+                    </>
+                }
+                {(userStatus === 'owner') && 
+                    <>
+                        <button
+                            onClick={() => setModalOpen(true)}
+                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        >
                             <FaTrash className="text-lg" />
                             Delete this trip
+                        </button>
+                        <ConfirmDelete
+                            isOpen={modalOpen}
+                            onClose={() => setModalOpen(false)}
+                            onConfirm={() => {
+                                deleteTrip();
+                                setModalOpen(false);
+                            }}
+                            itemName={trip.name}
+                        /> 
+                    </> 
+                }
+                {(userStatus === 'viewer') && 
+                    <>
+                        <Link to="/signup">
+                            <button
+                            className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                            >
+                                <FaPlaneDeparture className="text-lg" />
+                                Start your new adventure with Triply! Make an account here
                             </button>
-                            <ConfirmDelete
-                                isOpen={modalOpen}
-                                onClose={() => setModalOpen(false)}
-                                onConfirm={() => {
-                                    deleteTrip();
-                                    setModalOpen(false);
-                                }}
-                                itemName={trip.name}
-                            /> 
-                        </>
-                        : null
-                    }
+                        </Link>
+                    </> 
+                }
             </div>
         </div>
     )
 }
 export {
     TripPage as default, 
-    tripLoader
+    authTripLoader,
+    viewerTripLoader
 }

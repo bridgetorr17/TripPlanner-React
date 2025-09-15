@@ -14,8 +14,15 @@ const tripDetails = async (tripId, user) => {
     const contributorNames = trip.contributors.map(c => c.userName)
 
     const currentUser = (() => {
-        //the logged in user and owner are the same 
-        if (user._id.equals(trip.owner._id)){ 
+        //the user is not logged in or does not exist - they are a viewer
+        if (!user){
+            return {
+                userName: null,
+                userStatus: 'viewer'
+            }
+        }
+        //the logged in user and owner are the same
+        else if (user._id.equals(trip.owner._id)){ 
             return {
                 userName: user.userName,
                 userStatus: 'owner'
@@ -28,25 +35,12 @@ const tripDetails = async (tripId, user) => {
                 userStatus: 'contributor'
             }
         } 
-        //the user is not logged in, and they have the correct viewer token
-        else if (!user._id){
-            return {
-                userName: null,
-                userStatus: 'viewer'
-            }
-        }
         //this is a logged in user, but they do not have viewing permissions
-        else if (user.id){
+        else {
             return null;
         }
-        else {
-            return {
-                userName: null,
-                userStatus: 'viewer'
-            }
-        }
     })();
-    
+
     if (!currentUser){
         return {
             success: false,
