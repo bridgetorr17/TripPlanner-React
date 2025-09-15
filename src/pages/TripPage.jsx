@@ -11,9 +11,21 @@ import { FaTrash, FaShare } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 
-const tripLoader = async ({ request }) => {
+const authTripLoader = async ({ request }) => {
     const tripId = request.url.slice(-24)
     const trip = await fetch(`/api/trips/${tripId}`)
+    const tripRes = await trip.json();
+
+    if (!tripRes.success) {
+        return redirect(tripRes.redirect)
+    }
+
+    return tripRes;
+}
+
+const viewerTripLoader = async ({ request }) => {
+    const tripId = request.url.slice(-24)
+    const trip = await fetch(`/api/trips/viewer/${tripId}`)
     const tripRes = await trip.json();
 
     if (!tripRes.success) {
@@ -55,7 +67,8 @@ const TripPage = () => {
         try{
             await navigator.share({
                 title: 'Hey! Checkout out my trip on Triply',
-                url: 'https://triplytravel.vercel.app'
+                //url: 'https://triplytravel.vercel.app'
+                url: `http://localhost:3000/trips/viewer/${trip._id}`
             });
         }
         catch(err) {
@@ -219,5 +232,6 @@ const TripPage = () => {
 }
 export {
     TripPage as default, 
-    tripLoader
+    authTripLoader,
+    viewerTripLoader
 }
