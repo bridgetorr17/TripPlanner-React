@@ -7,7 +7,7 @@ import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
-import { FaTrash, FaUserPlus } from "react-icons/fa6"
+import { FaTrash, FaShare } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 
@@ -44,6 +44,23 @@ const TripPage = () => {
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
         else setEdit(true);
+    }
+
+    const shareTrip = async () => {
+        if (!navigator.share){
+            alert('sharing not supported on this browser')
+            return;
+        }
+
+        try{
+            await navigator.share({
+                title: 'Hey! Checkout out my trip on Triply',
+                url: 'https://triplytravel.vercel.app'
+            });
+        }
+        catch(err) {
+            console.error('sharing failed', err)
+        }
     }
 
     const deleteTrip = async () => {
@@ -165,27 +182,37 @@ const TripPage = () => {
                         tripId={trip._id}
                         reavlidator={reavlidator}/>
                 </section>
-                    {(userStatus === 'owner') ? 
-                        <>
-                            <button
-                                onClick={() => setModalOpen(true)}
-                                className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
-                            >
-                            <FaTrash className="text-lg" />
-                            Delete this trip
-                            </button>
-                            <ConfirmDelete
-                                isOpen={modalOpen}
-                                onClose={() => setModalOpen(false)}
-                                onConfirm={() => {
-                                    deleteTrip();
-                                    setModalOpen(false);
-                                }}
-                                itemName={trip.name}
-                            /> 
-                        </>
-                        : null
-                    }
+                {(userStatus === 'owner' || userStatus === 'contributor') &&
+                    <>
+                        <button
+                            onClick={shareTrip}
+                            className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        >
+                            <FaShare className="text-lg" />
+                            Share this trip
+                        </button>
+                    </>
+                }
+                {(userStatus === 'owner') && 
+                    <>
+                        <button
+                            onClick={() => setModalOpen(true)}
+                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        >
+                        <FaTrash className="text-lg" />
+                        Delete this trip
+                        </button>
+                        <ConfirmDelete
+                            isOpen={modalOpen}
+                            onClose={() => setModalOpen(false)}
+                            onConfirm={() => {
+                                deleteTrip();
+                                setModalOpen(false);
+                            }}
+                            itemName={trip.name}
+                        /> 
+                    </> 
+                }
             </div>
         </div>
     )
