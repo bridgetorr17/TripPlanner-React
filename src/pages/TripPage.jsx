@@ -66,9 +66,8 @@ const TripPage = () => {
 
         try{
             await navigator.share({
-                title: 'Hey! Checkout out my trip on Triply',
+                title: `Hi! Checkout out my ${trip.name} adventure on triply.`,
                 url: `https://triplytravel.vercel.app/trips/viewer/${trip._id}`
-                //url: `http://localhost:3000/trips/viewer/${trip._id}`
             });
         }
         catch(err) {
