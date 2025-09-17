@@ -16,7 +16,6 @@ import TripPage, { authTripLoader, viewerTripLoader } from './pages/TripPage';
 import PageWrapper from './components/Utlities/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
-import { tripLoader } from './pages/TripPage';
 import { loginLoader } from './pages/LoginPage';
 import { ErrorBoundary } from "react-error-boundary";
 import { configureMarkers } from './components/Utlities/ConfigureMarkerStyles'

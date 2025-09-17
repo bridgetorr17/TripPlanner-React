@@ -4,6 +4,7 @@ import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
 import { redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const UserPage = () => {
     const { isOwner,
@@ -94,89 +95,96 @@ const UserPage = () => {
     }
 
     return (
-        <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
-            <div className="flex flex-col items-center space-y-4 mb-8">
-                <img
-                    src={profilePictureURL}
-                    alt="Profile"
-                    className="w-24 h-24 rounded-full object-cover border-4 border-sky-300"
+        <div className="relative">
+            <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8 relative">
+                <div className="block mb-4 text-right">
+                    <Link to="/dashboard" className="text-blue-600 hover:text-blue-800 font-medium bg-white bg-opacity-90 px-2 py-1 rounded shadow">
+                        Back to Dashboard
+                    </Link>
+                </div>
+                <div className="flex flex-col items-center space-y-4 mb-8">
+                    <img
+                        src={profilePictureURL}
+                        alt="Profile"
+                        className="w-24 h-24 rounded-full object-cover border-4 border-sky-300"
+                    />
+                    {isOwner 
+                        ? <>
+                            <button
+                                className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1"
+                                onClick={() => fileInputRef.current.click()}
+                                >Edit Profile Photo</button>
+                                <input 
+                                    type="file"
+                                    id="file"
+                                    accept="image/*"
+                                    ref={fileInputRef}
+                                    style={{display: 'none'}}
+                                    onChange={handleFileChange}
+                                />
+                            </>
+                        : null}
+                    <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
+                </div>
+                <ProfileField 
+                    name='userName'
+                    label='User Name'
+                    value={userName}
+                    setValue={setUserName}
+                    edit={editName}
+                    setEdit={setEditName}
+                    isOwner={isOwner}
+                    save={handleSave}    
+                />
+                <ProfileField 
+                    name='email'
+                    label='Email'
+                    value={email}
+                    setValue={setEmail}
+                    edit={editEmail}
+                    setEdit={setEditEmail}
+                    isOwner={isOwner}
+                    save={handleSave}    
+                />
+                <ProfileField 
+                    name='bio'
+                    label='Biography'
+                    value={bio}
+                    setValue={setBio}
+                    edit={editBio}
+                    setEdit={setEditBio}
+                    isOwner={isOwner}
+                    save={handleSave}    
                 />
                 {isOwner 
-                    ? <>
+                    ?
+                    <>
+                        <button 
+                            onClick={() => handleLogout()}
+                            className="w-full flex justify-center items-center mb-3 gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
+                            >
+                            <FaSignOutAlt className="text-lg"/>
+                            Logout
+                        </button>
                         <button
-                            className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1"
-                            onClick={() => fileInputRef.current.click()}
-                            >Edit Profile Photo</button>
-                            <input 
-                                type="file"
-                                id="file"
-                                accept="image/*"
-                                ref={fileInputRef}
-                                style={{display: 'none'}}
-                                onChange={handleFileChange}
-                            />
-                        </>
-                    : null}
-                <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
-            </div>
-            <ProfileField 
-                name='userName'
-                label='User Name'
-                value={userName}
-                setValue={setUserName}
-                edit={editName}
-                setEdit={setEditName}
-                isOwner={isOwner}
-                save={handleSave}    
-            />
-            <ProfileField 
-                name='email'
-                label='Email'
-                value={email}
-                setValue={setEmail}
-                edit={editEmail}
-                setEdit={setEditEmail}
-                isOwner={isOwner}
-                save={handleSave}    
-            />
-            <ProfileField 
-                name='bio'
-                label='Biography'
-                value={bio}
-                setValue={setBio}
-                edit={editBio}
-                setEdit={setEditBio}
-                isOwner={isOwner}
-                save={handleSave}    
-            />
-            {isOwner 
-                ?
-                <>
-                    <button 
-                        onClick={() => handleLogout()}
-                        className="w-full flex justify-center items-center mb-3 gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
+                            onClick={() => setModalOpen(true)}
+                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
                         >
-                        <FaSignOutAlt className="text-lg"/>
-                        Logout
-                    </button>
-                    <button
-                        onClick={() => setModalOpen(true)}
-                        className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
-                    >
-                    <FaTrash className="text-lg" />
-                    Delete Account
-                    </button>
-                    <ConfirmDelete
-                        isOpen={modalOpen}
-                        onClose={() => setModalOpen(false)}
-                        onConfirm={() => {
-                            handleDelete();
-                            setModalOpen(false);
-                        }}
-                        itemName={userName}
-                    /> 
-                </>
-                : null}
+                        <FaTrash className="text-lg" />
+                        Delete Account
+                        </button>
+                        <ConfirmDelete
+                            isOpen={modalOpen}
+                            onClose={() => setModalOpen(false)}
+                            onConfirm={() => {
+                                handleDelete();
+                                setModalOpen(false);
+                            }}
+                            itemName={userName}
+                        /> 
+                    </>
+                    : null}
+            </div>
         </div>
     )
 }
@@ -186,9 +194,6 @@ const userLoader = async ({params}) => {
     const {userName} = params;
     const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
-
-    console.log(data);
-    console.log(data.success);
 
     if (!data.success) {
         console.log('redirecting to landing page on frontend')
