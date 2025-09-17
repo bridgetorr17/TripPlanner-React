@@ -14,6 +14,8 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
     const longLength = memoryText.length > 200;
     const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
 
+    console.log(`the profile picture url is ${memory.user.profilePicture}`)
+
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
         else setEdit(true);
@@ -56,7 +58,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
             <div
                 key={memory._id}
                 className="relative inline-block rounded-3xl p-4 bg-gradient-to-br to-sky-200 text-blue-900 shadow:md hover:shadow-lg transition-shadow w-full max-w-md">
-                    {loggedInUser === memory.userName && (
+                    {loggedInUser === memory.user.userName && (
                         <div className="absolute top-3 right-3 flex space-x-2">
                             <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
                                     onClick={() => toggleEdit(editMemory, updateMemory, setEditMemory)}>
@@ -95,14 +97,14 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
                     </p>}
                     
                 </div>
-                <Link to={`/dashboard/${memory.userName}`}>
+                <Link to={`/dashboard/${memory.user.userName}`}>
                     <div className="mt-2 text-right text-xs italic text-blue-800 opacity-90">
                         <img 
-                            src={memory.userProfilePicture} 
-                            alt={`${memory.userName}'s profile picture`} 
+                            src={memory.user.profilePicture} 
+                            alt={`${memory.user.userName}'s profile picture`} 
                             className="inline-block w-3 h-3 mr-1 rounded-full align-text-bottom"/>
                         <span className="cursor-pointer hover:underline hover:text-blue-600 transition-colors duration-200 ease-in-out">
-                            {memory.userName}
+                            {memory.user.userName}
                         </span>
                     </div>
                 </Link>
