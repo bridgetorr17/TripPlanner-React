@@ -5,6 +5,10 @@ const tripDetails = async (tripId, user) => {
     const trip = await Trip.findById(tripId)
         .populate('owner', 'userName')
         .populate('contributors', 'userName profilePicture')
+        .populate({
+            path: 'memories.user',
+            select: 'userName profilePicture'
+        })
         .lean();
     
     if (!trip) {

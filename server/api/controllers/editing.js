@@ -100,6 +100,11 @@ const deleteMemory = async (req, res) => {
     trip.memories.pull({_id: memoryId})
     await trip.save();
 
+    await trip.populate({
+        path: `memories.user`,
+        select: 'userName profilePicture'
+    })
+
     return res.json(trip.memories)
 
 }
