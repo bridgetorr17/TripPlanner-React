@@ -14,8 +14,6 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
     const longLength = memoryText.length > 200;
     const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
 
-    console.log(`the profile picture url is ${memory.user.profilePicture}`)
-
     const toggleEdit = (edit, saveFn, setEdit) => {
         if (edit) saveFn();
         else setEdit(true);
@@ -37,7 +35,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
                 body: JSON.stringify(updatedMemory)
             });
 
-            const data = await res.json();
+            await res.json();
 
             setEditMemory(false);
 

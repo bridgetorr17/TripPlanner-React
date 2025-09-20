@@ -27,7 +27,6 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
             });
 
             const created = await res.json();
-            console.log(`the created memory is ${created}`)
             setMemories(prev => [...prev, created])
         }
         catch(err){
