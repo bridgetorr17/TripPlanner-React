@@ -117,8 +117,14 @@ const postCreateNewMemory = async (req, res) => {
             location: req.body.location
         });
         await trip.save();
+
+        const idx = trip.memories.length - 1;
+        await trip.populate({
+            path: `memories.${idx}.user`,
+            select: 'userName profilePicture'
+        })
         
-        const lastMemory = trip.memories[trip.memories.length - 1]
+        const lastMemory = trip.memories[idx]
         return res.json(lastMemory);
     }
     catch(err){
