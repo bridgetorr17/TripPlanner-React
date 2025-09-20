@@ -27,7 +27,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
             });
 
             const created = await res.json();
-            console.log(`the created memory profile picture is ${created.userProfilePicture}`)
+            console.log(`the created memory profile picture is ${created.user.profilePicture}`)
             setMemories(prev => [...prev, created])
         }
         catch(err){
