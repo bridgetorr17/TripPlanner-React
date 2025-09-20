@@ -1,6 +1,7 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User.js';
+import Trip from '../models/Trip.js'
 import ResetToken from '../models/ResetToken.js';
 import { sendEmail } from '../middleware/sendEmail.js';
 import crypto from 'crypto';
@@ -184,11 +185,6 @@ const postSignup = async (req, res, next) => {
   }
 
   const resetPassword = async (req, res) => {
-    //validate email with userId and active token
-    //if expried token => send that message
-    //validate password - is strong password, and password confirmation matches
-    //hash the password, and save into User profile
-    //send success message to frontend
 
     try{
       const { token, userId, email, password, confirmPassword } = req.body;
@@ -235,6 +231,34 @@ const postSignup = async (req, res, next) => {
     const userId = req.user._id;
 
     try{
+      //delete all trips that this user owns
+      await Trip.deleteMany({ owner: userId })
+
+      //remove user's contributions from trips they didn't own
+      const tripsToClean = await Trip.find({
+        contributors: userId,
+        owner: { $ne: userId }
+      });
+
+      console.log(`there are ${tripsToClean.length} trips to scrub`)
+
+      for (let trip of tripsToClean){
+        trip.memories = trip.memories.filter(mem => {
+          return !mem.user.equals(userId)
+        })
+        console.log(trip.memories);
+
+        trip.photos = trip.photos.filter(photo => {
+          return !photo.user.equals(userId);
+        })
+
+        trip.contributors = trip.contributors.filter(cont => {
+          return !cont.equals(userId);
+        })
+
+        await trip.save();
+      }
+      
       const result = await User.findByIdAndDelete(userId);
       if(result) return getlogout(req,res);
       else res.json({ success: false });

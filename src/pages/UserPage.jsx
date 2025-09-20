@@ -83,6 +83,7 @@ const UserPage = () => {
         });
 
         const deleteRes = await deleteAccount.json();
+        
         nav('/')
     };
 
