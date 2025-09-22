@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import TripField from "./TripField"
 
 const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
@@ -13,10 +13,35 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
   const [editTripTitle, setEditTripTitle] = useState(false);
   const [editTripSubtitle, setEditTripSubtitle] = useState(false);
   const [editTripDate, setEditTripDate] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSave = (name, newValue, setEditFn) => {
-    // update logic here
-    setEditFn(false);
+  const handleSave = async (name, newValue, setEditFn) => {
+
+    const updatedTripData = {
+        field: name,
+        value: newValue
+    }
+
+    console.log(updatedTripData);
+
+    try{
+            const res = await fetch(`/api/trips/editTripField/${tripId}`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedTripData)
+            });
+
+            await res.json();
+
+            setEditFn(false);
+        }
+    catch(err){
+        navigate('/errorpage')
+        console.log(err);
+    }
   }
 
   return (

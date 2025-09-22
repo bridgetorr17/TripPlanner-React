@@ -8,7 +8,7 @@ import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
-import { FaTrash, FaShare, FaPlaneDeparture, FaEdit } from "react-icons/fa6"
+import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 
