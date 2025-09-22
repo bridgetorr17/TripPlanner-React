@@ -2,6 +2,7 @@ import { useLoaderData, useRevalidator } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
+import FeatureHeader from "../components/Trip/FeatureHeader"
 import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
@@ -45,6 +46,12 @@ const TripPage = () => {
     const nav = useNavigate();
     const reavlidator = useRevalidator();
 
+    const [tripData, setTripData] = useState({
+        title: trip.name,
+        subtitle: trip.subtitle,
+        year: trip.year,
+        month: trip.month
+    })
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
@@ -93,27 +100,15 @@ const TripPage = () => {
 
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
-            <div className="w-full max-w-3xl mb-2 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-blue-700 p-1">
-                    {trip.name}
-                </h1>
-                <Link to='/dashboard'>
-                    <h2 className="text-lg sm:text-xl text-blue-500 hover:text-blue-600">
-                    DASHBOARD
-                    </h2>
-                </Link>
-            </div>
-            <div className="w-full max-w-3xl mb-8 flex flex-col items-start overflow-x-hidden">
-                <span className="text-2xl font-normal text-blue-600 p-2 whitespace-normal break-words">
-                    {trip.subtitle}
-                </span>
-                <span className="text-xl font-normal text-blue-600 p-2 whitespace-normal break-words">
-                    {trip.month} {trip.year}
-                </span>
-            </div>
+            <TripHeader 
+                isOwner={(userStatus === 'owner')}
+                tripData={tripData}
+                setTripData={setTripData}
+                tripId={trip._id}
+                />
             <div className="w-full max-w-3xl space-y-6">
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <TripHeader 
+                    {(userStatus !== 'viewer') && <FeatureHeader 
                         headerTitle={"Where we went"}                        
                         modifyText={editLocations ? "Cancel" : "Edit"}
                         onToggleEdit={() => 
@@ -131,7 +126,7 @@ const TripPage = () => {
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <TripHeader 
+                    {(userStatus !== 'viewer') && <FeatureHeader 
                         headerTitle={"What we saw"}                      
                         modifyText={editPhotos ? "Cancel" : "Add"}
                         onToggleEdit={() => 
@@ -152,7 +147,7 @@ const TripPage = () => {
                 </section>
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <TripHeader 
+                    {(userStatus !== 'viewer') && <FeatureHeader 
                         headerTitle={"What we remember"}
                         modifyText={editMemories ? "Cancel" : "Add"}
                         onToggleEdit={() => 
@@ -174,7 +169,7 @@ const TripPage = () => {
 
 
                 <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <TripHeader 
+                    {(userStatus !== 'viewer') && <FeatureHeader 
                         headerTitle={"Who was there"}
                         modifyText={editContributors ? "Cancel" : "Edit"}
                         onToggleEdit={() => 

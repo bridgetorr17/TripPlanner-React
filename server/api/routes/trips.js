@@ -15,6 +15,7 @@ router.post('/addPlace/:id', tripController.postNewPlace)
 router.get('/:id', ensureAuth, tripController.getTrip);
 
 //editTripController
+router.put('/editTripField/:id', editTripController.editTripField);
 router.put('/editLocations/:id', editTripController.editLocations);
 router.put('/editContributors/:id', editTripController.editContributors);
 router.put('/editMemory/:id', editTripController.editMemory);
