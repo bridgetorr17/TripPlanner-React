@@ -57,52 +57,41 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
             {isOwner ? (
             <>
                 <TripField
-                name="title"
-                value={tripTitle}
-                setValue={setTripTitle}
-                edit={editTripTitle}
-                setEdit={setEditTripTitle}
-                save={handleSave}
-                classNameDisplay="text-4xl font-bold text-blue-900"
-                classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
-                classNameIcon="ml-2"
+                    name="title"
+                    value={tripTitle}
+                    setValue={setTripTitle}
+                    edit={editTripTitle}
+                    setEdit={setEditTripTitle}
+                    save={handleSave}
+                    classNameDisplay="text-4xl font-bold text-blue-900"
+                    classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
+                    classNameIcon="ml-2"
                 />
                 <TripField
-                name="subtitle"
-                value={tripSubtitle}
-                setValue={setTripSubtitle}
-                edit={editTripSubtitle}
-                setEdit={setEditTripSubtitle}
-                save={handleSave}
-                classNameDisplay="text-2xl font-medium text-blue-700"
-                classNameInput="text-2xl font-medium text-blue-700 border-blue-400"
-                classNameIcon="ml-1"
+                    name="subtitle"
+                    value={tripSubtitle}
+                    setValue={setTripSubtitle}
+                    edit={editTripSubtitle}
+                    setEdit={setEditTripSubtitle}
+                    save={handleSave}
+                    classNameDisplay="text-2xl font-medium text-blue-700"
+                    classNameInput="text-2xl font-medium text-blue-700 border-blue-400"
+                    classNameIcon="ml-1"
                 />
-                <TripField
-                name="date"
-                value={`${tripDate.month} ${tripDate.year}`}
-                setValue={(val) => {
-                    const [m, y] = val.split(" ");
-                    setTripDate({ month: m, year: y });
-                }}
-                edit={editTripDate}
-                setEdit={setEditTripDate}
-                save={handleSave}
-                classNameDisplay="text-xl font-normal text-blue-600"
-                classNameInput="text-xl font-normal text-blue-600 border-blue-400"
-                classNameIcon="ml-1"
-                />
+                <span className="text-xl font-normal text-blue-600">
+                    {tripData.month} {tripData.year}
+                </span>
             </>
             ) : (
             <>
                 <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-blue-900">
-                {tripData.title}
+                    {tripData.title}
                 </h1>
                 <span className="text-2xl font-medium text-blue-700">
-                {tripData.subtitle}
+                    {tripData.subtitle}
                 </span>
                 <span className="text-xl font-normal text-blue-600">
-                {tripData.month} {tripData.year}
+                    {tripData.month} {tripData.year}
                 </span>
             </>
             )}
