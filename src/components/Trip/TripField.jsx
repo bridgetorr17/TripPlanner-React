@@ -1,15 +1,6 @@
 import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 
-const TripField = ({ 
-    name, 
-    value, 
-    setValue, 
-    edit, 
-    setEdit, 
-    save,
-    classNameDisplay = '',
-    classNameInput = '',
-    classNameIcon = ''}) => {
+const TripField = ({ name, value, setValue, edit, setEdit, save, classNameDisplay = '', classNameInput = '', classNameIcon = ''}) => {
     return (
         <>
             <form onSubmit={(e) => {
@@ -44,7 +35,9 @@ const TripField = ({
                 </div>
                 ) : (
                 <div className="flex items-center justify-between">
-                    <span className={`text-blue-800 ${classNameDisplay}`}>{value}</span>
+                    <span className={`text-blue-800 ${classNameDisplay}`}>
+                        {value !== '' ? value : `Add ${name} here`}
+                    </span>
                     <button
                         type="button"
                         onClick={(e) => {
