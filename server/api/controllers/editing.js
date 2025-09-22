@@ -10,12 +10,24 @@ const editTripField = async (req, res) => {
     const tripId = req.params.id;
 
     console.log(`in the backend, there is ${field} and ${newValue}`)
-
-    // await Trip.findByIdAndUpdate(
-    //     tripId,
-    //     { $set: { [field]: newValue }},
-    //     { new: true }
-    // );
+    if (field === 'date') {
+        const dateArr = newValue.split(' ');
+        console.log(dateArr[0])
+        await Trip.findByIdAndUpdate(
+            tripId,
+            { $set: { 'month': dateArr[0],
+                      'year': dateArr[1]
+                    }
+                },
+            { new: true }
+        );
+    } else {
+        await Trip.findByIdAndUpdate(
+            tripId,
+            { $set: { [field]: newValue }},
+            { new: true }
+        );
+    }
 
     res.json({
         success: true,
