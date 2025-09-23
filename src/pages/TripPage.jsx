@@ -3,11 +3,13 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
 import FeatureHeader from "../components/Trip/FeatureHeader"
+import FeaturePanel from "../components/Trip/FeaturePanel"
 import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/Utlities/ConfirmDelete"
+import StyledButton from "../components/Trip/StyledButton"
 import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
@@ -107,36 +109,27 @@ const TripPage = () => {
                 tripId={trip._id}
                 />
             <div className="w-full max-w-3xl space-y-6">
-                <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <FeatureHeader 
-                        headerTitle={"Where we went"}                        
-                        modifyText={editLocations ? "Cancel" : "Edit"}
-                        onToggleEdit={() => 
-                            toggleEdit(
-                                editLocations, 
-                                () => {setEditLocations(false)},
-                                setEditLocations
-                                )
-                            } />}
+                <FeaturePanel 
+                    userStatus={userStatus}
+                    toggleEdit={toggleEdit}
+                    editFeature={editLocations}
+                    setEditFeature={setEditLocations}
+                    headerTitle="Where we went"
+                >
                     <Locations 
                         editMode={editLocations}
                         locations={locationsData}
                         setLocations={setLocationsData}
                         tripId={trip._id}/>
-                </section>
+                </FeaturePanel>
 
-                <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <FeatureHeader 
-                        headerTitle={"What we saw"}                      
-                        modifyText={editPhotos ? "Cancel" : "Add"}
-                        onToggleEdit={() => 
-                            toggleEdit(
-                                editPhotos, 
-                                () => {setEditPhotos(false)},
-                                setEditPhotos
-                                )
-                            }
-                        />}
+                <FeaturePanel
+                    userStatus={userStatus}
+                    toggleEdit={toggleEdit}
+                    editFeature={editPhotos}
+                    setEditFeature={setEditPhotos}
+                    headerTitle="Where we saw"
+                >
                     <Photos 
                         tripId={trip._id}
                         editMode={editPhotos}
@@ -144,42 +137,31 @@ const TripPage = () => {
                         photosInit={trip.photos}
                         loggedInUser={currentUser.userName}
                         />
-                </section>
+                </FeaturePanel>
 
-                <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <FeatureHeader 
-                        headerTitle={"What we remember"}
-                        modifyText={editMemories ? "Cancel" : "Add"}
-                        onToggleEdit={() => 
-                            toggleEdit(
-                                editMemories, 
-                                //using "saveFn" as cancel, actual posting of a new memory is in Memories
-                                () => {setEditMemories(false)},
-                                setEditMemories
-                                )
-                            }
-                        />}
+                <FeaturePanel
+                    userStatus={userStatus}
+                    toggleEdit={toggleEdit}
+                    editFeature={editMemories}
+                    setEditFeature={setEditMemories}
+                    headerTitle="What we remember"
+                >
                     <Memories 
                         editMode={editMemories}
                         setEditMode={setEditMemories}
                         memoriesInit={trip.memories}
                         tripId={trip._id}
                         loggedInUser={currentUser.userName}/>
-                </section>
+                </FeaturePanel>
 
 
-                <section className="bg-white border border-sky-200 rounded-lg shadow-md p-6 space-y-4">
-                    {(userStatus !== 'viewer') && <FeatureHeader 
-                        headerTitle={"Who was there"}
-                        modifyText={editContributors ? "Cancel" : "Edit"}
-                        onToggleEdit={() => 
-                            toggleEdit(
-                                editContributors, 
-                                () => {setEditContributors(false)},
-                                setEditContributors
-                                )
-                            }
-                        />}
+                <FeaturePanel
+                    userStatus={userStatus}
+                    toggleEdit={toggleEdit}
+                    editFeature={editContributors}
+                    setEditFeature={setEditContributors}
+                    headerTitle="Who was there"
+                >
                     <Contributors 
                         editMode={editContributors}
                         setEditMode={setEditContributors}
@@ -188,27 +170,27 @@ const TripPage = () => {
                         contributors={trip.contributors}
                         tripId={trip._id}
                         reavlidator={reavlidator}/>
-                </section>
+                </FeaturePanel>
                 {(userStatus !== 'viewer') &&
                     <>
-                        <button
-                            onClick={shareTrip}
-                            className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        <StyledButton
+                            onclickFn={shareTrip}
+                            color={"blue"}
                         >
                             <FaShare className="text-lg" />
                             Share this trip
-                        </button>
+                        </StyledButton>
                     </>
                 }
                 {(userStatus === 'owner') && 
                     <>
-                        <button
-                            onClick={() => setModalOpen(true)}
-                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                        <StyledButton
+                            onclickFn={() => setModalOpen(true)}
+                            color={"red"}
                         >
                             <FaTrash className="text-lg" />
                             Delete this trip
-                        </button>
+                        </StyledButton>
                         <ConfirmDelete
                             isOpen={modalOpen}
                             onClose={() => setModalOpen(false)}
@@ -223,12 +205,13 @@ const TripPage = () => {
                 {(userStatus === 'viewer') && 
                     <>
                         <Link to="/signup">
-                            <button
-                            className="w-full flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                            <StyledButton
+                                onclickFn={null}
+                                color="blue"
                             >
                                 <FaPlaneDeparture className="text-lg" />
                                 Start your new adventure with Triply! Make an account here
-                            </button>
+                            </StyledButton>
                         </Link>
                     </> 
                 }
