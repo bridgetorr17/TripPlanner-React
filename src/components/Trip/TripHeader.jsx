@@ -1,21 +1,23 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import TripField from "./TripField"
+import EditDate from "./EditDate"
 
 const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
-  const [tripTitle, setTripTitle] = useState(tripData.title);
-  const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
-  const [tripDate, setTripDate] = useState({
-    month: tripData.month,
-    year: tripData.year
-  });
 
-  const [editTripTitle, setEditTripTitle] = useState(false);
-  const [editTripSubtitle, setEditTripSubtitle] = useState(false);
-  const [editTripDate, setEditTripDate] = useState(false);
-  const navigate = useNavigate();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-  const handleSave = async (name, newValue, setEditFn) => {
+    const [tripTitle, setTripTitle] = useState(tripData.title);
+    const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
+    const [date, setDate] = useState({month: tripData.month, year: tripData.year})
+    const [selectedDate, setSelectedDate] = useState(new Date(tripData.year, monthNames.indexOf(tripData.month)))
+
+    const [editTripTitle, setEditTripTitle] = useState(false);
+    const [editTripSubtitle, setEditTripSubtitle] = useState(false);
+    const [editTripDate, setEditTripDate] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSave = async (name, newValue, setEditFn) => {
 
     const updatedTripData = {
         field: name,
@@ -42,62 +44,69 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
         navigate('/errorpage')
         console.log(err);
     }
-  }
+    }
 
-  return (
-    <div className="w-full max-w-3xl mb-8 flex flex-col space-y-4">
-        <div className="flex justify-end">
-            <Link to="/dashboard">
-            <h2 className="text-lg sm:text-xl text-blue-500 hover:text-blue-600">
-                DASHBOARD
-            </h2>
-            </Link>
+    return (
+        <div className="w-full max-w-3xl mb-8 flex flex-col space-y-4">
+            <div className="flex justify-end">
+                <Link to="/dashboard">
+                <h2 className="text-lg sm:text-xl text-blue-500 hover:text-blue-600">
+                    DASHBOARD
+                </h2>
+                </Link>
+            </div>
+            <div className="flex flex-col items-start space-y-4">
+                {isOwner ? (
+                <>
+                    <TripField
+                        name="title"
+                        value={tripTitle}
+                        setValue={setTripTitle}
+                        edit={editTripTitle}
+                        setEdit={setEditTripTitle}
+                        save={handleSave}
+                        classNameDisplay="text-4xl font-bold text-blue-900"
+                        classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
+                        classNameIcon="ml-2"
+                    />
+                    <TripField
+                        name="subtitle"
+                        value={tripSubtitle}
+                        setValue={setTripSubtitle}
+                        edit={editTripSubtitle}
+                        setEdit={setEditTripSubtitle}
+                        save={handleSave}
+                        classNameDisplay="text-2xl font-medium text-blue-700"
+                        classNameInput="text-2xl font-medium text-blue-700 border-blue-400"
+                        classNameIcon="ml-1"
+                    />
+                    <EditDate 
+                        name="date"
+                        date={date}
+                        setDate={setDate}
+                        selectedDate={selectedDate}
+                        setSelectedDate={setSelectedDate}
+                        edit={editTripDate}
+                        setEdit={setEditTripDate}
+                        save={handleSave}
+                        />
+                </>
+                ) : (
+                <>
+                    <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-blue-900">
+                        {tripData.title}
+                    </h1>
+                    <span className="text-2xl font-medium text-blue-700">
+                        {tripData.subtitle}
+                    </span>
+                    <span className="text-xl font-normal text-blue-600">
+                        {tripData.month} {tripData.year}
+                    </span>
+                </>
+                )}
+            </div>
         </div>
-        <div className="flex flex-col items-start space-y-4">
-            {isOwner ? (
-            <>
-                <TripField
-                    name="title"
-                    value={tripTitle}
-                    setValue={setTripTitle}
-                    edit={editTripTitle}
-                    setEdit={setEditTripTitle}
-                    save={handleSave}
-                    classNameDisplay="text-4xl font-bold text-blue-900"
-                    classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
-                    classNameIcon="ml-2"
-                />
-                <TripField
-                    name="subtitle"
-                    value={tripSubtitle}
-                    setValue={setTripSubtitle}
-                    edit={editTripSubtitle}
-                    setEdit={setEditTripSubtitle}
-                    save={handleSave}
-                    classNameDisplay="text-2xl font-medium text-blue-700"
-                    classNameInput="text-2xl font-medium text-blue-700 border-blue-400"
-                    classNameIcon="ml-1"
-                />
-                <span className="text-xl font-normal text-blue-600">
-                    {tripData.month} {tripData.year}
-                </span>
-            </>
-            ) : (
-            <>
-                <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-blue-900">
-                    {tripData.title}
-                </h1>
-                <span className="text-2xl font-medium text-blue-700">
-                    {tripData.subtitle}
-                </span>
-                <span className="text-xl font-normal text-blue-600">
-                    {tripData.month} {tripData.year}
-                </span>
-            </>
-            )}
-        </div>
-    </div>
-  )
+    )
 }
 
 export default TripHeader
