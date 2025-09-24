@@ -10,15 +10,21 @@ import sharp from 'sharp'
 const getDashboard = async (req, res) => {
     try{
 
-        let userTrips = await Trip.find({owner:req.user.id})        
+        let userTrips = await Trip.find(
+            {owner:req.user.id}, 
+            {_id: 1, name: 1}
+        );
+
         let sharedTrips = await Trip.find({ 
             contributors: req.user.id,
-            owner: { $ne: req.user.id }
-        });
-        let user = await User.findOne({userName: req.user.userName})
+            owner: { $ne: req.user.id }},
+            {_id: 1, name: 1}
+        );
 
-        let profilePicture = user.profilePicture;
-        let userName = user.userName;
+        let user = await User.findOne(
+            {userName: req.user.userName},
+            {profilePicture: 1, userName: 1}
+        );
 
         return res.json({
             success: true,
@@ -26,8 +32,8 @@ const getDashboard = async (req, res) => {
                 userTrips,
                 sharedTrips
             },
-            userName: userName,
-            profilePicture: profilePicture
+            userName: user.userName,
+            profilePicture: user.profilePicture
         });
     }
     catch(err){
