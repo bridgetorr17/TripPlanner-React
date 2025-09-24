@@ -20,8 +20,6 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
         value: newValue
     }
 
-    console.log(updatedTripData);
-
     try{
             const res = await fetch(`/api/trips/editTripField/${tripId}`, {
                 method: 'PUT',
@@ -55,7 +53,7 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
                 {isOwner ? (
                 <>
                     <TripField
-                        name="title"
+                        name="name"
                         value={tripTitle}
                         setValue={setTripTitle}
                         edit={editTripTitle}
