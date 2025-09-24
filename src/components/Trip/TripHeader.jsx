@@ -5,13 +5,9 @@ import EditDate from "./EditDate"
 
 const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
 
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
+ 
     const [tripTitle, setTripTitle] = useState(tripData.title);
     const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
-    const [date, setDate] = useState({month: tripData.month, year: tripData.year})
-    const [selectedDate, setSelectedDate] = useState(new Date(tripData.year, monthNames.indexOf(tripData.month)))
-
     const [editTripTitle, setEditTripTitle] = useState(false);
     const [editTripSubtitle, setEditTripSubtitle] = useState(false);
     const [editTripDate, setEditTripDate] = useState(false);
@@ -82,10 +78,8 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
                     />
                     <EditDate 
                         name="date"
-                        date={date}
-                        setDate={setDate}
-                        selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}
+                        startingMonth={tripData.month}
+                        startingYear={tripData.year}
                         edit={editTripDate}
                         setEdit={setEditTripDate}
                         save={handleSave}

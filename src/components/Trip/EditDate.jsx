@@ -1,14 +1,20 @@
 import MonthYear from "./MonthYear";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import { useState } from "react";
 
-const EditDate = ({ name, date, setDate, selectedDate, setSelectedDate, edit, setEdit, save }) => {
+const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) => {
 
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+    const [date, setDate] = useState({month: startingMonth, year: startingYear})
+    const [selectedDate, setSelectedDate] = useState(new Date(startingYear, monthNames.indexOf(startingMonth)))
+    
     return (
         <>
             <form onSubmit={(e) => {
                     e.preventDefault();
-                    setDate(selectedDate);
-                    save(name, selectedDate, setEdit);
+                    setDate({month: monthNames[selectedDate.getMonth()], year: selectedDate.getFullYear()});
+                    save(name, {month: selectedDate.getMonth(), year: selectedDate.getFullYear()}, setEdit);
                 }}
                 className="mb-6">
                 {edit ? (
