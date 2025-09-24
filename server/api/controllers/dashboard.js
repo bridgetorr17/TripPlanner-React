@@ -10,11 +10,17 @@ import sharp from 'sharp'
 const getDashboard = async (req, res) => {
     try{
 
-        let userTrips = await Trip.find({owner:req.user.id})        
+        let userTrips = await Trip.find(
+            {owner:req.user.id}, 
+            {_id: 1, name: 1}
+        );
+
         let sharedTrips = await Trip.find({ 
             contributors: req.user.id,
-            owner: { $ne: req.user.id }
-        });
+            owner: { $ne: req.user.id }},
+            {_id: 1, name: 1}
+        );
+
         let user = await User.findOne({userName: req.user.userName})
 
         let profilePicture = user.profilePicture;
