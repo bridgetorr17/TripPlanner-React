@@ -6,13 +6,13 @@ import { ensureAuth } from '../middleware/auth.js';
 const router = express.Router();
 
 //tripController
-router.post('/createNew', tripController.postCreateNewTrip);
-router.delete('/delete/:id', tripController.deleteTrip);
-router.get('/viewer/:id', tripController.getTrip);
-router.post('/createNewMemory/:id', tripController.postCreateNewMemory);
-router.post('/uploadPhoto/:id', tripController.postNewPhoto)
-router.post('/addPlace/:id', tripController.postNewPlace)
 router.get('/:id', ensureAuth, tripController.getTrip);
+router.get('/viewer/:id', tripController.getTrip);
+router.post('/createNew', tripController.postCreateNewTrip);
+router.post('/createNewMemory/:id', tripController.postCreateNewMemory);
+router.post('/uploadPhoto/:id', tripController.postNewPhoto);
+router.post('/addPlace/:id', tripController.postNewPlace);
+router.delete('/delete/:id', tripController.deleteTrip);
 
 //editTripController
 router.put('/editTripField/:id', editTripController.editTripField);

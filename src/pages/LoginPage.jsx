@@ -6,14 +6,15 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Modal from "../components/Utlities/Modal"
 
 const LoginPage = ({loginAttempt}) => {
-    const navigate = useNavigate();
+    const nav = useNavigate();
 
     let isAlreadyLoggedIn = false;
     isAlreadyLoggedIn = useLoaderData();
 
+    //redirects to dashboard if user's session cookies are active
     useEffect(() => {
         if (isAlreadyLoggedIn) {
-            navigate('/dashboard')
+            nav('/dashboard')
         }
     }, [isAlreadyLoggedIn])
 
@@ -35,11 +36,11 @@ const LoginPage = ({loginAttempt}) => {
             password
         }
 
-        let nav = '';
+        let navTo = '';
 
         try{
             const result = await loginAttempt(loginAttemptInfo);
-            nav = result.success ? '/dashboard' : '/login';
+            navTo = result.success ? '/dashboard' : '/login';
 
             if (!result.success) throw new Error(result.message || 'Login failed')
         }
@@ -49,7 +50,7 @@ const LoginPage = ({loginAttempt}) => {
         }
         finally{
             setLoading(false);
-            navigate(nav);
+            nav(navTo);
         }
     }
 

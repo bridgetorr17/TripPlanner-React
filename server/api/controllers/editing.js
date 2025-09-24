@@ -9,8 +9,6 @@ const editTripField = async (req, res) => {
     const newValue = req.body.value;
     const tripId = req.params.id;
 
-    console.log(`in the backend, there is ${field} and ${newValue.month}`)
-    
     if (field === 'date') {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         await Trip.findByIdAndUpdate(

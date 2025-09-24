@@ -197,7 +197,6 @@ const userLoader = async ({params}) => {
     const data = await user.json();
 
     if (!data.success) {
-        console.log('redirecting to landing page on frontend')
         return redirect('/')
     }
 

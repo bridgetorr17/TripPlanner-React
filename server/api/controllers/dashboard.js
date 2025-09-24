@@ -38,29 +38,41 @@ const getDashboard = async (req, res) => {
     }
     catch(err){
         console.error(err);
+        return res.json({
+            success: false,
+            message: err
+        })
     }
 }
 
-//GET - user profile page. 
-//TODO: Allow logged in users to edit their password
-//      for logged in users view thier profile page, send password, decrypted back through bcrypt (likely need to extract hashing middleware out of User.js)
+//GET - user profile page
 const getUser = async (req, res) => {
 
-    let isOwner = false;
-    if(req.user.userName === req.params.userName) {
-        isOwner = true;
+    try{
+        let isOwner = false;
+
+        if(req.user.userName === req.params.userName) {
+            isOwner = true;
+        }
+
+        const userProfile = await User.findOne({userName: req.params.userName})
+
+        res.json({
+            success: true,
+            isOwner,
+            userName: userProfile.userName,
+            email: userProfile.email,
+            profilePicture: userProfile.profilePicture,
+            bio: userProfile.bio
+        })
     }
-
-    const userProfile = await User.findOne({userName: req.params.userName})
-
-    res.json({
-        success: true,
-        isOwner,
-        userName: userProfile.userName,
-        email: userProfile.email,
-        profilePicture: userProfile.profilePicture,
-        bio: userProfile.bio
-    })
+    catch(err){
+        console.error(err);
+        return res.json({
+            success: false,
+            message: err
+        })
+    }
 }
 
 //PUT - allows users to edit username, email or biography through their profile page
