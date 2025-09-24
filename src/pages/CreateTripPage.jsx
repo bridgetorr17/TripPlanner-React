@@ -74,29 +74,45 @@ const CreateTripPage = () => {
                     </div>
             <form onSubmit={createTrip}
                 className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 space-y-6">
-                <div className="flex flex-col">
-                    <label className="mb-1 text-blue-700 font-semibold">Trip Name</label>
-                    <div className="flex flex-row justify-between">
-                        <input 
-                            type="text"
-                            name="name" 
-                            placeholder="Name your trip"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)} 
-                            className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
-                        <MonthYear
-                            selectedDate={selectedDate}
-                            setSelectedDate={setSelectedDate}
-                            className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                        />
+                <div className="flex flex-col gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                        <div className="flex-1 flex flex-col">
+                            <label 
+                                className="mb-1 text-blue-700 font-semibold"
+                                htmlFor="trip-name">
+                                Trip Name
+                            </label>
+                            <input 
+                                id="trip-name"
+                                type="text"
+                                name="name" 
+                                placeholder="Name your trip"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)} 
+                                className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                        </div>
+                        <div className="flex-1 flex flex-col">
+                            <label 
+                                className="mb-1 text-blue-700 font-semibold block"
+                                htmlFor="trip-date">
+                                Date
+                            </label>
+                            <MonthYear
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                                className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
                     </div>
-                    <input 
+                    <div>
+                        <input 
                         type="text"
                         name="subtitle"
                         placeholder="Add a short description"
                         value={subtitle}
                         onChange={(e) => setSubtitle(e.target.value)} 
-                        className="border border-blue-300 rounded-md px-3 py-2 mt-3 focus:outline-none focus:ring-2 focus:ring-cyan-400"/>
+                        className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                    </div>
                 </div>
 
                 <CreateTripLocationAutocomplete 
