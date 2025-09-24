@@ -21,10 +21,10 @@ const getDashboard = async (req, res) => {
             {_id: 1, name: 1}
         );
 
-        let user = await User.findOne({userName: req.user.userName})
-
-        let profilePicture = user.profilePicture;
-        let userName = user.userName;
+        let user = await User.findOne(
+            {userName: req.user.userName},
+            {profilePicture: 1, userName: 1}
+        );
 
         return res.json({
             success: true,
@@ -32,8 +32,8 @@ const getDashboard = async (req, res) => {
                 userTrips,
                 sharedTrips
             },
-            userName: userName,
-            profilePicture: profilePicture
+            userName: user.userName,
+            profilePicture: user.profilePicture
         });
     }
     catch(err){
