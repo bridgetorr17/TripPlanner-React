@@ -13,12 +13,12 @@ import UserPage from './pages/UserPage';
 import PreviewPage from './pages/PreviewPage';
 import CreateTripPage from './pages/CreateTripPage';
 import TripPage, { authTripLoader, viewerTripLoader } from './pages/TripPage';
-import PageWrapper from './components/Utlities/PageWrapper';
+import PageWrapper from './components/Utilities/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
 import { loginLoader } from './pages/LoginPage';
 import { ErrorBoundary } from "react-error-boundary";
-import { configureMarkers } from './components/Utlities/ConfigureMarkerStyles'
+import { configureMarkers } from './components/Utilities/ConfigureMarkerStyles'
 
 const App = () => {
     //configure styles for markers ono the map

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { inputStyles, panelButtonStyles } from "../components/Utilities/commonStyles.js";
+import SubmitButton from "../components/StyledComponents/SubmitButton.jsx";
+import StyledPanel from "../components/StyledComponents/StyledPanel.jsx"
 
 const ResetPasswordPage = () => {
 
@@ -58,66 +61,63 @@ const ResetPasswordPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-blue-400 flex items-center justify-center px-4 sm:px-6 md:px-8">
-            <div className="bg-white max-w-md w-full p-8 rounded-lg shadow-xl border border-cyan-200">
-                <h2 className="text-2xl font-semibold text-blue-700 text-center mb-6">Reset Password</h2>
-                <form onSubmit={submitForm} className="flex flex-col gap-4">
+        <StyledPanel>
+            <StyledH2 color="blue">
+                Reset Password
+            </StyledH2>
+            <form onSubmit={submitForm} className="flex flex-col gap-4">
+                <input 
+                    type="email"
+                    name="email" 
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={inputStyles}
+                />
+                <div className={passwordInputStyles}>
                     <input 
-                        type="email"
-                        name="email" 
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
+                        type={showPassword ? "text" : "password"}
+                        name="password" 
+                        placeholder="New password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)} 
+                        className="focus:outline-none focus:ring-0"
+                        disabled={loading}
                     />
-                    <div className="flex flex-row justify-between items-center px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition">
-                        <input 
-                            type={showPassword ? "text" : "password"}
-                            name="password" 
-                            placeholder="New password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)} 
-                            className="focus:outline-none focus:ring-0"
-                            disabled={loading}
-                        />
-                        <button
-                            type="button"
-                            onClick={(e) => setShowPassword(prev => !prev)}
-                            className=" text-blue-500 hover:text-blue-700"
-                            tabIndex={-1}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                    </div>
-                    <input 
-                        type="password"
-                        name="confirmPassword" 
-                        placeholder="Confirm new password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfrimPassword(e.target.value)} 
-                        className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
-                    />
-                    {status && (
-                        <div className="text-center">
-                            <p className={`text-${statusColor}-600 font-semibold`}>{status}</p>
-                        </div>
-                    )}
-                    <button type="submit"
-                            className={`mt-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
-                                        ${loading
-                                            ? "bg-blue-400 cursor-not-allowed"
-                                            : "bg-blue-600 hover:bg-blue-700 text-white"
-                                        }`}>
-                        Reset Password
+                    <button
+                        type="button"
+                        onClick={(e) => setShowPassword(prev => !prev)}
+                        className=" text-blue-500 hover:text-blue-700"
+                        tabIndex={-1}
+                    >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
-                </form>
-                <Link
-                    to='/login'
-                    className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center">
-                    Login
-                </Link>
-            </div>
-        </div>
+                </div>
+                <input 
+                    type="password"
+                    name="confirmPassword" 
+                    placeholder="Confirm new password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfrimPassword(e.target.value)} 
+                    className={inputStyles}
+                />
+                {status && (
+                    <div className="text-center">
+                        <p className={`text-${statusColor}-600 font-semibold`}>{status}</p>
+                    </div>
+                )}
+                <SubmitButton
+                    loading={loading}
+                    showSpinner={false}
+                    message="Reset password"
+                />
+            </form>
+            <Link
+                to='/login'
+                className={panelButtonStyles}>
+                Login
+            </Link>
+        </StyledPanel>
 
     )
 }

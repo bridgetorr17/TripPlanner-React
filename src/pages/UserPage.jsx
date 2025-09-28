@@ -2,8 +2,9 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
-import ConfirmDelete from "../components/Utlities/ConfirmDelete"
+import ConfirmDelete from "../components/Utilities/ConfirmDelete"
 import { redirect } from "react-router-dom";
+import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
 
 const UserPage = () => {
@@ -160,20 +161,20 @@ const UserPage = () => {
                 {isOwner 
                     ?
                     <>
-                        <button 
-                            onClick={() => handleLogout()}
-                            className="w-full flex justify-center items-center mb-3 gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
+                        <StyledButton 
+                            onClickFn={() => handleLogout()}
+                            color={"teal"}
                             >
                             <FaSignOutAlt className="text-lg"/>
                             Logout
-                        </button>
-                        <button
+                        </StyledButton>
+                        <StyledButton
                             onClick={() => setModalOpen(true)}
-                            className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 mt-2 rounded-lg transition"
+                            color={"red"}
                         >
-                        <FaTrash className="text-lg" />
-                        Delete Account
-                        </button>
+                            <FaTrash className="text-lg" />
+                            Delete Account
+                        </StyledButton>
                         <ConfirmDelete
                             isOpen={modalOpen}
                             onClose={() => setModalOpen(false)}
