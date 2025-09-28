@@ -56,7 +56,7 @@ const LoginPage = ({loginAttempt}) => {
 
     const sendEmail = async (e) => {
         e.preventDefault();
-        console.log('sending request to backend for ' + emailReset)
+       
         try{
             const res = await fetch ('/api/resetPasswordEmail', {
                 method: 'POST',
@@ -67,10 +67,7 @@ const LoginPage = ({loginAttempt}) => {
                 body: JSON.stringify({email: emailReset})
             })
 
-            const response = await res.json();
-
-            console.log(response);
-
+            await res.json();
             setEmailSent(true);
         }
         catch(err){

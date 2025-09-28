@@ -10,7 +10,7 @@ const SignupPage = ({signupAttempt}) => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
     const [confirmPassword, setConfrimPassword] = useState('');
-    const [signupError, setSignupError] = useState([]);
+    const [signupError, setSignupError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -96,8 +96,8 @@ const SignupPage = ({signupAttempt}) => {
                         className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
                         disabled={loading}
                     />
-                    <div className="text-center">
-                        {signupError.map(err => <p className="text-red-600 font-semibold">{err.msg}</p>)}      
+                    <div className="text-center font-bold text-red-500">
+                        {signupError}    
                     </div>
                     <button type="submit"
                             className={`mt-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition

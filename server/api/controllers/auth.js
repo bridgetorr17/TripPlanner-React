@@ -76,25 +76,25 @@ const postSignup = async (req, res, next) => {
       if(existingUser){
           return res.json({
             success: false,
-            message: [{ msg: 'Account already exists with that username or email'}]
+            message: 'Account already exists with that username or email'
           })
       }
 
         const validationErrors = []
-        if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
+        if (!validator.isEmail(req.body.email)) validationErrors.push('Please enter a valid email address.')
         if (!validator.isStrongPassword(req.body.password, {
           minLength: 8,
           minLowercase: 0,
           minUppercase: 0,
           minNumbers: 1,
           minSymbols: 1
-        })) {validationErrors.push({ msg: 'Password be at least 8 characters and must contain at least 1 number and 1 special character.'})}
-        if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match.' })
+        })) {validationErrors.push('Password must be at least 8 characters and must contain at least 1 number and 1 special character.')}
+        if (req.body.password !== req.body.confirmPassword) validationErrors.push('Passwords do not match.')
     
         if (validationErrors.length > 0) {
             return res.json({
               success: false,
-              message: validationErrors
+              message: validationErrors[0]
             })
         }
 
@@ -122,13 +122,11 @@ const postSignup = async (req, res, next) => {
   }
 
   const postResetPasswordEmail = async (req, res) => {
-
     try{
-
       const { email } = req.body;
       if (!email) { 
-        return res.json(
-          { success: false, 
+        return res.json({ 
+            success: false, 
             message: 'Email is required' 
           }
         );
@@ -156,7 +154,7 @@ const postSignup = async (req, res, next) => {
       const resetUrl = `https://triplytravel.vercel.app/resetPassword?token=${token}&id=${user._id}`
 
       try{
-        const emailResult = await sendEmail( 
+        await sendEmail( 
           'bridgetorr1902@gmail.com',
           'Triply Password Reset',
           user.email,
