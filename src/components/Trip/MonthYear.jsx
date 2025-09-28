@@ -9,8 +9,11 @@ const MonthYear = ( {selectedDate, setSelectedDate} ) => {
     return <span title={tooltipText}>{shortMonth}</span>;
   };
 
+  console.log(`selectedDate format is ${selectedDate}`)
+  
   return (
     <DatePicker
+      className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
       showIcon
       toggleCalendarOnIconClick
       showMonthYearPicker
