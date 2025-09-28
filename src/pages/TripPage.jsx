@@ -48,12 +48,12 @@ const TripPage = () => {
     const nav = useNavigate();
     const reavlidator = useRevalidator();
 
-    const [tripData, setTripData] = useState({
+    const tripData ={
         title: trip.name,
         subtitle: trip.subtitle,
         year: trip.year,
         month: trip.month
-    })
+    };
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
@@ -105,7 +105,6 @@ const TripPage = () => {
             <TripHeader 
                 isOwner={(userStatus === 'owner')}
                 tripData={tripData}
-                setTripData={setTripData}
                 tripId={trip._id}
                 />
             <div className="w-full max-w-3xl space-y-6">

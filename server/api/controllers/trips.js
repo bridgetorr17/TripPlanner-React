@@ -45,7 +45,6 @@ const postNewTrip = async (req, res) => {
     if (!Array.isArray(contributors)) {
         contributors = [contributors];
     }
-    console.log(req.user);
     contributors.unshift(req.user.userName)
 
     const users = await User.find({ userName: { $in: contributors}})
@@ -56,8 +55,6 @@ const postNewTrip = async (req, res) => {
     if (missing.length > 0){
         console.warn(`${missing[0]} does not exist as a user of Triply.`)
     }
-
-    console.log(`locations as is are ${req.body.locations}`)
 
     const userIds = users.map(u => u._id)
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
