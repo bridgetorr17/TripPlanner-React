@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/login', authController.getLogin);
 router.get('/logout', authController.getlogout);
 router.post('/login', authController.postLogin);
-router.post('/resetPasswordEmail', authController.sendResetPasswordEmail);
+router.post('/resetPasswordEmail', authController.postResetPasswordEmail);
 router.post('/signup', authController.postSignup);
 router.put('/resetPassword', authController.resetPassword);
 router.delete('/delete', authController.deleteAccount);

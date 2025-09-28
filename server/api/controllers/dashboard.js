@@ -1,8 +1,8 @@
 import Trip from '../models/Trip.js'
 import User from '../models/User.js'
-import formidable from 'formidable'
 import { put } from '@vercel/blob';
 import { PassThrough } from 'stream';
+import { parseForm } from '../middleware/parseForm.js';
 import fs from 'fs'
 import sharp from 'sharp'
 
@@ -94,7 +94,7 @@ const editProfileField = async (req, res) => {
 }
 
 //POST - upload user profile picture 
-const uploadProfilePicture = async (req, res) => {
+const postNewProfilePicture = async (req, res) => {
     try{
         const userId = req.user._id.toString();
         const {fields, files} = await parseForm(req);
@@ -138,20 +138,9 @@ const uploadProfilePicture = async (req, res) => {
     }
 }
 
-//helper function for processing picture through form
-function parseForm(req){
-    return new Promise((resolve, reject) => {
-        const form = formidable({multiples: false});
-        form.parse(req, (err, fields, files) => {
-            if(err) return reject(err);
-            resolve ({fields, files})
-        })
-    });
-}
-
 export { 
     getDashboard,
     getUser,
     editProfileField,
-    uploadProfilePicture
+    postNewProfilePicture
 }

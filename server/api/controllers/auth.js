@@ -121,22 +121,28 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  const sendResetPasswordEmail = async (req, res) => {
+  const postResetPasswordEmail = async (req, res) => {
 
     try{
-      console.log('Received reset request for:', req.body.email);
 
       const { email } = req.body;
       if (!email) { 
-        return res.status(400).json({ success: false, message: 'Email is required' });
+        return res.json(
+          { success: false, 
+            message: 'Email is required' 
+          }
+        );
       }
 
       const user = await User.findOne({ email: req.body.email })
 
       if (!user) {
-        console.log('No user found with email:', email);
         // Respond success anyway (security) but email won't be sent
-        return res.json({ success: true, message: 'If that email is registered, a reset link will be sent.' });
+        return res.json(
+          { success: true, 
+            message: 'If that email is registered, a reset link will be sent.' 
+          }
+        );
       }
 
       await ResetToken.deleteMany({ userId: user._id });
@@ -169,18 +175,28 @@ const postSignup = async (req, res, next) => {
           `Thanks,<br/>The Triply Team`,
         );
 
-        console.log('Mailjet send result: ', emailResult)
       }
       catch(err) {
-        console.error('Error sending email with sendEmail(): ', err)
-        return res.status(500).json({ success: false, message: 'Failed to send reset email' });
+        return res.json(
+          { success: false, 
+            message: 'Failed to send reset email' 
+          }
+        );
       }
 
-      return res.json({ success: true, message: 'Reset email sent (if that email is registered).' });
+      return res.json(
+        { success: true, 
+          message: 'Reset email sent (if that email is registered).' 
+        }
+      );
     }
     catch(err) {
-      console.error('sendResetPasswordEmail caught error:', err);
-      return res.status(500).json({ success: false, message: 'Server error' });
+      console.error(err);
+      return res.json(
+        { success: false, 
+          message: 'Server error' 
+        }
+      );
     }
   }
 
@@ -273,7 +289,7 @@ const postSignup = async (req, res, next) => {
             postLogin, 
             getlogout, 
             postSignup,
-            sendResetPasswordEmail,
+            postResetPasswordEmail,
             resetPassword,
             deleteAccount
   }

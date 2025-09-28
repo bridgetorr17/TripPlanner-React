@@ -1,7 +1,7 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
 import {tripDetails} from '../middleware/tripDetails.js';
-import formidable from 'formidable'
+import { parseForm } from '../middleware/parseForm.js';
 import { put } from '@vercel/blob';
 import { PassThrough } from 'stream';
 import fs from 'fs'
@@ -39,7 +39,7 @@ const getTrip = async (req, res) => {
 }
 
 //POST - creates new trip. 
-const postCreateNewTrip = async (req, res) => {
+const postNewTrip = async (req, res) => {
     let contributors = req.body.contributors;
 
     if (!Array.isArray(contributors)) {
@@ -105,7 +105,7 @@ const deleteTrip = async (req, res) => {
 }
 
 //POST - creates new memory in the trip
-const postCreateNewMemory = async (req, res) => {
+const postNewMemory = async (req, res) => {
     const tripId = req.params.id;
     const user = await User.findById(req.user._id)
 
@@ -204,20 +204,9 @@ const postNewPlace = async (req, res) => {
     }
 }
 
-//helper function for processing picture through form
-function parseForm(req){
-    return new Promise((resolve, reject) => {
-        const form = formidable({multiples: false});
-        form.parse(req, (err, fields, files) => {
-            if(err) return reject(err);
-            resolve ({fields, files})
-        })
-    });
-}
-
 export {getTrip, 
-        postCreateNewTrip, 
+        postNewTrip, 
         deleteTrip,
-        postCreateNewMemory,
+        postNewMemory,
         postNewPhoto,
         postNewPlace};
