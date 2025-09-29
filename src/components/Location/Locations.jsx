@@ -7,8 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
-    const [newCoords, setNewCoords] = useState({});
-    const [centerCoords, setCenterCoords] = 
+    const [coords, setCoords] = 
         useState(locations[0] 
             ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
             : [38.7946, -100.534]
@@ -35,13 +34,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             );
 
             const result = await response.json();
-
-            setNewCoords({
-                lat: result.location?.latitude,
-                lng: result.location?.longitude
-            });
-
-            setCenterCoords([result.location?.latitude, result.location?.longitude]);
+            setCoords([result.location?.latitude, result.location?.longitude]);
         } 
         catch {
             navigate('/errorpage')
@@ -55,8 +48,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                 secondaryText: newPlace.placePrediction.structuredFormat.secondaryText?.text,
             },
             coordinates: {
-                latitude: newCoords.lat,
-                longitude: newCoords.lng
+                latitude: coords[0],
+                longitude: coords[1]
             }
         }
 
@@ -115,7 +108,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             <li 
                                 key={ind} 
                                 className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
-                                onClick={() => setCenterCoords([ el.coordinates.latitude, el.coordinates.longitude ])}>
+                                onClick={() => setCoords([ el.coordinates.latitude, el.coordinates.longitude ])}>
                                 <div className="flex items-center space-x-2">
                                     <span className="font-medium">{el.name.mainText}</span>
                                 </div>
@@ -151,7 +144,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             handleSelect={selectNewPlace}/>
                         <Map 
                             locations={locations}
-                            coords={centerCoords}/>
+                            coords={coords}/>
                 </div>
             </div>
         </div>
