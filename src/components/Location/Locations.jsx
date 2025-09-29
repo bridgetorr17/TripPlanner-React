@@ -1,5 +1,5 @@
 import Map from "./Map";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
@@ -7,16 +7,20 @@ import { useNavigate } from "react-router-dom";
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
-    const navigate = useNavigate()
-    const [newCoords, setNewCoords] = useState({});
-    const [centerCoords, setCenterCoords] = 
+    const [newPlaceCoords, setNewPlaceCoords] = useState([])
+    const [coords, setCoords] = 
         useState(locations[0] 
             ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
             : [38.7946, -100.534]
     )
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setNewPlace(null);
+        setCoords([locations[0].coordinates.latitude, locations[0].coordinates.longitude])
+    }, [editMode])
     
     const selectNewPlace = async (selectedPlace) => {
-
         setNewPlace(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
         try {
@@ -32,26 +36,24 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             );
 
             const result = await response.json();
-            setNewCoords({
-                lat: result.location?.latitude,
-                lng: result.location?.longitude
-            })
-            setCenterCoords([result.location?.latitude, result.location?.longitude]);
+            setCoords([result.location?.latitude, result.location?.longitude]);
+            setNewPlaceCoords([result.location?.latitude, result.location?.longitude])
         } 
-        catch {
+        catch (err) {
+            console.log(err);
             navigate('/errorpage')
-        } 
+        }
     }
 
     const addLocation = async () => {
         const addPlace = {
             name: {
-                mainText: newPlace.placePrediction.structuredFormat.mainText.text,
-                secondaryText: newPlace.placePrediction.structuredFormat.secondaryText.text,
+                mainText: newPlace.placePrediction.structuredFormat.mainText?.text,
+                secondaryText: newPlace.placePrediction.structuredFormat.secondaryText?.text,
             },
             coordinates: {
-                latitude: newCoords.lat,
-                longitude: newCoords.lng
+                latitude: coords[0],
+                longitude: coords[1]
             }
         }
 
@@ -110,7 +112,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             <li 
                                 key={ind} 
                                 className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
-                                onClick={() => setCenterCoords([ el.coordinates.latitude, el.coordinates.longitude ])}>
+                                onClick={() => setCoords([ el.coordinates.latitude, el.coordinates.longitude ])}>
                                 <div className="flex items-center space-x-2">
                                     <span className="font-medium">{el.name.mainText}</span>
                                 </div>
@@ -127,7 +129,11 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                     {newPlace && editMode && (
                         <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg">
                             <div className="mb-3 text-lg font-semibold text-green-800">
-                                {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                                <span 
+                                    className="inline-block transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
+                                    onClick={() => setCoords([...newPlaceCoords])}>
+                                    {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                                </span>
                             </div>
                             <div className="mb-3 text-md font-medium text-green-800">
                                 {newPlace.placePrediction?.structuredFormat?.secondaryText?.text}
@@ -146,7 +152,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                             handleSelect={selectNewPlace}/>
                         <Map 
                             locations={locations}
-                            coords={centerCoords}/>
+                            coords={coords}/>
                 </div>
             </div>
         </div>

@@ -16,7 +16,6 @@ const FeaturePanel = ({
                 onToggleEdit={() => 
                     toggleEdit(
                         editFeature, 
-                        () => {setEditFeature(false)},
                         setEditFeature
                         )
                     }
