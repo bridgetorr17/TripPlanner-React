@@ -62,8 +62,8 @@ const TripPage = () => {
     const [editMemories, setEditMemories] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
-    const toggleEdit = (edit, saveFn, setEdit) => {
-        if (edit) saveFn();
+    const toggleEdit = (edit, setEdit) => {
+        if (edit) setEdit(false);
         else setEdit(true);
     }
 
