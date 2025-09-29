@@ -1,5 +1,5 @@
 import Map from "./Map";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,11 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             : [38.7946, -100.534]
     )
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setNewPlace(null);
+        setCoords([locations[0].coordinates.latitude, locations[0].coordinates.longitude])
+    }, [editMode])
     
     const selectNewPlace = async (selectedPlace) => {
         setNewPlace(selectedPlace);

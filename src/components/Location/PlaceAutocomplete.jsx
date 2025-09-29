@@ -24,12 +24,9 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
     }, [place])
 
     useEffect(() => {
-        console.log(`edit mode changed to ${editMode}`)
-        if(editMode){
-            setPlace('')
-            setSuggestions([])
-        }
-    }, editMode)
+        setPlace('')
+        setSuggestions([])
+    }, [editMode])
 
     const POSTreq = async ()  => {
 

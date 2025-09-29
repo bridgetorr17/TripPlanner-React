@@ -63,7 +63,6 @@ const TripPage = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const toggleEdit = (edit, setEdit) => {
-        console.log(`edit is being toggled from ${edit} to ${!edit}`)
         if (edit) setEdit(false);
         else setEdit(true);
     }
