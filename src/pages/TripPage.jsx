@@ -174,7 +174,7 @@ const TripPage = () => {
                 {(userStatus !== 'viewer') &&
                     <>
                         <StyledButton
-                            onclickFn={shareTrip}
+                            onClickFn={shareTrip}
                             color={"blue"}
                         >
                             <FaShare className="text-lg" />
@@ -185,7 +185,7 @@ const TripPage = () => {
                 {(userStatus === 'owner') && 
                     <>
                         <StyledButton
-                            onclickFn={() => setModalOpen(true)}
+                            onClickFn={() => setModalOpen(true)}
                             color={"red"}
                         >
                             <FaTrash className="text-lg" />
@@ -206,7 +206,7 @@ const TripPage = () => {
                     <>
                         <Link to="/signup">
                             <StyledButton
-                                onclickFn={null}
+                                onClickFn={null}
                                 color="blue"
                             >
                                 <FaPlaneDeparture className="text-lg" />

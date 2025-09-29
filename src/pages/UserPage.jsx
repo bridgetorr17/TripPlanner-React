@@ -169,7 +169,7 @@ const UserPage = () => {
                             Logout
                         </StyledButton>
                         <StyledButton
-                            onClick={() => setModalOpen(true)}
+                            onClickFn={() => setModalOpen(true)}
                             color={"red"}
                         >
                             <FaTrash className="text-lg" />

@@ -2,9 +2,8 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { inputStyles, panelButtonStyles } from "../components/Utilities/commonStyles.js";
+import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles } from "../components/Utilities/commonStyles.js";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx";
-import StyledPanel from "../components/StyledComponents/StyledPanel.jsx"
 
 const ResetPasswordPage = () => {
 
@@ -61,7 +60,8 @@ const ResetPasswordPage = () => {
     }
 
     return (
-        <StyledPanel>
+        <div className={panelContainerStyles}>
+            <div className={panelBorderStyles}>
             <StyledH2 color="blue">
                 Reset Password
             </StyledH2>
@@ -117,8 +117,8 @@ const ResetPasswordPage = () => {
                 className={panelButtonStyles}>
                 Login
             </Link>
-        </StyledPanel>
-
+        </div>
+        </div>
     )
 }
 

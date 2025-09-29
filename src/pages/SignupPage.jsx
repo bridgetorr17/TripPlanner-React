@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
-import StyledPanel from "../components/StyledComponents/StyledPanel.jsx"
-import { inputStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
+import { inputStyles, panelBorderStyles, panelContainerStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
+import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
 
 const SignupPage = ({signupAttempt}) => {
 
@@ -48,11 +48,9 @@ const SignupPage = ({signupAttempt}) => {
     }
 
     return (
-        <StyledPanel
-            modalOpen={false}
-            closeModal={null}
-        >
-            <h2 className="text-2xl font-semibold text-blue-700 text-center mb-6">Triply</h2>
+    <div className={panelContainerStyles}>
+        <div className={panelBorderStyles}>
+            <StyledH2 color="blue">Triply</StyledH2>
             <form onSubmit={submitForm} className="flex flex-col gap-4">
                 <input 
                     type="text"
@@ -109,7 +107,8 @@ const SignupPage = ({signupAttempt}) => {
                     showSpinner={true}
                 />
             </form>
-        </StyledPanel>  
+        </div>
+    </div>
 
     )
 }

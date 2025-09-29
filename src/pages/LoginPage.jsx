@@ -3,8 +3,8 @@ import { useNavigate, useLoaderData } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
-import StyledPanel from "../components/StyledComponents/StyledPanel.jsx"
-import { inputStyles, panelButtonStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
+import ResetPasswordModal from "../components/Login/ResetPasswordModal.jsx"
+import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
 
 const LoginPage = ({loginAttempt}) => {
@@ -58,69 +58,71 @@ const LoginPage = ({loginAttempt}) => {
     }
     
     return (
-        <StyledPanel
-            modalOpen={modalOpen}
-            closeModal={closeModal}
-        >
-            <StyledH2 color={"blue"}>
-                Triply
-            </StyledH2>
-            <form onSubmit={submitForm} className="flex flex-col gap-4">
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={inputStyles}
-                    disabled={loading}
-                    required
-                />
-                <div className={passwordInputStyles}>
+        <div className={panelContainerStyles}>
+            <div className={panelBorderStyles}>
+                <StyledH2 color={"blue"}>
+                    Triply
+                </StyledH2>
+                <form onSubmit={submitForm} className="flex flex-col gap-4">
                     <input
-                        id="password"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="focus:outline-none focus:ring-0"
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={inputStyles}
                         disabled={loading}
                         required
                     />
-                    <button
-                        type="button"
-                        onClick={(e) => setShowPassword(prev => !prev)}
-                        className=" text-blue-500 hover:text-blue-700"
-                        tabIndex={-1}
-                    >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </button>
-                </div>
-                {loginError && (
-                    <div className="text-center">
-                        <p className="text-red-600 font-semibold">{loginError}</p>
+                    <div className={passwordInputStyles}>
+                        <input
+                            id="password"
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="focus:outline-none focus:ring-0"
+                            disabled={loading}
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={(e) => setShowPassword(prev => !prev)}
+                            className=" text-blue-500 hover:text-blue-700"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
                     </div>
-                )}
-                <button
-                    className="text-sm text-stone-500 mt-2" 
-                    type="button"
-                    onClick={() => setModalOpen(true)}>
-                    Forgot Password?
-                </button>
-                <SubmitButton
-                    loading={loading}
-                    message="Login"
-                    showSpinner={true}
-                />
-            </form>
-            <Link
-                to='/signup'
-                className={panelButtonStyles}>
-                Signup
-            </Link>
-        </StyledPanel>
+                    {loginError && (
+                        <div className="text-center">
+                            <p className="text-red-600 font-semibold">{loginError}</p>
+                        </div>
+                    )}
+                    <button
+                        className="text-sm text-stone-500 mt-2" 
+                        type="button"
+                        onClick={() => setModalOpen(true)}>
+                        Forgot Password?
+                    </button>
+                    <SubmitButton
+                        loading={loading}
+                        message="Login"
+                        showSpinner={true}
+                    />
+                </form>
+                <Link
+                    to='/signup'
+                    className={panelButtonStyles}>
+                    Signup
+                </Link>
+            </div>
+            { modalOpen && (<ResetPasswordModal
+                closeModal={closeModal}
+            />)}
+        </div>
     )
 }
 
