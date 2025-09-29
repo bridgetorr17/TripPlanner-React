@@ -7,33 +7,34 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
     const handleSelect = async (selected) => {
         const placeId = selected.placePrediction.placeId;
         try {
-        const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Goog-Api-Key": import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-                    "X-Goog-FieldMask": "location"
+            const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Goog-Api-Key": import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+                        "X-Goog-FieldMask": "location"
+                    },
+                }
+            );
+
+            const result = await response.json();
+            const created = {
+                name: {
+                    mainText: selected.placePrediction.structuredFormat.mainText?.text,
+                    secondaryText: selected.placePrediction.structuredFormat.secondaryText?.text,
                 },
+                coordinates: {
+                    latitude: result.location?.latitude,
+                    longitude: result.location?.longitude
+                }
             }
-        );
 
-        const result = await response.json();
-        const created = {
-            name: {
-                mainText: selected.placePrediction.structuredFormat.mainText?.text,
-                secondaryText: selected.placePrediction.structuredFormat.secondaryText?.text,
-            },
-            coordinates: {
-                latitude: result.location?.latitude,
-                longitude: result.location?.longitude
-            }
+            setLocations(prev => [...prev, created])
+        } 
+        catch {
+            navigate('/errorpage')
         }
-
-        setLocations(prev => [...prev, created])
-    } catch {
-        navigate('/errorpage')
-    }
     }
 
     return (

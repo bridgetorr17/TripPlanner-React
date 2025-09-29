@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
+    const [newPlaceCoords, setNewPlaceCoords] = useState([])
     const [coords, setCoords] = 
         useState(locations[0] 
             ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
@@ -15,10 +16,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
     const navigate = useNavigate();
     
     const selectNewPlace = async (selectedPlace) => {
-
-        console.log(`new place is ${newPlace}`)
-        console.log(selectedPlace.placePrediction.structuredFormat)
-
         setNewPlace(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
         try {
@@ -35,8 +32,10 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
 
             const result = await response.json();
             setCoords([result.location?.latitude, result.location?.longitude]);
+            setNewPlaceCoords([result.location?.latitude, result.location?.longitude])
         } 
-        catch {
+        catch (err) {
+            console.log(err);
             navigate('/errorpage')
         }
     }
@@ -125,7 +124,11 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                     {newPlace && editMode && (
                         <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg">
                             <div className="mb-3 text-lg font-semibold text-green-800">
-                                {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                                <span 
+                                    className="inline-block transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
+                                    onClick={() => setCoords([...newPlaceCoords])}>
+                                    {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                                </span>
                             </div>
                             <div className="mb-3 text-md font-medium text-green-800">
                                 {newPlace.placePrediction?.structuredFormat?.secondaryText?.text}
