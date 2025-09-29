@@ -21,8 +21,8 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
         const result = await response.json();
         const created = {
             name: {
-                mainText: selected.placePrediction.structuredFormat.mainText.text,
-                secondaryText: selected.placePrediction.structuredFormat.secondaryText.text,
+                mainText: selected.placePrediction.structuredFormat.mainText?.text,
+                secondaryText: selected.placePrediction.structuredFormat.secondaryText?.text,
             },
             coordinates: {
                 latitude: result.location?.latitude,

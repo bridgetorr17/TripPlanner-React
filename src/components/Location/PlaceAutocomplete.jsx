@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
-
 const PlaceAutocomplete = ({editMode, handleSelect}) => {
 
     const [place, setPlace] = useState('');

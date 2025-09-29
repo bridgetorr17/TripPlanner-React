@@ -7,19 +7,18 @@ import { useNavigate } from "react-router-dom";
 const Locations = ({editMode, locations, setLocations, tripId}) => {
 
     const [newPlace, setNewPlace] = useState(null);
-    const [coords, setCoords] = useState({
-        lat: locations[0]?.coordinates?.latitude,
-        lng: locations[0]?.coordinates?.longitude
-    });
-    const navigate = useNavigate()
     const [newCoords, setNewCoords] = useState({});
     const [centerCoords, setCenterCoords] = 
         useState(locations[0] 
             ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
             : [38.7946, -100.534]
     )
+    const navigate = useNavigate();
     
     const selectNewPlace = async (selectedPlace) => {
+
+        console.log(`new place is ${newPlace}`)
+        console.log(selectedPlace.placePrediction.structuredFormat)
 
         setNewPlace(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
@@ -36,6 +35,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         );
 
         const result = await response.json();
+
         setNewCoords({
             lat: result.location?.latitude,
             lng: result.location?.longitude
@@ -49,8 +49,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
     const addLocation = async () => {
         const addPlace = {
             name: {
-                mainText: newPlace.placePrediction.structuredFormat.mainText.text,
-                secondaryText: newPlace.placePrediction.structuredFormat.secondaryText.text,
+                mainText: newPlace.placePrediction.structuredFormat.mainText?.text,
+                secondaryText: newPlace.placePrediction.structuredFormat.secondaryText?.text,
             },
             coordinates: {
                 latitude: newCoords.lat,
