@@ -23,6 +23,14 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
         
     }, [place])
 
+    useEffect(() => {
+        console.log(`edit mode changed to ${editMode}`)
+        if(editMode){
+            setPlace('')
+            setSuggestions([])
+        }
+    }, editMode)
+
     const POSTreq = async ()  => {
 
         const data = {
@@ -90,7 +98,7 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
                                 onClick={() => {
                                     setSelectMode(true);
                                     setSuggestions([]);
-                                    setPlace(sug.placePrediction.structuredFormat.mainText.text);
+                                    setPlace('');
                                     handleSelect(sug)
                                 }}
                                 className="px-2 py-2 hover:bg-gray-200 cursor-pointer"
