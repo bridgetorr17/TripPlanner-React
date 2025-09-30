@@ -3,9 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import TripField from "./TripField"
 import EditDate from "./EditDate"
 
-const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
-
- 
+const TripHeader = ({ isOwner, tripData, tripId }) => {
     const [tripTitle, setTripTitle] = useState(tripData.title);
     const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
     const [editTripTitle, setEditTripTitle] = useState(false);
