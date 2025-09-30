@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Modal from "../Utlities/Modal";
+import Modal from "../StyledComponents/Modal";
 import { FaTrash } from "react-icons/fa6";
-import Spinner from "../Utlities/Spinner";
+import Spinner from "../StyledComponents/Spinner";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 

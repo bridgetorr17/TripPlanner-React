@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import VaraText from "../components/VaraText";
 
 const LandingPage = () => {
+    const linkStyles = 
+        "bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300"
     return (
         <div className="flex flex-col justify-center items-center bg-blue-300 min-h-screen px-4 text-center">
             <div className="vara-wrapper flex justify-center items-center w-full"
@@ -21,13 +23,13 @@ const LandingPage = () => {
                 Record, Remember, Reminisce
                 </span>
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <Link to="/login" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300">
+                <Link to="/login" className={linkStyles}>
                     Login
                 </Link>
-                <Link to="/signup" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300">
+                <Link to="/signup" className={linkStyles}>
                     Signup
                 </Link>
-                <Link to="/preview" className="bg-blue-500 text-gray-50 font-medium rounded-full px-6 py-3 shadow-md transition transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-3 focus:ring-blue-300">
+                <Link to="/preview" className={linkStyles}>
                     Explore
                 </Link>
             </div>
