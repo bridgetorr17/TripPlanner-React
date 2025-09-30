@@ -71,6 +71,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             setLocations(prev => [...prev, created])
         }
         catch {
+            console.log(err);
             navigate('/errorpage')
         }
         finally{
