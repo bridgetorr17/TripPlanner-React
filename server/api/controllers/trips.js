@@ -151,7 +151,7 @@ const postNewPhoto = async (req, res) => {
         return res.json(lastPhoto);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         return res.json({
             success: false,
             message: 'error adding the photo to the trip'

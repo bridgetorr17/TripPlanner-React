@@ -18,7 +18,6 @@ function parseForm(req){
 async function proccessPhoto(req){
     try{    
         const {fields, files} = await parseForm(req);
-        
         const readableStream = fs.createReadStream(files.newPhoto[0].filepath)
 
         const resize = sharp()
@@ -31,8 +30,6 @@ async function proccessPhoto(req){
 
         const pass = new PassThrough()
         optimizeStream.pipe(pass);
-
-        console.log('about the put the photo on the blob')
 
         const blob = await put(files.newPhoto[0].originalFilename, pass, {
             access: 'public',

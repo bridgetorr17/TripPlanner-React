@@ -92,7 +92,6 @@ const editProfileField = async (req, res) => {
 //POST - upload user profile picture 
 const postNewProfilePicture = async (req, res) => {
     try{
-        console.log('trying to upload new profile picture')
         const userId = req.user._id.toString();
 
         const blobUrl = await proccessPhoto(req);

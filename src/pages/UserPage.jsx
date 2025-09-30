@@ -26,10 +26,7 @@ const UserPage = () => {
     const [editBio, setEditBio] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
-    const handleFileChange = async (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
+    const uploadPhoto = async (file) => {
         const formData = new FormData();
         formData.append("newPhoto", file);
 
@@ -39,14 +36,20 @@ const UserPage = () => {
                 body: formData
             });
 
-            const data = await res.json();
-            if(data.success){
-                setProfilePictureURL(data.profilePictureURL)
-            } else throw data.message
+            const photo = await res.json();
+            if(photo.success){
+                setProfilePictureURL(photo.profilePictureURL)
+            } else throw photo.message
         }
         catch(err){
             console.error("Upload error: ", err)
         }
+
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0] || null;
+        if (file) uploadPhoto(file);
     }
 
     const handleSave = async (field, newValue, setEdit) => {
