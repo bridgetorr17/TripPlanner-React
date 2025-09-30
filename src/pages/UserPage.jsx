@@ -31,7 +31,7 @@ const UserPage = () => {
         if (!file) return;
 
         const formData = new FormData();
-        formData.append("profilePicture", file);
+        formData.append("newPhoto", file);
 
         try{
             const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {

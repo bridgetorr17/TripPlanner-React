@@ -1,10 +1,6 @@
 import Trip from '../models/Trip.js'
 import User from '../models/User.js'
-import { put } from '@vercel/blob';
-import { PassThrough } from 'stream';
-import { parseForm } from '../middleware/parseForm.js';
-import fs from 'fs'
-import sharp from 'sharp'
+import { proccessPhoto } from '../middleware/processPhoto.js';
 
 //GET - dashboard. Sorts user owned trips and shared trips. Provides user information
 const getDashboard = async (req, res) => {
@@ -96,37 +92,22 @@ const editProfileField = async (req, res) => {
 //POST - upload user profile picture 
 const postNewProfilePicture = async (req, res) => {
     try{
+        console.log('trying to upload new profile picture')
         const userId = req.user._id.toString();
-        const {fields, files} = await parseForm(req);
 
-        const readableStream = fs.createReadStream(files.profilePicture[0].filepath)
+        const blobUrl = await proccessPhoto(req);
 
-        const resize = sharp()
-            .rotate()
-            .resize(800)
-            .jpeg({quality: 70})
-
-        const optimizeStream = readableStream
-            .pipe(resize);
-
-        const pass = new PassThrough()
-        optimizeStream.pipe(pass);
-
-        const blob = await put(files.profilePicture[0].originalFilename, pass, {
-            access: 'public',
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-            addRandomSuffix: true
-        })
+        if (!blobUrl) throw Error;
 
         await User.findByIdAndUpdate(
             userId,
-            { $set: { profilePicture: blob.url }},
+            { $set: { profilePicture: blobUrl }},
             { new: true }
         );
 
         res.json({
             success: true,
-            profilePictureURL: blob.url
+            profilePictureURL: blobUrl
         })
     }
     catch(err){

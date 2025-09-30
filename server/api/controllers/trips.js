@@ -1,11 +1,7 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
 import {tripDetails} from '../middleware/tripDetails.js';
-import { parseForm } from '../middleware/parseForm.js';
-import { put } from '@vercel/blob';
-import { PassThrough } from 'stream';
-import fs from 'fs'
-import sharp from 'sharp'
+import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
@@ -137,32 +133,14 @@ const postNewMemory = async (req, res) => {
 const postNewPhoto = async (req, res) => {
     try{
         const user = await User.findById(req.user._id)
-        const tripId = req.params.id;
-        const trip = await Trip.findById(tripId);
+        const trip = await Trip.findById(req.params.id);
 
-        const {fields, files} = await parseForm(req);
+        const blobUrl = await proccessPhoto(req);
 
-        const readableStream = fs.createReadStream(files.newPhoto[0].filepath)
-
-        const resize = sharp()
-            .rotate()
-            .resize(800)
-            .jpeg({quality: 70})
-
-        const optimizeStream = readableStream
-            .pipe(resize);
-
-        const pass = new PassThrough()
-        optimizeStream.pipe(pass);
-
-        const blob = await put(files.newPhoto[0].originalFilename, pass, {
-            access: 'public',
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-            addRandomSuffix: true
-        });
+        if (!blobUrl) throw Error;
 
          trip.photos.push({
-            url: blob.url,
+            url: blobUrl,
             user: user._id,
             userName: user.userName
         });
