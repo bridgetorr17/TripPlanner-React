@@ -40,17 +40,10 @@ const ResetPasswordPage = () => {
             });
 
             const result = await res.json();
-
-            console.log(result)
+            setStatus(result.message);
             
-            if (!result.success) {
-                setStatus(result.message[0].msg)
-                setStatusColor('red')
-            }
-            else {
-                setStatus(result.message);
-                setStatusColor('gray')
-            }
+            if (!result.success) setStatusColor('red')
+            else setStatusColor('gray')
         }
         catch(err){
             console.error(err);

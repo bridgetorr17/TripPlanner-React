@@ -21,7 +21,7 @@ const getTrip = async (req, res) => {
         return res.json({
             success: true,
             trip: details.trip,
-            contributorNames: details.contributorNames,
+            contributors: details.contributors,
             currentUser: details.currentUser
         });
     }

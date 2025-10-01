@@ -33,7 +33,7 @@ const tripDetails = async (tripId, user) => {
             }
         } 
         //the user is logged in and a contributor, but they are not the owner
-        else if (user._id && contributorNames.includes(user.userName)){
+        else if (user._id && trip.contributors.some(cont => cont.userName === user.userName)){
             return {
                 userName: user.userName,
                 userStatus: 'contributor'
@@ -55,7 +55,7 @@ const tripDetails = async (tripId, user) => {
     return {
         success: true,
         trip,
-        contributorNames,
+        contributors: trip.contributors,
         currentUser
     }
 }

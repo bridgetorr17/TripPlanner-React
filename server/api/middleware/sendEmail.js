@@ -9,8 +9,6 @@ const sendEmail = async (
     text,
     html) => {
 
-    console.log('called sendEmail with receiver: ', receiver)
-    
     const mj = mailjet.apiConnect(
         process.env.MJ_APIKEY_PUBLIC,
         process.env.MJ_APIKEY_PRIVATE
@@ -29,7 +27,6 @@ const sendEmail = async (
             ]
         });
 
-        console.log('Mailject response body: ', request.body);
         return request;
     }
     catch(err){
