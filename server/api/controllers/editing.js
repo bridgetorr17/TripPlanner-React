@@ -33,38 +33,7 @@ const editTripField = async (req, res) => {
     })
 }
 
-//PUT - update location array in a trip
-const editLocations = async (req, res) => {
-    try{
-        const tripId = req.params.id;
-        const updatedLocations = req.body.locations;
-
-        await Trip.findByIdAndUpdate(
-            tripId,
-            {
-                $set: {
-                    locations: updatedLocations
-                }
-            },
-            {new: true}
-        );
-
-        return res.json({
-            success: true,
-            message: 'Successfully saved edits'
-        });
-    }
-    catch(err){
-        console.log(err);
-        return res.json({
-            success: false,
-            message: 'There was an error saving those edits'
-        });
-    }
-}
-
 //PUT - update the contributors array in a trip. 
-//TODO: better error handling for users that do not exist. 
 const editContributors = async (req, res) => {
     try{
         const tripId = req.params.id;
@@ -168,7 +137,6 @@ const deleteLocation = async (req, res) => {
 }
 
 export {editTripField,
-        editLocations,
         editContributors,
         editMemory,
         deleteMemory,

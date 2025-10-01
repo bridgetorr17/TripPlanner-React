@@ -16,7 +16,6 @@ router.delete('/delete/:id', tripController.deleteTrip);
 
 //editTripController
 router.put('/editTripField/:id', editTripController.editTripField);
-router.put('/editLocations/:id', editTripController.editLocations);
 router.put('/editContributors/:id', editTripController.editContributors);
 router.put('/editMemory/:id', editTripController.editMemory);
 router.delete('/deleteMemory/:id', editTripController.deleteMemory);
