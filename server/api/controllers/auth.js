@@ -205,7 +205,10 @@ const postSignup = async (req, res, next) => {
 
       const resetToken = await ResetToken.findOne({ userId: userId, token: token});
       if (!resetToken){
-        return res.status(400).json({ success: false, message: 'Invalid or expired reset token.' });
+        return res.json({ 
+          success: false, 
+          message: 'Invalid or expired reset token.' 
+        });
       }
 
       const validationErrors = [];
@@ -215,13 +218,13 @@ const postSignup = async (req, res, next) => {
           minUppercase: 0,
           minNumbers: 1,
           minSymbols: 1
-        })) {validationErrors.push({ msg: 'Password be at least 8 characters and must contain at least 1 number and 1 special character.'})}
-        if (password !== confirmPassword) validationErrors.push({ msg: 'Passwords do not match.' })
+        })) {validationErrors.push('Password be at least 8 characters and must contain at least 1 number and 1 special character.')}
+        if (password !== confirmPassword) validationErrors.push('Passwords do not match.' )
     
         if (validationErrors.length > 0) {
             return res.json({
               success: false,
-              message: validationErrors
+              message: validationErrors[0]
             })
         }
 
@@ -229,13 +232,22 @@ const postSignup = async (req, res, next) => {
         if (user.email === email) {
           user.password = password;
           await user.save();
-        } else return res.status(400).json({ success: false, message: 'Invalid email' });
+        } else return res.json({ 
+          success: false, 
+          message: 'Invalid email' 
+        });
 
-        return res.status(200).json({ success: true, message: 'Password reset successful. You can now login with your new password.' })
+        return res.json({ 
+          success: true, 
+          message: 'Password reset successful. You can now login with your new password.'
+        })
     }
     catch(err){
       console.error(err);
-
+      return res.json({ 
+          success: false, 
+          message: 'There was an error resetting the password.' 
+      });
     }
   }
 

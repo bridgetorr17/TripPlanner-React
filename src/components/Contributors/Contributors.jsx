@@ -26,7 +26,6 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
             console.error("error saving locations:" , err)
             setErrorMessage(err.message);
             setModalOpen(true);
-
         }
         finally{
             setEditMode(false);
