@@ -81,16 +81,25 @@ const editContributors = async (req, res) => {
 
 //PUT - edit a memory in a trip
 const editMemory = async (req, res) => {
-    const tripId = req.params.id;
+    try{
+        const tripId = req.params.id;
+        const trip = await Trip.findById(tripId);
+        const memory = trip.memories.id(req.body.id);
 
-    const trip = await Trip.findById(tripId);
-    const memory = trip.memories.id(req.body.id);
+        memory.text = req.body.updatedText;
 
-    memory.text = req.body.updatedText;
+        await trip.save();
 
-    await trip.save();
-
-    return res.json(memory);
+        return res.json({
+            success: true,
+            memory: memory});
+    }
+    catch(err){
+        return res.json({
+            success: false,
+            message: 'Error updating that memory.'
+        })
+    }
 } 
 
 //DELETE - delete a memory in a trip
