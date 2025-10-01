@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContributorsInput from "./ContributorsInput";
 import Modal from "../Utlities/Modal";
 
@@ -8,6 +8,10 @@ const Contributors = ({editMode, setEditMode, contributors, setContributors, tri
     const [modalOpen, setModalOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [contributorNames, setContributorNames] = useState(contributors.map(cont => cont.userName))
+
+    useEffect(() => {
+        setContributorNames(contributors.map(cont => cont.userName));
+    }, [editMode])
 
     const editContributors = async () => {
         try{
