@@ -2,7 +2,6 @@ import { useLoaderData } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
-import FeatureHeader from "../components/Trip/FeatureHeader"
 import FeaturePanel from "../components/Trip/FeaturePanel"
 import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
@@ -41,7 +40,6 @@ const viewerTripLoader = async ({ request }) => {
 const TripPage = () => {
     
     const trip = useLoaderData().trip;
-    const contributorNamesLoader = useLoaderData().contributorNames
     const currentUser = useLoaderData().currentUser;
     const userStatus = currentUser.userStatus;
 
@@ -56,7 +54,6 @@ const TripPage = () => {
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
-    const [contributorNames, setContributorNames] = useState(contributorNamesLoader);
     const [contributors, setContributors] = useState(trip.contributors)
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
@@ -164,8 +161,6 @@ const TripPage = () => {
                     <Contributors 
                         editMode={editContributors}
                         setEditMode={setEditContributors}
-                        contributorNames={contributorNames}
-                        setContributorNames={setContributorNames}
                         contributors={contributors}
                         setContributors={setContributors}
                         tripId={trip._id}/>

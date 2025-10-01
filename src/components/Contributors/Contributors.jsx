@@ -3,10 +3,11 @@ import { useState } from "react";
 import ContributorsInput from "./ContributorsInput";
 import Modal from "../Utlities/Modal";
 
-const Contributors = ({editMode, setEditMode, contributorNames, setContributorNames, contributors, setContributors, tripId}) => {
+const Contributors = ({editMode, setEditMode, contributors, setContributors, tripId}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
+    const [contributorNames, setContributorNames] = useState(contributors.map(cont => cont.userName))
 
     const editContributors = async () => {
         try{
@@ -22,7 +23,6 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
 
             if (!response.success) throw new Error (response.message)
             setContributors(response.contributors);
-            console.log(response.contributors)
         }
         catch(err) {
             console.error("error saving locations:" , err)
