@@ -54,17 +54,21 @@ const editContributors = async (req, res) => {
         const updatedUserIds = updatedUsers.map(user => user._id)
         await Trip.findByIdAndUpdate(
             tripId,
-            {
-                $set: {
-                    contributors: updatedUserIds
-                }
-            },
+            {$set: { contributors: updatedUserIds}},
             {new: true}
         );
 
+        const contributors = updatedUsers.map(user => (
+            {
+                id: user._id,
+                userName: user.userName, 
+                profilePicture: user.profilePicture
+            }
+        ));
         return res.json({
             success: true,
-            message: 'Successfully saved edits'
+            message: 'Successfully saved edits',
+            contributors: contributors
         });
     }
     catch(err){

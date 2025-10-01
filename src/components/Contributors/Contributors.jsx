@@ -3,7 +3,7 @@ import { useState } from "react";
 import ContributorsInput from "./ContributorsInput";
 import Modal from "../Utlities/Modal";
 
-const Contributors = ({editMode, setEditMode, contributorNames, setContributorNames, contributors, tripId, reavlidator}) => {
+const Contributors = ({editMode, setEditMode, contributorNames, setContributorNames, contributors, setContributors, tripId}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
@@ -21,6 +21,8 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
             const response = await res.json();
 
             if (!response.success) throw new Error (response.message)
+            setContributors(response.contributors);
+            console.log(response.contributors)
         }
         catch(err) {
             console.error("error saving locations:" , err)
@@ -29,7 +31,6 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
         }
         finally{
             setEditMode(false);
-            reavlidator.revalidate();
         }
     }  
 

@@ -1,4 +1,4 @@
-import { useLoaderData, useRevalidator } from "react-router-dom"
+import { useLoaderData } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
@@ -46,7 +46,6 @@ const TripPage = () => {
     const userStatus = currentUser.userStatus;
 
     const nav = useNavigate();
-    const reavlidator = useRevalidator();
 
     const tripData ={
         title: trip.name,
@@ -58,6 +57,7 @@ const TripPage = () => {
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
     const [contributorNames, setContributorNames] = useState(contributorNamesLoader);
+    const [contributors, setContributors] = useState(trip.contributors)
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -166,9 +166,9 @@ const TripPage = () => {
                         setEditMode={setEditContributors}
                         contributorNames={contributorNames}
                         setContributorNames={setContributorNames}
-                        contributors={trip.contributors}
-                        tripId={trip._id}
-                        reavlidator={reavlidator}/>
+                        contributors={contributors}
+                        setContributors={setContributors}
+                        tripId={trip._id}/>
                 </FeaturePanel>
                 {(userStatus !== 'viewer') &&
                     <>

@@ -56,6 +56,7 @@ const tripDetails = async (tripId, user) => {
         success: true,
         trip,
         contributorNames,
+        contributors: trip.contributors,
         currentUser
     }
 }
