@@ -104,7 +104,7 @@ const SignupPage = ({signupAttempt}) => {
                 <SubmitButton 
                     loading={loading}
                     message="Sign up"
-                    showSpinner={true}
+                    color="blue"
                 />
             </form>
         </div>

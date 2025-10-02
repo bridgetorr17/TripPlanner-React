@@ -110,7 +110,7 @@ const LoginPage = ({loginAttempt}) => {
                     <SubmitButton
                         loading={loading}
                         message="Login"
-                        showSpinner={true}
+                        color="blue"
                     />
                 </form>
                 <Link

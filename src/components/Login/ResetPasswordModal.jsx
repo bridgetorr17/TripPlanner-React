@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { panelButtonStyles } from "../Utilities/commonStyles"
 import Modal from "../StyledComponents/Modal";
+import SubmitButton from "../StyledComponents/SubmitButton";
 
 const ResetPasswordModal = ({closeModal}) => {
     const [emailReset, setEmailReset] = useState('');
@@ -63,11 +64,11 @@ const ResetPasswordModal = ({closeModal}) => {
                             placeholder="Enter your email"
                             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             required />
-                        <button
-                            type="submit"
-                            className={panelButtonStyles}>
-                                Send Reset Email
-                        </button>
+                        <SubmitButton
+                            loading={false}
+                            message="Send Reset Email"
+                            color="blue"
+                        />
                     </div>
                 </form>
             )}

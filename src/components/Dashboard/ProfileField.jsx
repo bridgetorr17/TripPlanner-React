@@ -1,3 +1,5 @@
+import SubmitButton from "../StyledComponents/SubmitButton";
+
 const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, save}) => {
     return (
         <>
@@ -14,9 +16,16 @@ const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, sa
                     onChange={(e) => setValue(e.target.value)}
                     className="flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
                     />
-                    <button type="submit" className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-md">
-                    Save
-                    </button>
+                    <SubmitButton
+                        loading={false}
+                        message=""
+                        color="teal"
+                    />
+                    <SubmitButton
+                        loading={false}
+                        message="Save"
+                        color="teal"
+                    />
                 </div>
                 ) : (
                 <div className="flex items-center justify-between">

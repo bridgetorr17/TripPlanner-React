@@ -108,7 +108,7 @@ const ResetPasswordPage = () => {
                 )}
                 <SubmitButton
                     loading={loading}
-                    showSpinner={false}
+                    color="blue"
                     message="Reset password"
                 />
             </form>
