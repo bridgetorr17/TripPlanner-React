@@ -73,13 +73,13 @@ const getUser = async (req, res) => {
 
 //PUT - allows users to edit username, email or biography through their profile page
 const editProfileField = async (req, res) => {
-    const field = req.params.field;
-    const data = req.body;
+    const field = req.body.field;
+    const newValue = req.body.value;
     const userId = req.user._id.toString();
 
     await User.findByIdAndUpdate(
         userId,
-        { $set: { [field]: data['field'] }},
+        { $set: { [field]: newValue }},
         { new: true }
     );
 

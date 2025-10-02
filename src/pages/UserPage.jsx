@@ -54,11 +54,12 @@ const UserPage = () => {
 
     const handleSave = async (field, newValue, setEdit) => {
         const editField = {
-            field: newValue
+            field: field,
+            value: newValue
         }
 
         try{
-            const result = await fetch(`/api/dashboard/edit/${field}`, {
+            const result = await fetch(`/api/dashboard/editUserField`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -73,7 +74,8 @@ const UserPage = () => {
             } 
         }
         catch (err){
-            console.err(err);
+            nav('/errorpage')
+            console.log(err);
         }
         finally{
             setEdit(false);
