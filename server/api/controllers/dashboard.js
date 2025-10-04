@@ -1,5 +1,5 @@
 import Trip from '../models/Trip.js'
-import User from '../models/User.js'
+import User from '../models/User'
 import { proccessPhoto } from '../middleware/processPhoto.js';
 
 //GET - dashboard. Sorts user owned trips and shared trips. Provides user information

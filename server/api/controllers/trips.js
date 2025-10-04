@@ -1,6 +1,6 @@
 import Trip from '../models/Trip.js';
-import User from '../models/User.js';
-import {tripDetails} from '../middleware/tripDetails.js';
+import User from '../models/User';
+import { tripDetails } from '../middleware/tripDetails';
 import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})

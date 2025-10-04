@@ -1,5 +1,5 @@
 import Trip from '../models/Trip.js';
-import User from '../models/User.js';
+import User from '../models/User';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 

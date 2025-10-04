@@ -20,8 +20,6 @@ const tripDetails = async (
         throw new Error('Trip not found');
     }
 
-    console.log(trip.contributors);
-
     const currentUser = (() => {
         //the user is not logged in or does not exist - they are a viewer
         if (!user){

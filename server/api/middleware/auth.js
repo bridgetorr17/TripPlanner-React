@@ -1,8 +1,5 @@
 const ensureAuth = (req, res, next) => {
-    console.log('routed through ensure auth')
-
     if(req.isAuthenticated()){
-        console.log('user IS logged in')
         return next();
     }
     else{

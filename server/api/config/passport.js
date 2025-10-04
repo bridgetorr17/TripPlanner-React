@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import User from '../models/User.js';
+import User from '../models/User';
 import {Strategy as LocalStrategy} from 'passport-local';
 import passport from 'passport';
 
