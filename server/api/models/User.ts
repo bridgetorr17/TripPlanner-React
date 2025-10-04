@@ -1,7 +1,21 @@
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
+import mongoose, { Document, Model, Types } from 'mongoose';
 
-const UserSchema = new mongoose.Schema({
+//Minimal user interface - provides only user details for read-only logic
+export interface IUserMinimal {
+  _id: Types.ObjectId;
+  userName: string;
+  email: string;
+  profilePicture?: string;
+  bio?: string;
+}
+
+//Full mongoose User document interface 
+export interface IUser extends IUserMinimal{
+  password: string
+}
+
+const UserSchema = new mongoose.Schema<IUser>({
     userName: {
       type: String, 
       unique: true,
@@ -29,7 +43,6 @@ const UserSchema = new mongoose.Schema({
 // Password hash middleware.
  UserSchema.pre('save', function save(next) {
   const user = this;
-  console.log('here the password is ', user.password);
   if (!user.isModified('password')) { return next() }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err) }
@@ -50,6 +63,6 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
   })
 }
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model<IUser>('User', UserSchema);
 
 export default User;

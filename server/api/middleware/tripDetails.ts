@@ -1,10 +1,15 @@
 import Trip from '../models/Trip.js';
+import { IUserMinimal } from '../models/User'
+import { Types } from 'mongoose';
 
 //gets trip details and formats for controllers
-const tripDetails = async (tripId, user) => {
+const tripDetails = async (
+    tripId: string | Types.ObjectId, 
+    user: IUserMinimal
+) => {
     const trip = await Trip.findById(tripId)
         .populate('owner', 'userName')
-        .populate('contributors', 'userName profilePicture')
+        .populate<{ contributors: Array<{ userName: string; profilePicture: string }> }>('contributors', 'userName profilePicture')
         .populate({
             path: 'memories.user',
             select: 'userName profilePicture'
@@ -15,7 +20,7 @@ const tripDetails = async (tripId, user) => {
         throw new Error('Trip not found');
     }
 
-    const contributorNames = trip.contributors.map(c => c.userName)
+    console.log(trip.contributors);
 
     const currentUser = (() => {
         //the user is not logged in or does not exist - they are a viewer
