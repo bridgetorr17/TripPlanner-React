@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface ILocation{
+export interface ILocation extends Document{
     name: {
         mainText: string;
         secondaryText: string;

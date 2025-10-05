@@ -87,6 +87,9 @@ const tripDetails = async (
 
     return {
         success: true,
+        //patchwork solution becuase typescript was throwing error for ITripPopulated being inconsistent with ITrip
+        //they are definitely not the same types, ITripPopulated includes additional user information not saved directly in the document, but necessary for the trip loader
+        //is there a better work around for this? Or should ITripPopulated not be typed?s
         trip: trip as unknown as ITripPopulated,
         currentUser
     }

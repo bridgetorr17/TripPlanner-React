@@ -9,11 +9,11 @@ export interface ITrip extends Document {
     subtitle?: String;
     owner: Types.ObjectId;
     contributors: Types.ObjectId[];
-    locations: ILocation[];
+    locations: Types.DocumentArray<ILocation>;
     month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
     year: number;
-    memories: IMemory[];
-    photos: IPhoto[];
+    memories: Types.DocumentArray<IMemory>;
+    photos: Types.DocumentArray<IPhoto>;
 }
 
 const TripSchema = new mongoose.Schema<ITrip>({

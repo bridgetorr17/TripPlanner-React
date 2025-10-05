@@ -4,7 +4,7 @@ import { ILocation } from '../models/Location'
 import { tripDetails } from '../middleware/tripDetails';
 import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
-import { Request,  Response, NextFunction } from 'express';
+import { Request,  Response } from 'express';
 dotenv.config({path: './config/.env'})
 
 //GET - trip information for trip page (request comes from react loader)

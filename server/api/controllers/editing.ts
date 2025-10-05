@@ -1,15 +1,18 @@
-import Trip from '../models/Trip';
-import User from '../models/User';
+import Trip, { ITrip } from '../models/Trip';
+import User, { IUserMinimal, IUser } from '../models/User';
 import dotenv from 'dotenv';
+import { Types } from 'mongoose';
+import { Request,  Response } from 'express';
+import { IMemory } from '../models/Memory';
 dotenv.config({path: './config/.env'})
 
 //PUT - update fieds of the trip, such as title, subtitle, and date
-const editTripField = async (req, res) => {
-    const field = req.body.field;
-    const newValue = req.body.value;
+const editTripField = async (req: Request, res: Response) => {
     const tripId = req.params.id;
+    const field = req.body.field as string;
+    const newValue = req.body.value as {month: number; year: number} | string;
 
-    if (field === 'date') {
+    if (typeof newValue === 'object') {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         await Trip.findByIdAndUpdate(
             tripId,
@@ -34,13 +37,13 @@ const editTripField = async (req, res) => {
 }
 
 //PUT - update the contributors array in a trip. 
-const editContributors = async (req, res) => {
+const editContributors = async (req: Request, res: Response) => {
     try{
         const tripId = req.params.id;
-        const updatedContributors = req.body.contributors;
+        const updatedContributors = req.body.contributors as string[];
         
-        const updatedUsers = await User.find({ userName: { $in: updatedContributors}})
-        const foundName = updatedUsers.map(u => u.userName);
+        const updatedUsers = await User.find({ userName: { $in: updatedContributors}}) as IUser[];
+        const foundName = updatedUsers.map(u => u.userName) as string[];
 
         //handle userNames submitted that are not users
         const missing = updatedContributors.filter(name => !foundName.includes(name));
@@ -51,13 +54,14 @@ const editContributors = async (req, res) => {
             })
         }
 
-        const updatedUserIds = updatedUsers.map(user => user._id)
+        const updatedUserIds = updatedUsers.map(user => user._id) as Types.ObjectId[]
         await Trip.findByIdAndUpdate(
             tripId,
             {$set: { contributors: updatedUserIds}},
             {new: true}
         );
 
+        //should this array be typed? Should I make the contributor type elsewhere so it can be used everywhere?
         const contributors = updatedUsers.map(user => (
             {
                 id: user._id,
@@ -80,12 +84,12 @@ const editContributors = async (req, res) => {
 }
 
 //PUT - edit a memory in a trip
-const editMemory = async (req, res) => {
+const editMemory = async (req: Request, res: Response) => {
     try{
         const tripId = req.params.id;
-        const trip = await Trip.findById(tripId);
-        const memory = trip.memories.id(req.body.id);
-
+        const trip = await Trip.findById(tripId) as ITrip;
+        const memory = trip.memories.find(mem => mem._id.equals(req.body.id)) as IMemory;
+        
         memory.text = req.body.updatedText;
 
         await trip.save();
@@ -103,11 +107,11 @@ const editMemory = async (req, res) => {
 } 
 
 //DELETE - delete a memory in a trip
-const deleteMemory = async (req, res) => {
+const deleteMemory = async (req: Request, res: Response) => {
     const tripId = req.params.id;
     const memoryId = req.body.id;
 
-    const trip = await Trip.findById(tripId);
+    const trip = await Trip.findById(tripId) as ITrip;
     
     trip.memories.pull({_id: memoryId})
     await trip.save();
@@ -118,35 +122,32 @@ const deleteMemory = async (req, res) => {
     })
 
     return res.json(trip.memories)
-
 }
 
 //DELETE - delete a photo in a trip
-const deletePhoto = async (req, res) => {
+const deletePhoto = async (req: Request, res: Response) => {
     const tripId = req.params.id;
     const photoId = req.body.id;
 
-    const trip = await Trip.findById(tripId);
+    const trip = await Trip.findById(tripId) as ITrip;
     
     trip.photos.pull({_id: photoId})
     await trip.save();
 
     return res.json(trip.photos)
-
 }
 
 //DELETE - delete a location in a trip
-const deleteLocation = async (req, res) => {
+const deleteLocation = async (req: Request, res: Response) => {
     const tripId = req.params.id;
     const locationId = req.body.id;
 
-    const trip = await Trip.findById(tripId);
+    const trip = await Trip.findById(tripId) as ITrip;
 
     trip.locations.pull({_id: locationId})
     await trip.save();
 
     return res.json(trip.locations)
-
 }
 
 export {editTripField,

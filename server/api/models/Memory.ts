@@ -1,6 +1,7 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Types, Document } from "mongoose";
 
-export interface IMemory{
+export interface IMemory extends Document{
+    _id: Types.ObjectId;
     text: string;
     user: Types.ObjectId;
     location: string;
