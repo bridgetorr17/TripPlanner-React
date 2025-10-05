@@ -1,6 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
-const MemorySchema = new mongoose.Schema({
+export interface IMemory{
+    text: string;
+    user: Types.ObjectId;
+    location: string;
+}
+
+const MemorySchema = new mongoose.Schema<IMemory>({
     text: {
         type: String,
         required: true

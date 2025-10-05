@@ -1,15 +1,17 @@
-import Trip from '../models/Trip.js';
-import User from '../models/User';
+import Trip, { ITrip, ITripMinimal } from '../models/Trip';
+import User, { IUserMinimal } from '../models/User';
+import { ILocation } from '../models/Location'
 import { tripDetails } from '../middleware/tripDetails';
 import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
+import { Request,  Response, NextFunction } from 'express';
 dotenv.config({path: './config/.env'})
 
 //GET - trip information for trip page (request comes from react loader)
-const getTrip = async (req, res) => {
+const getTrip = async (req: Request, res: Response) => {
     try{
         const tripId = req.params.id;
-        const details = await tripDetails(tripId, req.user);
+        const details = await tripDetails(tripId, req.user as IUserMinimal);
 
         if (!details.success){
             return res.json({
@@ -35,19 +37,29 @@ const getTrip = async (req, res) => {
 }
 
 //POST - creates new trip. 
-const postNewTrip = async (req, res) => {
-    let contributors = req.body.contributors;
+const postNewTrip = async (req: Request, res: Response) => {
+    let contributors = req.body.contributors as string[];
+    const name = req.body.name as string;
+    const subtitle = req.body.subtitle as string;
+    const locations = req.body.locations as ILocation[];
+    const monthNumber = req.body.month as number;
+    const year = req.body.year as number;
+    const user = req.user as IUserMinimal;
 
     if (!Array.isArray(contributors)) {
         contributors = [contributors];
     }
-    contributors.unshift(req.user.userName)
 
+    //add this creating user's name as the first contributor
+    contributors.unshift(user.userName)
+
+    //array of User documents who's userName appears in the contributors array
     const users = await User.find({ userName: { $in: contributors}})
-    const foundName = users.map(u => u.userName);
+    //extracting the userNames of those User documents 
+    const foundNames = users.map(u => u.userName);
 
     //handle userNames submitted that are not users
-    const missing = contributors.filter(name => !foundName.includes(name));
+    const missing = contributors.filter(name => !foundNames.includes(name));
     if (missing.length > 0){
         console.warn(`${missing[0]} does not exist as a user of Triply.`)
     }
@@ -56,13 +68,13 @@ const postNewTrip = async (req, res) => {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     try{
         await Trip.create({
-            name: req.body.name,
-            subtitle: req.body.subtitle,
-            owner: req.user._id,
+            name,
+            subtitle,
+            owner: user._id,
             contributors: userIds,
-            locations: req.body.locations,
-            month: monthNames[req.body.month],
-            year: req.body.year
+            locations,
+            month: monthNames[monthNumber],
+            year,
         });
 
         return res.json({
@@ -79,7 +91,7 @@ const postNewTrip = async (req, res) => {
 }
 
 //DELETE - deletes trip 
-const deleteTrip = async (req, res) => {
+const deleteTrip = async (req: Request, res: Response) => {
     try{
         await Trip.findOneAndDelete({_id: req.params.id});
         
@@ -98,12 +110,14 @@ const deleteTrip = async (req, res) => {
 }
 
 //POST - creates new memory in the trip
-const postNewMemory = async (req, res) => {
+const postNewMemory = async (req: Request, res: Response) => {
     const tripId = req.params.id;
-    const user = await User.findById(req.user._id)
+    const user = req.user as IUserMinimal;
+    //const userDoc = await User.findById(user._id)
+    console.log(`the user is ${user}`)
 
     try{
-        const trip = await Trip.findById(tripId);
+        const trip = await Trip.findById(tripId) as ITrip;
         trip.memories.push({
             text: req.body.memory,
             user: user._id,
@@ -130,10 +144,11 @@ const postNewMemory = async (req, res) => {
 }
 
 //POST - creates new photo in the trip
-const postNewPhoto = async (req, res) => {
+const postNewPhoto = async (req: Request, res: Response) => {
     try{
-        const user = await User.findById(req.user._id)
-        const trip = await Trip.findById(req.params.id);
+        const user = req.user as IUserMinimal;
+        //const user = await User.findById(req.user._id)
+        const trip = await Trip.findById(req.params.id) as ITrip;
 
         const blobUrl = await proccessPhoto(req);
 
@@ -159,11 +174,11 @@ const postNewPhoto = async (req, res) => {
     }
 }
 
-const postNewPlace = async (req, res) => {
+const postNewPlace = async (req: Request, res: Response) => {
     const tripId = req.params.id;
 
     try{
-        const trip = await Trip.findById(tripId);
+        const trip = await Trip.findById(tripId) as ITrip;
         trip.locations.push(req.body);
         await trip.save();
         

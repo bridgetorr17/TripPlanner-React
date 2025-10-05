@@ -1,4 +1,4 @@
-import Trip from '../models/Trip.js'
+import Trip from '../models/Trip'
 import User from '../models/User'
 import { proccessPhoto } from '../middleware/processPhoto.js';
 

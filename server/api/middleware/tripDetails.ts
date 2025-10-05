@@ -1,4 +1,4 @@
-import Trip from '../models/Trip.js';
+import Trip from '../models/Trip';
 import { IUserMinimal } from '../models/User'
 import { Types } from 'mongoose';
 

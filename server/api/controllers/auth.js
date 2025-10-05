@@ -1,7 +1,7 @@
 import passport from 'passport';
 import validator from 'validator';
 import User from '../models/User';
-import Trip from '../models/Trip.js'
+import Trip from '../models/Trip'
 import ResetToken from '../models/ResetToken.js';
 import { sendEmail } from '../middleware/sendEmail.js';
 import crypto from 'crypto';

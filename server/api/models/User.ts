@@ -11,7 +11,7 @@ export interface IUserMinimal {
 }
 
 //Full mongoose User document interface 
-export interface IUser extends IUserMinimal{
+export interface IUser extends IUserMinimal, Document<Types.ObjectId>{
   password: string
 }
 
@@ -57,7 +57,7 @@ const UserSchema = new mongoose.Schema<IUser>({
 
 
 // Helper method for validating user's password.
-UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+UserSchema.methods.comparePassword = function comparePassword(candidatePassword: string, cb: Function) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     cb(err, isMatch)
   })

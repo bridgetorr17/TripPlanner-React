@@ -6,10 +6,10 @@
     "moduleResolution": "nodenext",
     "outDir": "./dist",
     "rootDir": "api",
-    // "strict": true,
-    // "esModuleInterop": true,
-    // "skipLibCheck": true,
-    // "forceConsistentCasingInFileNames": true
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
     "include": [
     "api/**/*"

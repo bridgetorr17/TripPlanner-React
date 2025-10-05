@@ -1,4 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+
+export interface IPhoto{
+    url: string;
+    user: Types.ObjectId;
+    userName: string
+}
 
 const PhotoSchema = new mongoose.Schema({
     url: {

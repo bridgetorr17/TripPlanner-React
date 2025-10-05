@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 
-const LocationSchema = new mongoose.Schema({
+export interface ILocation{
+    name: {
+        mainText: string;
+        secondaryText: string;
+    };
+    coordinates: {
+        latitude: number;
+        longitude: number;
+    };
+}
+
+const LocationSchema = new mongoose.Schema<ILocation>({
     name: {
         type: {
             mainText: String,
