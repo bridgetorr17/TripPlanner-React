@@ -1,4 +1,4 @@
-import Trip, { ITrip, ITripMinimal } from '../models/Trip';
+import Trip, { ITrip } from '../models/Trip';
 import User, { IUserMinimal } from '../models/User';
 import { ILocation } from '../models/Location'
 import { tripDetails } from '../middleware/tripDetails';
@@ -23,7 +23,6 @@ const getTrip = async (req: Request, res: Response) => {
         return res.json({
             success: true,
             trip: details.trip,
-            contributors: details.contributors,
             currentUser: details.currentUser
         });
     }
@@ -113,8 +112,6 @@ const deleteTrip = async (req: Request, res: Response) => {
 const postNewMemory = async (req: Request, res: Response) => {
     const tripId = req.params.id;
     const user = req.user as IUserMinimal;
-    //const userDoc = await User.findById(user._id)
-    console.log(`the user is ${user}`)
 
     try{
         const trip = await Trip.findById(tripId) as ITrip;
@@ -147,7 +144,6 @@ const postNewMemory = async (req: Request, res: Response) => {
 const postNewPhoto = async (req: Request, res: Response) => {
     try{
         const user = req.user as IUserMinimal;
-        //const user = await User.findById(req.user._id)
         const trip = await Trip.findById(req.params.id) as ITrip;
 
         const blobUrl = await proccessPhoto(req);

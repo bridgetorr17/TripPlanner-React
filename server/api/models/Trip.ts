@@ -3,7 +3,8 @@ import MemorySchema, { IMemory } from "./Memory"
 import PhotoSchema, { IPhoto }  from "./Photo"
 import LocationSchema, { ILocation }  from './Location';
 
-export interface ITripMinimal {
+export interface ITrip extends Document {
+    _id: Types.ObjectId;
     name: String;
     subtitle?: String;
     owner: Types.ObjectId;
@@ -13,10 +14,6 @@ export interface ITripMinimal {
     year: number;
     memories: IMemory[];
     photos: IPhoto[];
-}
-
-export interface ITrip extends ITripMinimal, Document {
-    //add additional methods if needed
 }
 
 const TripSchema = new mongoose.Schema<ITrip>({

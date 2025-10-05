@@ -1,13 +1,43 @@
 import Trip from '../models/Trip';
 import { IUserMinimal } from '../models/User'
 import { Types } from 'mongoose';
+import { IPhoto }  from "../models/Photo"
+import { ILocation }  from '../models/Location';
+import { IMemory } from '../models/Memory';
+
+interface ITripPopulated {
+    _id: Types.ObjectId;
+    name: String;
+    subtitle: String;
+    owner: {_id: Types.ObjectId; userName: string};
+    contributors: Array<{ _id: Types.ObjectId; userName: string; profilePicture: string }>;
+    locations: ILocation[];
+    month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
+    year: number;
+    memories: Array< IMemory | { text: string; location: string; user: {_id: Types.ObjectId; userName: string; profilePicture: string;}}>;
+    photos: IPhoto[];
+}
+
+interface TripDetailsSuccess {
+    success: true;
+    trip: ITripPopulated;
+    currentUser: null | {
+        userName: string | null;
+        userStatus: string;
+    }
+}
+
+interface TripDetailsFailure {
+    success: false;
+    message: string;
+}
 
 //gets trip details and formats for controllers
 const tripDetails = async (
     tripId: string | Types.ObjectId, 
     user: IUserMinimal
-) => {
-    const trip = await Trip.findById(tripId)
+): Promise <TripDetailsFailure | TripDetailsSuccess> => {
+    const trip = await Trip.findById(tripId) 
         .populate('owner', 'userName')
         .populate<{ contributors: Array<{ userName: string; profilePicture: string }> }>('contributors', 'userName profilePicture')
         .populate({
@@ -44,7 +74,7 @@ const tripDetails = async (
         } 
         //this is a logged in user, but they do not have viewing permissions
         else {
-            return null;
+            return null
         }
     })();
 
@@ -57,8 +87,7 @@ const tripDetails = async (
 
     return {
         success: true,
-        trip,
-        contributors: trip.contributors,
+        trip: trip as unknown as ITripPopulated,
         currentUser
     }
 }
