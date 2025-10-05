@@ -103,8 +103,8 @@ const SignupPage = ({signupAttempt}) => {
                 </div>
                 <SubmitButton 
                     loading={loading}
-                    message="Sign up"
                     color="blue"
+                    children="Sign up"
                 />
             </form>
         </div>

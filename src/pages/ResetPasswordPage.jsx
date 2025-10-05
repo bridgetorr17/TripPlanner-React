@@ -109,7 +109,7 @@ const ResetPasswordPage = () => {
                 <SubmitButton
                     loading={loading}
                     color="blue"
-                    message="Reset password"
+                    children="Reset password"
                 />
             </form>
             <Link

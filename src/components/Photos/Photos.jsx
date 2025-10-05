@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../StyledComponents/Modal";
 import { FaTrash } from "react-icons/fa6";
 import Spinner from "../StyledComponents/Spinner";
-import SubmitButton from "../StyledComponents/SubmitButton";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 
@@ -132,11 +131,15 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
                                 style={{display: 'none'}}
                                 onChange={handleFileChange}
                                 />
-                            <SubmitButton
-                                loading={loading}
-                                message={buttonLabel}
-                                color="sky"
-                            />
+                            <button
+                                type="button"
+                                className="px-4 py-2 bg-sky-100 text-blue-600 rounded hover:bg-sky-200 transition"
+                                onClick={handleButtonClick}
+                                >
+                                {loading ?
+                                    <Spinner loading={loading}/> 
+                                    : buttonLabel}
+                            </button>
                             {previewUrl && (
                                 <div className="flex items-center justify-center w-64 h-64 mx-auto">
                                     <img

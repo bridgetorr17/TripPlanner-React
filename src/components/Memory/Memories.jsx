@@ -92,8 +92,8 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                         />
                     <SubmitButton
                         loading={false}
-                        message="Create Memory"
                         color="blue"
+                        children="Create Memory"
                     />
                 </form>
             :   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">

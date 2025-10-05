@@ -109,8 +109,8 @@ const LoginPage = ({loginAttempt}) => {
                     </button>
                     <SubmitButton
                         loading={loading}
-                        message="Login"
                         color="blue"
+                        children="Login"
                     />
                 </form>
                 <Link

@@ -1,6 +1,6 @@
 import Spinner from "./Spinner";
 
-const SubmitButton = ({loading, message, color}) => {
+const SubmitButton = ({loading, color, children}) => {
     return (
         <button
             type="submit"
@@ -13,7 +13,7 @@ const SubmitButton = ({loading, message, color}) => {
         >
             {loading
                 ? <Spinner loading={loading} />
-                : message}
+                : children}
         </button>
     )
 }

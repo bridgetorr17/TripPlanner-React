@@ -66,8 +66,8 @@ const ResetPasswordModal = ({closeModal}) => {
                             required />
                         <SubmitButton
                             loading={false}
-                            message="Send Reset Email"
                             color="blue"
+                            children="Send Reset Email"
                         />
                     </div>
                 </form>
