@@ -1,6 +1,7 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 
 export interface ILocation extends Document{
+    _id: Types.ObjectId;
     name: {
         mainText: string;
         secondaryText: string;
