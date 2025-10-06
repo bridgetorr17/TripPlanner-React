@@ -128,7 +128,8 @@ const CreateTripPage = () => {
                     className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
                 >
                     <FaPlus className="text-lg"/>
-                    Create Trip</button>
+                    Create Trip
+                </button>
             </form>
             </div>
         </div>

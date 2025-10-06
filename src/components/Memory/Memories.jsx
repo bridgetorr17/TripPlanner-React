@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Memory from "./Memory"
 import { useNavigate } from "react-router-dom";
+import SubmitButton from "../StyledComponents/SubmitButton";
 
 const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) => {
 
@@ -89,11 +90,11 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                         onChange={(e) => setMemory(e.target.value)} 
                         className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
                         />
-                    <button
-                        type="submit"
-                        className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition">
-                        Create Memory
-                    </button>
+                    <SubmitButton
+                        loading={false}
+                        color="blue"
+                        children="Create Memory"
+                    />
                 </form>
             :   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
                     {memories.map((mem) => (
