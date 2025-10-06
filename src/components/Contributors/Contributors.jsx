@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContributorsInput from "./ContributorsInput";
 import Modal from "../StyledComponents/Modal";
 
-const Contributors = ({editMode, setEditMode, contributorNames, setContributorNames, contributors, tripId, reavlidator}) => {
+const Contributors = ({editMode, setEditMode, contributors, setContributors, tripId}) => {
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
+    const [contributorNames, setContributorNames] = useState(contributors.map(cont => cont.userName))
+
+    useEffect(() => {
+        setContributorNames(contributors.map(cont => cont.userName));
+    }, [editMode])
 
     const editContributors = async () => {
         try{
@@ -21,16 +26,15 @@ const Contributors = ({editMode, setEditMode, contributorNames, setContributorNa
             const response = await res.json();
 
             if (!response.success) throw new Error (response.message)
+            setContributors(response.contributors);
         }
         catch(err) {
             console.error("error saving locations:" , err)
             setErrorMessage(err.message);
             setModalOpen(true);
-
         }
         finally{
             setEditMode(false);
-            reavlidator.revalidate();
         }
     }  
 

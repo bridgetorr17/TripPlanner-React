@@ -27,12 +27,9 @@ const UserPage = () => {
     const [editBio, setEditBio] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
-    const handleFileChange = async (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
+    const uploadPhoto = async (file) => {
         const formData = new FormData();
-        formData.append("profilePicture", file);
+        formData.append("newPhoto", file);
 
         try{
             const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
@@ -40,23 +37,30 @@ const UserPage = () => {
                 body: formData
             });
 
-            const data = await res.json();
-            if(data.success){
-                setProfilePictureURL(data.profilePictureURL)
-            } else throw data.message
+            const photo = await res.json();
+            if(photo.success){
+                setProfilePictureURL(photo.profilePictureURL)
+            } else throw photo.message
         }
         catch(err){
             console.error("Upload error: ", err)
         }
+
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0] || null;
+        if (file) uploadPhoto(file);
     }
 
     const handleSave = async (field, newValue, setEdit) => {
         const editField = {
-            field: newValue
+            field: field,
+            value: newValue
         }
 
         try{
-            const result = await fetch(`/api/dashboard/edit/${field}`, {
+            const result = await fetch(`/api/dashboard/editUserField`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -71,7 +75,8 @@ const UserPage = () => {
             } 
         }
         catch (err){
-            console.err(err);
+            nav('/errorpage')
+            console.log(err);
         }
         finally{
             setEdit(false);
@@ -198,7 +203,6 @@ const userLoader = async ({params}) => {
     const data = await user.json();
 
     if (!data.success) {
-        console.log('redirecting to landing page on frontend')
         return redirect('/')
     }
 

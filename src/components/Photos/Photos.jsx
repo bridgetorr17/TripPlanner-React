@@ -33,8 +33,8 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
             closeModal();
         }
         catch(err){
-            navigate('/errorpage')
             console.error("Upload error: ", err)
+            navigate('/errorpage')
         }
     }
 

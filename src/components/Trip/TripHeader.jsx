@@ -3,9 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import TripField from "./TripField"
 import EditDate from "./EditDate"
 
-const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
-
- 
+const TripHeader = ({ isOwner, tripData, tripId }) => {
     const [tripTitle, setTripTitle] = useState(tripData.title);
     const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
     const [editTripTitle, setEditTripTitle] = useState(false);
@@ -13,31 +11,36 @@ const TripHeader = ({ isOwner, tripData, setTripData, tripId }) => {
     const [editTripDate, setEditTripDate] = useState(false);
     const navigate = useNavigate();
 
-    const handleSave = async (name, newValue, setEditFn) => {
+    const handleSave = async (field, newValue, setEdit) => {
 
-    const updatedTripData = {
-        field: name,
-        value: newValue
-    }
-
-    try{
-            const res = await fetch(`/api/trips/editTripField/${tripId}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedTripData)
-            });
-
-            await res.json();
-
-            setEditFn(false);
+        const updatedTripData = {
+            field: field,
+            value: newValue
         }
-    catch(err){
-        navigate('/errorpage')
-        console.log(err);
-    }
+
+        try{
+                const res = await fetch(`/api/trips/editTripField/${tripId}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedTripData)
+                });
+
+                const data = await res.json();
+
+                if(!data.success){
+                    throw data.message
+                }
+        }
+        catch(err){
+            navigate('/errorpage')
+            console.log(err);
+        }
+        finally{
+            setEdit(false);
+        }
     }
 
     return (

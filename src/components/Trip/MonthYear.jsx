@@ -8,8 +8,6 @@ const MonthYear = ( {selectedDate, setSelectedDate} ) => {
     const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`;
     return <span title={tooltipText}>{shortMonth}</span>;
   };
-
-  console.log(`selectedDate format is ${selectedDate}`)
   
   return (
     <DatePicker

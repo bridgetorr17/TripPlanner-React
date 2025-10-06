@@ -8,14 +8,15 @@ import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
 
 const LoginPage = ({loginAttempt}) => {
-    const navigate = useNavigate();
+    const nav = useNavigate();
 
     let isAlreadyLoggedIn = false;
     isAlreadyLoggedIn = useLoaderData();
 
+    //redirects to dashboard if user's session cookies are active
     useEffect(() => {
         if (isAlreadyLoggedIn) {
-            navigate('/dashboard')
+            nav('/dashboard')
         }
     }, [isAlreadyLoggedIn])
 
@@ -35,11 +36,11 @@ const LoginPage = ({loginAttempt}) => {
             password
         }
 
-        let nav = '';
+        let navTo = '';
 
         try{
             const result = await loginAttempt(loginAttemptInfo);
-            nav = result.success ? '/dashboard' : '/login';
+            navTo = result.success ? '/dashboard' : '/login';
 
             if (!result.success) throw new Error(result.message || 'Login failed')
         }
@@ -49,8 +50,30 @@ const LoginPage = ({loginAttempt}) => {
         }
         finally{
             setLoading(false);
-            navigate(nav);
+            nav(navTo);
         }
+    }
+
+    const sendEmail = async (e) => {
+        e.preventDefault();
+       
+        try{
+            const res = await fetch ('/api/resetPasswordEmail', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: emailReset})
+            })
+
+            await res.json();
+            setEmailSent(true);
+        }
+        catch(err){
+            console.error(err);
+        }
+
     }
 
     const closeModal = () => {

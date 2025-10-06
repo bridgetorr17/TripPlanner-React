@@ -9,8 +9,6 @@ const editTripField = async (req, res) => {
     const newValue = req.body.value;
     const tripId = req.params.id;
 
-    console.log(`in the backend, there is ${field} and ${newValue.month}`)
-    
     if (field === 'date') {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         await Trip.findByIdAndUpdate(
@@ -35,38 +33,7 @@ const editTripField = async (req, res) => {
     })
 }
 
-//PUT - update location array in a trip
-const editLocations = async (req, res) => {
-    try{
-        const tripId = req.params.id;
-        const updatedLocations = req.body.locations;
-
-        await Trip.findByIdAndUpdate(
-            tripId,
-            {
-                $set: {
-                    locations: updatedLocations
-                }
-            },
-            {new: true}
-        );
-
-        return res.json({
-            success: true,
-            message: 'Successfully saved edits'
-        });
-    }
-    catch(err){
-        console.log(err);
-        return res.json({
-            success: false,
-            message: 'There was an error saving those edits'
-        });
-    }
-}
-
 //PUT - update the contributors array in a trip. 
-//TODO: better error handling for users that do not exist. 
 const editContributors = async (req, res) => {
     try{
         const tripId = req.params.id;
@@ -87,17 +54,21 @@ const editContributors = async (req, res) => {
         const updatedUserIds = updatedUsers.map(user => user._id)
         await Trip.findByIdAndUpdate(
             tripId,
-            {
-                $set: {
-                    contributors: updatedUserIds
-                }
-            },
+            {$set: { contributors: updatedUserIds}},
             {new: true}
         );
 
+        const contributors = updatedUsers.map(user => (
+            {
+                id: user._id,
+                userName: user.userName, 
+                profilePicture: user.profilePicture
+            }
+        ));
         return res.json({
             success: true,
-            message: 'Successfully saved edits'
+            message: 'Successfully saved edits',
+            contributors: contributors
         });
     }
     catch(err){
@@ -110,16 +81,25 @@ const editContributors = async (req, res) => {
 
 //PUT - edit a memory in a trip
 const editMemory = async (req, res) => {
-    const tripId = req.params.id;
+    try{
+        const tripId = req.params.id;
+        const trip = await Trip.findById(tripId);
+        const memory = trip.memories.id(req.body.id);
 
-    const trip = await Trip.findById(tripId);
-    const memory = trip.memories.id(req.body.id);
+        memory.text = req.body.updatedText;
 
-    memory.text = req.body.updatedText;
+        await trip.save();
 
-    await trip.save();
-
-    return res.json(memory);
+        return res.json({
+            success: true,
+            memory: memory});
+    }
+    catch(err){
+        return res.json({
+            success: false,
+            message: 'Error updating that memory.'
+        })
+    }
 } 
 
 //DELETE - delete a memory in a trip
@@ -170,7 +150,6 @@ const deleteLocation = async (req, res) => {
 }
 
 export {editTripField,
-        editLocations,
         editContributors,
         editMemory,
         deleteMemory,

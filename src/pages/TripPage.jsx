@@ -1,8 +1,7 @@
-import { useLoaderData, useRevalidator } from "react-router-dom"
+import { useLoaderData } from "react-router-dom"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
-import FeatureHeader from "../components/Trip/FeatureHeader"
 import FeaturePanel from "../components/Trip/FeaturePanel"
 import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
@@ -41,23 +40,21 @@ const viewerTripLoader = async ({ request }) => {
 const TripPage = () => {
     
     const trip = useLoaderData().trip;
-    const contributorNamesLoader = useLoaderData().contributorNames
     const currentUser = useLoaderData().currentUser;
     const userStatus = currentUser.userStatus;
 
     const nav = useNavigate();
-    const reavlidator = useRevalidator();
 
-    const [tripData, setTripData] = useState({
+    const tripData ={
         title: trip.name,
         subtitle: trip.subtitle,
         year: trip.year,
         month: trip.month
-    })
+    };
     const [editLocations, setEditLocations] = useState(false);
     const [locationsData, setLocationsData] = useState(trip.locations);
     const [editContributors, setEditContributors] = useState(false);
-    const [contributorNames, setContributorNames] = useState(contributorNamesLoader);
+    const [contributors, setContributors] = useState(trip.contributors)
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -105,7 +102,6 @@ const TripPage = () => {
             <TripHeader 
                 isOwner={(userStatus === 'owner')}
                 tripData={tripData}
-                setTripData={setTripData}
                 tripId={trip._id}
                 />
             <div className="w-full max-w-3xl space-y-6">
@@ -165,11 +161,9 @@ const TripPage = () => {
                     <Contributors 
                         editMode={editContributors}
                         setEditMode={setEditContributors}
-                        contributorNames={contributorNames}
-                        setContributorNames={setContributorNames}
-                        contributors={trip.contributors}
-                        tripId={trip._id}
-                        reavlidator={reavlidator}/>
+                        contributors={contributors}
+                        setContributors={setContributors}
+                        tripId={trip._id}/>
                 </FeaturePanel>
                 {(userStatus !== 'viewer') &&
                     <>

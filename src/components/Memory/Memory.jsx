@@ -35,10 +35,10 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
                 body: JSON.stringify(updatedMemory)
             });
 
-            await res.json();
+            const response = await res.json();
 
+            if (!response.success) throw new Error (response.message)
             setEditMemory(false);
-
         }
         catch(err){
             navigate('/errorpage')

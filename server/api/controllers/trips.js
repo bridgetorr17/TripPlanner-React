@@ -1,11 +1,7 @@
 import Trip from '../models/Trip.js';
 import User from '../models/User.js';
 import {tripDetails} from '../middleware/tripDetails.js';
-import formidable from 'formidable'
-import { put } from '@vercel/blob';
-import { PassThrough } from 'stream';
-import fs from 'fs'
-import sharp from 'sharp'
+import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
 dotenv.config({path: './config/.env'})
 
@@ -25,7 +21,7 @@ const getTrip = async (req, res) => {
         return res.json({
             success: true,
             trip: details.trip,
-            contributorNames: details.contributorNames,
+            contributors: details.contributors,
             currentUser: details.currentUser
         });
     }
@@ -39,13 +35,12 @@ const getTrip = async (req, res) => {
 }
 
 //POST - creates new trip. 
-const postCreateNewTrip = async (req, res) => {
+const postNewTrip = async (req, res) => {
     let contributors = req.body.contributors;
 
     if (!Array.isArray(contributors)) {
         contributors = [contributors];
     }
-    console.log(req.user);
     contributors.unshift(req.user.userName)
 
     const users = await User.find({ userName: { $in: contributors}})
@@ -56,8 +51,6 @@ const postCreateNewTrip = async (req, res) => {
     if (missing.length > 0){
         console.warn(`${missing[0]} does not exist as a user of Triply.`)
     }
-
-    console.log(`locations as is are ${req.body.locations}`)
 
     const userIds = users.map(u => u._id)
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -105,7 +98,7 @@ const deleteTrip = async (req, res) => {
 }
 
 //POST - creates new memory in the trip
-const postCreateNewMemory = async (req, res) => {
+const postNewMemory = async (req, res) => {
     const tripId = req.params.id;
     const user = await User.findById(req.user._id)
 
@@ -140,32 +133,14 @@ const postCreateNewMemory = async (req, res) => {
 const postNewPhoto = async (req, res) => {
     try{
         const user = await User.findById(req.user._id)
-        const tripId = req.params.id;
-        const trip = await Trip.findById(tripId);
+        const trip = await Trip.findById(req.params.id);
 
-        const {fields, files} = await parseForm(req);
+        const blobUrl = await proccessPhoto(req);
 
-        const readableStream = fs.createReadStream(files.newPhoto[0].filepath)
-
-        const resize = sharp()
-            .rotate()
-            .resize(800)
-            .jpeg({quality: 70})
-
-        const optimizeStream = readableStream
-            .pipe(resize);
-
-        const pass = new PassThrough()
-        optimizeStream.pipe(pass);
-
-        const blob = await put(files.newPhoto[0].originalFilename, pass, {
-            access: 'public',
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-            addRandomSuffix: true
-        });
+        if (!blobUrl) throw Error;
 
          trip.photos.push({
-            url: blob.url,
+            url: blobUrl,
             user: user._id,
             userName: user.userName
         });
@@ -176,7 +151,7 @@ const postNewPhoto = async (req, res) => {
         return res.json(lastPhoto);
     }
     catch(err){
-        console.log(err);
+        console.error(err);
         return res.json({
             success: false,
             message: 'error adding the photo to the trip'
@@ -204,20 +179,9 @@ const postNewPlace = async (req, res) => {
     }
 }
 
-//helper function for processing picture through form
-function parseForm(req){
-    return new Promise((resolve, reject) => {
-        const form = formidable({multiples: false});
-        form.parse(req, (err, fields, files) => {
-            if(err) return reject(err);
-            resolve ({fields, files})
-        })
-    });
-}
-
 export {getTrip, 
-        postCreateNewTrip, 
+        postNewTrip, 
         deleteTrip,
-        postCreateNewMemory,
+        postNewMemory,
         postNewPhoto,
         postNewPlace};
