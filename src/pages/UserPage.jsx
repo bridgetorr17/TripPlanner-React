@@ -2,7 +2,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
-import ConfirmDelete from "../components/Utilities/ConfirmDelete"
+import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
 import { redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";

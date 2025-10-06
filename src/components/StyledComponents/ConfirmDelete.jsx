@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Modal from "../StyledComponents/Modal";
+import Modal from "./Modal";
 
 const ConfirmDelete = ({isOpen, onClose, onConfirm, itemName}) =>{
 
