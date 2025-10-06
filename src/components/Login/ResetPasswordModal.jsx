@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { panelButtonStyles } from "../Utilities/commonStyles"
+import StyledButton from "../StyledComponents/StyledButton";
 import Modal from "../StyledComponents/Modal";
 import SubmitButton from "../StyledComponents/SubmitButton";
 
-const ResetPasswordModal = ({closeModal}) => {
+const ResetPasswordModal = ({ closeModal }) => {
     const [emailReset, setEmailReset] = useState('');
     const [emailSent, setEmailSent] = useState(false);
     
@@ -42,17 +42,16 @@ const ResetPasswordModal = ({closeModal}) => {
                         <br />
                         Make sure to check you spam folder if you don't see the email in your inbox.
                     </p>
-                    <button
-                        onClick={closeModal}
-                        className={buttonStyles}
+                    <StyledButton
+                        onClickFn={closeModal}
+                        color="blue"
                     >
                         Close
-                    </button>
+                    </StyledButton>
                 </div>
             )
             : (
-                <form onSubmit={sendEmail} className="p-4">
-                    <div className="mb-4">
+                <form onSubmit={sendEmail} className="flex flex-col gap-4">
                         <label htmlFor="resetEmail" className="block mb-1 font-semibold">
                             Email Address
                         </label>
@@ -69,7 +68,6 @@ const ResetPasswordModal = ({closeModal}) => {
                             color="blue"
                             children="Send Reset Email"
                         />
-                    </div>
                 </form>
             )}
         </Modal>)

@@ -54,28 +54,6 @@ const LoginPage = ({loginAttempt}) => {
         }
     }
 
-    const sendEmail = async (e) => {
-        e.preventDefault();
-       
-        try{
-            const res = await fetch ('/api/resetPasswordEmail', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email: emailReset})
-            })
-
-            await res.json();
-            setEmailSent(true);
-        }
-        catch(err){
-            console.error(err);
-        }
-
-    }
-
     const closeModal = () => {
         setModalOpen(false);
     }
