@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
-import Spinner from "../components/Utlities/Spinner";
 import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Modal from "../components/Utlities/Modal"
+import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
+import ResetPasswordModal from "../components/Login/ResetPasswordModal.jsx"
+import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
+import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
 
 const LoginPage = ({loginAttempt}) => {
     const nav = useNavigate();
@@ -19,13 +21,11 @@ const LoginPage = ({loginAttempt}) => {
     }, [isAlreadyLoggedIn])
 
     const [email, setEmail] = useState('');
-    const [emailReset, setEmailReset] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false)
     const [loginError, setLoginError] = useState('');
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [emailSent, setEmailSent] = useState(false);
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -54,36 +54,16 @@ const LoginPage = ({loginAttempt}) => {
         }
     }
 
-    const sendEmail = async (e) => {
-        e.preventDefault();
-       
-        try{
-            const res = await fetch ('/api/resetPasswordEmail', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email: emailReset})
-            })
-
-            await res.json();
-            setEmailSent(true);
-        }
-        catch(err){
-            console.error(err);
-        }
-
-    }
-
     const closeModal = () => {
         setModalOpen(false);
     }
-
+    
     return (
-        <div className="min-h-screen bg-blue-400 flex items-center justify-center px-4 sm:px-6 md:px-8">
-            <div className="bg-white max-w-md w-full p-8 rounded-lg shadow-xl border border-cyan-200">
-                <h2 className="text-2xl font-semibold text-blue-700 text-center mb-6">Triply</h2>
+        <div className={panelContainerStyles}>
+            <div className={panelBorderStyles}>
+                <StyledH2 color={"blue"}>
+                    Triply
+                </StyledH2>
                 <form onSubmit={submitForm} className="flex flex-col gap-4">
                     <input
                         id="email"
@@ -92,11 +72,11 @@ const LoginPage = ({loginAttempt}) => {
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition"
+                        className={inputStyles}
                         disabled={loading}
                         required
                     />
-                    <div className="flex flex-row justify-between items-center px-4 py-2 border-2 border-sky-300 rounded-md focus:outline-none focus:border-blue-400 transition">
+                    <div className={passwordInputStyles}>
                         <input
                             id="password"
                             name="password"
@@ -128,68 +108,21 @@ const LoginPage = ({loginAttempt}) => {
                         onClick={() => setModalOpen(true)}>
                         Forgot Password?
                     </button>
-                    <button
-                        type="submit"
-                        className={`mt-2 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition
-                                    ${loading 
-                                        ? "bg-blue-400 cursor-not-allowed"
-                                        : "bg-blue-600 hover:bg-blue-700 text-white"
-                                    }`}
-                        disabled={loading}
-                    >
-                        {loading 
-                            ? <Spinner loading={loading} />
-                            : "Login"}
-                    </button>
+                    <SubmitButton
+                        loading={loading}
+                        color="blue"
+                        children="Login"
+                    />
                 </form>
                 <Link
                     to='/signup'
-                    className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center">
+                    className={panelButtonStyles}>
                     Signup
                 </Link>
             </div>
-            { modalOpen && (<Modal
-                isOpen={true}
-                onClose={closeModal}
-                title="Reset Password">
-                    { emailSent ? (
-                        <div className="p-4">
-                            <p> Thank you! If that email address is registered, you’ll receive a reset link shortly. 
-                                <br />
-                                <br />
-                                Make sure to check you spam folder if you don't see the email in your inbox.
-                            </p>
-                            <button
-                                onClick={closeModal}
-                                className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    )
-                    : (
-                        <form onSubmit={sendEmail} className="p-4">
-                            <div className="mb-4">
-                                <label htmlFor="resetEmail" className="block mb-1 font-semibold">
-                                    Email Address
-                                </label>
-                                <input 
-                                    type="email"
-                                    id="resetEmail"
-                                    value={emailReset}
-                                    onChange={(e) => setEmailReset(e.target.value)}
-                                    placeholder="Enter your email"
-                                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    required />
-                                <button
-                                    type="submit"
-                                    className="mt-4 py-2 w-full block bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition text-center">
-                                        Send Reset Email
-                                </button>
-                            </div>
-                        </form>
-                        )}
-                </Modal>)}
+            { modalOpen && (<ResetPasswordModal
+                closeModal={closeModal}
+            />)}
         </div>
     )
 }

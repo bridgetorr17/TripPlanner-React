@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ContributorsInput from "./ContributorsInput";
-import Modal from "../Utlities/Modal";
+import Modal from "../StyledComponents/Modal";
 
 const Contributors = ({editMode, setEditMode, contributors, setContributors, tripId}) => {
 

@@ -7,8 +7,8 @@ import Locations from "../components/Location/Locations"
 import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
-import ConfirmDelete from "../components/Utlities/ConfirmDelete"
-import StyledButton from "../components/Trip/StyledButton"
+import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
+import StyledButton from "../components/StyledComponents/StyledButton"
 import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
@@ -168,7 +168,7 @@ const TripPage = () => {
                 {(userStatus !== 'viewer') &&
                     <>
                         <StyledButton
-                            onclickFn={shareTrip}
+                            onClickFn={shareTrip}
                             color={"blue"}
                         >
                             <FaShare className="text-lg" />
@@ -179,7 +179,7 @@ const TripPage = () => {
                 {(userStatus === 'owner') && 
                     <>
                         <StyledButton
-                            onclickFn={() => setModalOpen(true)}
+                            onClickFn={() => setModalOpen(true)}
                             color={"red"}
                         >
                             <FaTrash className="text-lg" />
@@ -200,7 +200,7 @@ const TripPage = () => {
                     <>
                         <Link to="/signup">
                             <StyledButton
-                                onclickFn={null}
+                                onClickFn={null}
                                 color="blue"
                             >
                                 <FaPlaneDeparture className="text-lg" />
