@@ -61,7 +61,7 @@ const Contributors = ({editMode, setEditMode, contributors, setContributors, tri
             :  (
                 <div className="flex space-x-4 overflow-x-auto">
                     {contributors?.map((cont, ind) => (
-                        <Link to={`/dashboard/${cont.userName}`}>
+                        <Link to={`/dashboard/${cont._id}`}>
                             <div key={ind} className="flex flex-col items-center">
                                 <img
                                     src={cont.profilePicture}

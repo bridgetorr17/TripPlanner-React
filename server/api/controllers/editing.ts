@@ -1,5 +1,5 @@
 import Trip, { ITrip } from '../models/Trip';
-import User, { IUserMinimal, IUser } from '../models/User';
+import User, { IUser } from '../models/User';
 import dotenv from 'dotenv';
 import { Types } from 'mongoose';
 import { Request,  Response } from 'express';

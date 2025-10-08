@@ -1,4 +1,3 @@
-import SubmitButton from "../StyledComponents/SubmitButton";
 
 const ProfileField = ({ name, label, value, setValue, edit, setEdit, isOwner, save}) => {
     return (
