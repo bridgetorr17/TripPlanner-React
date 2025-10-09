@@ -1,6 +1,6 @@
 import express from 'express';
 import * as dashboardController from '../controllers/dashboard';
-import { ensureAuth } from '../middleware/auth.js';
+import { ensureAuth } from '../middleware/auth';
 
 const router = express.Router();
 router.get('/', ensureAuth, dashboardController.getDashboard);

@@ -1,5 +1,5 @@
 import express from 'express';
-import * as authController from '../controllers/auth.js';
+import * as authController from '../controllers/auth';
 import { forwardAuth } from '../middleware/auth.js';
 
 const router = express.Router();

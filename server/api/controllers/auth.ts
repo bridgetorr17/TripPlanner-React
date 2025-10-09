@@ -1,13 +1,14 @@
 import passport from 'passport';
 import validator from 'validator';
-import User from '../models/User';
-import Trip from '../models/Trip'
+import User, { IUser, IUserMinimal } from '../models/User';
+import Trip, { ITrip } from '../models/Trip'
 import ResetToken from '../models/ResetToken.js';
 import { sendEmail } from '../middleware/sendEmail.js';
 import crypto from 'crypto';
+import { Request,  Response, NextFunction } from 'express';
 
 //GET - login page. Redirects user to dashboard if session cookie exists
-const getLogin = (req, res) => {
+const getLogin = (req: Request, res: Response) => {
     if (req.isAuthenticated()) {
       res.json({
         success: true
@@ -16,21 +17,21 @@ const getLogin = (req, res) => {
   }
 
 //POST - login request. Validates user account and redirects to dashboard
-const postLogin = (req, res, next) => {
+const postLogin = (req: Request, res: Response, next: NextFunction) => {
     const validationErrors = []
-    if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
-    if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: 'Password cannot be blank.' })
+    if (!validator.isEmail(req.body.email)) validationErrors.push('Please enter a valid email address.');
+    if (validator.isEmpty(req.body.password)) validationErrors.push('Password cannot be blank.');
   
     if (validationErrors.length) {
       req.flash('errors', validationErrors)
       return res.status(401).json({
           success: false,
-          message: info?.message || 'Incorrect username or password'
+          message: 'Incorrect username or password'
         })
     }
     req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
   
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local', (err: any, user: IUser | false, info: any) => {
       if (err) { return next(err) }
       if (!user) {
         return res.status(401).json({
@@ -53,19 +54,21 @@ const postLogin = (req, res, next) => {
   }
   
 //GET - logout. Ends the user's session. User will have to re-login.
-const getlogout = (req, res) => {
+const getlogout = (req: Request, res: Response) => {
   req.session.destroy((err2) => {
     if (err2) {
       console.log('Error destroying session: ', err2)
       return res.json({success: false})
     }
-    req.user = null;
+    //req.logout();
+    req.user = undefined;
+    //req.user = null;
     return res.json({success: true})
   })
 }
   
 //POST - signup. Creates new user with valid username, password and email.
-const postSignup = async (req, res, next) => {
+const postSignup = async (req: Request, res: Response, next: NextFunction) => {
     try{
       req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
     
@@ -121,7 +124,7 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  const postResetPasswordEmail = async (req, res) => {
+  const postResetPasswordEmail = async (req: Request, res: Response) => {
     try{
       const { email } = req.body;
       if (!email) { 
@@ -132,7 +135,7 @@ const postSignup = async (req, res, next) => {
         );
       }
 
-      const user = await User.findOne({ email: req.body.email })
+      const user = await User.findOne({ email: req.body.email }) as IUserMinimal;
 
       if (!user) {
         // Respond success anyway (security) but email won't be sent
@@ -198,7 +201,7 @@ const postSignup = async (req, res, next) => {
     }
   }
 
-  const resetPassword = async (req, res) => {
+  const resetPassword = async (req: Request, res: Response) => {
 
     try{
       const { token, userId, email, password, confirmPassword } = req.body;
@@ -228,7 +231,7 @@ const postSignup = async (req, res, next) => {
             })
         }
 
-        const user = await User.findById(userId);
+        const user = await User.findById(userId) as IUser;
         if (user.email === email) {
           user.password = password;
           await user.save();
@@ -252,41 +255,34 @@ const postSignup = async (req, res, next) => {
   }
 
 //DELETE - account. Deletes user's account. 
-//TODO: remove user as contributor from all trips before deleting.
-  const deleteAccount = async (req, res) => {
-    const userId = req.user._id;
+  const deleteAccount = async (req: Request, res: Response) => {
+    const deletingUser = req.user as IUserMinimal;
 
     try{
       //delete all trips that this user owns
-      await Trip.deleteMany({ owner: userId })
+      await Trip.deleteMany({ owner: deletingUser._id })
 
       //remove user's contributions from trips they didn't own
       const tripsToClean = await Trip.find({
-        contributors: userId,
-        owner: { $ne: userId }
-      });
+        contributors: deletingUser._id,
+        owner: { $ne: deletingUser._id }
+      }) as [ITrip];
 
       console.log(`there are ${tripsToClean.length} trips to scrub`)
 
       for (let trip of tripsToClean){
-        trip.memories = trip.memories.filter(mem => {
-          return !mem.user.equals(userId)
-        })
-        console.log(trip.memories);
-
-        trip.photos = trip.photos.filter(photo => {
-          return !photo.user.equals(userId);
-        })
+        trip.memories.pull({ user: deletingUser._id });
+        trip.photos.pull({ user: deletingUser._id });
 
         trip.contributors = trip.contributors.filter(cont => {
-          return !cont.equals(userId);
+          return !cont.equals(deletingUser._id);
         })
 
         await trip.save();
       }
       
-      const result = await User.findByIdAndDelete(userId);
-      if(result) return getlogout(req,res);
+      const result = await User.findByIdAndDelete(deletingUser._id) as IUser;
+      if(result) return getlogout(req, res);
       else res.json({ success: false });
     }
     catch(err) {
