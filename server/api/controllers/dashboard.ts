@@ -55,14 +55,9 @@ const getUser = async (req: Request, res: Response) => {
         const currentUser = req.user as IUserMinimal;
         const requestedUser = await User.findOne({_id: req.params.id }) as IUserMinimal;
 
-        console.log(`getUser was called again`)
-        console.log(currentUser.userName);
-
         if(currentUser.userName === requestedUser.userName) {
             isOwner = true;
         }
-
-        console.log(requestedUser);
 
         res.json({
             success: true,

@@ -268,8 +268,6 @@ const postSignup = async (req: Request, res: Response, next: NextFunction) => {
         owner: { $ne: deletingUser._id }
       }) as [ITrip];
 
-      console.log(`there are ${tripsToClean.length} trips to scrub`)
-
       for (let trip of tripsToClean){
         trip.memories.pull({ user: deletingUser._id });
         trip.photos.pull({ user: deletingUser._id });

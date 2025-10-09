@@ -1,4 +1,6 @@
-const ensureAuth = (req, res, next) => {
+import { Request, Response, NextFunction } from 'express';
+
+const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
     if(req.isAuthenticated()){
         return next();
     }
@@ -11,7 +13,7 @@ const ensureAuth = (req, res, next) => {
     }
 }
 
-const forwardAuth = (req, res, next) => {
+const forwardAuth = (req: Request, res: Response, next: NextFunction) => {
     if(req.isAuthenticated()){
         res.redirect('/dashboard');
     }
