@@ -2,7 +2,7 @@ import passport from 'passport';
 import validator from 'validator';
 import User, { IUser, IUserMinimal } from '../models/User';
 import Trip, { ITrip } from '../models/Trip'
-import ResetToken from '../models/ResetToken.js';
+import ResetToken, { IResetToken } from '../models/ResetToken';
 import { sendEmail } from '../middleware/sendEmail';
 import crypto from 'crypto';
 import { Request,  Response, NextFunction } from 'express';
@@ -152,7 +152,7 @@ const postSignup = async (req: Request, res: Response, next: NextFunction) => {
       await ResetToken.create({ 
         userId : user._id,
         token
-      });
+      }) as IResetToken;
 
       const resetUrl = `https://triplytravel.vercel.app/resetPassword?token=${token}&id=${user._id}`
 
@@ -206,7 +206,7 @@ const postSignup = async (req: Request, res: Response, next: NextFunction) => {
     try{
       const { token, userId, email, password, confirmPassword } = req.body;
 
-      const resetToken = await ResetToken.findOne({ userId: userId, token: token});
+      const resetToken = await ResetToken.findOne({ userId: userId, token: token}) as IResetToken;
       if (!resetToken){
         return res.json({ 
           success: false, 
