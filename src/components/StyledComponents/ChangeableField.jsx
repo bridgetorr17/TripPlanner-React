@@ -1,7 +1,7 @@
 import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
 
-const TripField = ({ name, value, setValue, edit, setEdit, save, classNameDisplay = '', classNameInput = '', classNameIcon = ''}) => {
+const ChangeableField = ({ name, label, value, setValue, edit, setEdit, save, classNameDisplay = '', classNameInput = '', classNameIcon = ''}) => {
 
     const [tempValue, setTempValue] = useState(value);
 
@@ -11,8 +11,8 @@ const TripField = ({ name, value, setValue, edit, setEdit, save, classNameDispla
                     e.preventDefault();
                     setValue(tempValue);
                     save(name, tempValue, setEdit);
-                }} 
-                className="mb-6">
+                }} className="mb-6">
+                {label && <label className="block text-teal-800 font-semibold mb-1">{label}</label>}
                 {edit ? (
                     <div className="flex items-center space-x-2">
                         <input
@@ -62,4 +62,4 @@ const TripField = ({ name, value, setValue, edit, setEdit, save, classNameDispla
     )
 }
 
-export default TripField;
+export default ChangeableField;

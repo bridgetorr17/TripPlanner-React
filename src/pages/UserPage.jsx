@@ -1,11 +1,11 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
 import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
 import { redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
+import ChangeableField from "../components/StyledComponents/ChangeableField";
 
 const UserPage = () => {
     const { isOwner,
@@ -133,34 +133,31 @@ const UserPage = () => {
                         : null}
                     <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
                 </div>
-                <ProfileField 
+                <ChangeableField
                     name='userName'
                     label='User Name'
                     value={userName}
                     setValue={setUserName}
                     edit={editName}
                     setEdit={setEditName}
-                    isOwner={isOwner}
                     save={handleSave}    
                 />
-                <ProfileField 
+                <ChangeableField
                     name='email'
                     label='Email'
                     value={email}
                     setValue={setEmail}
                     edit={editEmail}
                     setEdit={setEditEmail}
-                    isOwner={isOwner}
                     save={handleSave}    
                 />
-                <ProfileField 
+                <ChangeableField
                     name='bio'
                     label='Biography'
                     value={bio}
                     setValue={setBio}
                     edit={editBio}
                     setEdit={setEditBio}
-                    isOwner={isOwner}
                     save={handleSave}    
                 />
                 {isOwner 

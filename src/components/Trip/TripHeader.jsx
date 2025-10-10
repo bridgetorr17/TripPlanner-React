@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import TripField from "./TripField"
 import EditDate from "./EditDate"
+import ChangeableField from "../StyledComponents/ChangeableField"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
     const [tripTitle, setTripTitle] = useState(tripData.title);
@@ -55,8 +55,9 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
             <div className="flex flex-col items-start space-y-4">
                 {isOwner ? (
                 <>
-                    <TripField
+                    <ChangeableField
                         name="name"
+                        label=""
                         value={tripTitle}
                         setValue={setTripTitle}
                         edit={editTripTitle}
@@ -66,8 +67,9 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
                         classNameIcon="ml-2"
                     />
-                    <TripField
+                    <ChangeableField
                         name="subtitle"
+                        label=""
                         value={tripSubtitle}
                         setValue={setTripSubtitle}
                         edit={editTripSubtitle}
