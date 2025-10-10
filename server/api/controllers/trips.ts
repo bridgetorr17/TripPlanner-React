@@ -2,7 +2,7 @@ import Trip, { ITrip } from '../models/Trip';
 import User, { IUserMinimal } from '../models/User';
 import { ILocation } from '../models/Location'
 import { tripDetails } from '../middleware/tripDetails';
-import { proccessPhoto } from '../middleware/processPhoto.js';
+import { proccessPhoto } from '../middleware/processPhoto';
 import dotenv from 'dotenv';
 import { Request,  Response } from 'express';
 dotenv.config({path: './config/.env'})

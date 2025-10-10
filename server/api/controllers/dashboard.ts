@@ -1,7 +1,7 @@
 import Trip from '../models/Trip'
 import User, { IUserMinimal } from '../models/User'
 import { Request,  Response } from 'express';
-import { proccessPhoto } from '../middleware/processPhoto.js';
+import { proccessPhoto } from '../middleware/processPhoto';
 
 //GET - dashboard. Sorts user owned trips and shared trips. Provides user information
 const getDashboard = async (req: Request, res: Response) => {

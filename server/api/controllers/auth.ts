@@ -3,7 +3,7 @@ import validator from 'validator';
 import User, { IUser, IUserMinimal } from '../models/User';
 import Trip, { ITrip } from '../models/Trip'
 import ResetToken from '../models/ResetToken.js';
-import { sendEmail } from '../middleware/sendEmail.js';
+import { sendEmail } from '../middleware/sendEmail';
 import crypto from 'crypto';
 import { Request,  Response, NextFunction } from 'express';
 
