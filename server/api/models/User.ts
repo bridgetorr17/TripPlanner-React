@@ -12,7 +12,8 @@ export interface IUserMinimal {
 
 //Full mongoose User document interface 
 export interface IUser extends IUserMinimal, Document<Types.ObjectId>{
-  password: string
+  password: string;
+  comparePassword(candidatePassword: string, cb: (err: any, isMatch: boolean) => void): void
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
