@@ -95,7 +95,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
                     </p>}
                     
                 </div>
-                <Link to={`/dashboard/${memory.user.userName}`}>
+                <Link to={`/dashboard/${memory.user._id}`}>
                     <div className="mt-2 text-right text-xs italic text-blue-800 opacity-90">
                         <img 
                             src={memory.user.profilePicture} 

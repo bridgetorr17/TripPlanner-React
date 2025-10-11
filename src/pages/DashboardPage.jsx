@@ -6,8 +6,12 @@ import { Link } from "react-router-dom";
 import { redirect } from "react-router-dom";
 
 const DashboardPage = () => {
-    const { userTrips, sharedTrips, userName, profilePicture } = useLoaderData();
+    const { userTrips, sharedTrips, user } = useLoaderData();
     const [activeTab, setActiveTab] = useState('my');
+
+    const userName = user.userName;
+    const userProfilePicture = user.profilePicture;
+    const userId = user._id;
 
     let content = null;
 
@@ -25,9 +29,9 @@ const DashboardPage = () => {
                 </h1>
                 <div className="relative">
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-sky-300 focus:border-blue-400">
-                        <Link to={`/dashboard/${userName}`}>
+                        <Link to={`/dashboard/${userId}`}>
                             <img
-                                src={profilePicture}
+                                src={userProfilePicture}
                                 alt="Profile Picture"
                                 className="w-full h-full object-cover object-center"
                             />
@@ -52,14 +56,10 @@ const dashboardLoader = async () => {
         return redirect('/')
     }
 
-    const userName = tripsRes.userName;
-    const profilePicture = tripsRes.profilePicture;
-
     return {
         userTrips: tripsRes.trips.userTrips,
         sharedTrips: tripsRes.trips.sharedTrips,
-        userName,
-        profilePicture
+        user: tripsRes.user,
     }
 }
 

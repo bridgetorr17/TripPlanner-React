@@ -1,7 +1,7 @@
 import express from 'express';
-import * as tripController from '../controllers/trips.js';
-import * as editTripController from '../controllers/editing.js';
-import { ensureAuth } from '../middleware/auth.js';
+import * as tripController from '../controllers/trips';
+import * as editTripController from '../controllers/editing';
+import { ensureAuth } from '../middleware/auth';
 
 const router = express.Router();
 

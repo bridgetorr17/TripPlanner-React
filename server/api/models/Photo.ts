@@ -1,6 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Types, Document } from "mongoose";
 
-const PhotoSchema = new mongoose.Schema({
+export interface IPhoto extends Document{
+    _id: Types.ObjectId;
+    url: string;
+    user: Types.ObjectId;
+    userName: string;
+}
+
+const PhotoSchema = new mongoose.Schema<IPhoto>({
     url: {
         type: String,
         required: true

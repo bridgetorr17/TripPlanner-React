@@ -1,17 +1,17 @@
 import mailjet from 'node-mailjet';
 
-const sendEmail = async (
-    sender, 
-    senderName,
-    receiver,
-    receiverName,
-    subject,
-    text,
-    html) => {
+const sendEmail = async (sender: string, senderName: string, receiver: string, receiverName: string, subject: string, text: string, html: string) => {
+
+    const publicKey = process.env.MJ_APIKEY_PUBLIC;
+    const privateKey = process.env.MJ_APIKEY_PRIVATE;
+
+    if (!publicKey || !privateKey) {
+        throw new Error ('Mailjet API keys are not set as environment variables')
+    }
 
     const mj = mailjet.apiConnect(
-        process.env.MJ_APIKEY_PUBLIC,
-        process.env.MJ_APIKEY_PRIVATE
+        publicKey,
+        privateKey
     );
 
     try{
