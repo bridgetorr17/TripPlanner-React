@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
-const PlaceAutocomplete = ({editMode, handleSelect}) => {
+const PlaceAutocomplete = ({ editMode, handleSelect, clearPlace }) => {
 
     const [place, setPlace] = useState('');
     const [suggestions, setSuggestions] = useState([]);
@@ -90,16 +90,17 @@ const PlaceAutocomplete = ({editMode, handleSelect}) => {
                             >
                             {suggestions.map((sug, index) => (
                                 <li
-                                key={index}
-                                role="option"
-                                onClick={() => {
-                                    setSelectMode(true);
-                                    setSuggestions([]);
-                                    setPlace('');
-                                    handleSelect(sug)
-                                }}
-                                className="px-2 py-2 hover:bg-gray-200 cursor-pointer"
-                                >
+                                    key={index}
+                                    role="option"
+                                    onClick={() => {
+                                        setSelectMode(true);
+                                        setSuggestions([]);
+                                        if(clearPlace) setPlace('');
+                                        else setPlace(sug.placePrediction.structuredFormat.mainText.text);
+                                        handleSelect(sug);
+                                    }}
+                                    className="px-2 py-2 hover:bg-gray-200 cursor-pointer"
+                                    >
                                     {sug.placePrediction?.text?.text}
                                 </li>
                             ))}

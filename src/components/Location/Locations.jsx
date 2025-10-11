@@ -22,6 +22,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
     
     const selectNewPlace = async (selectedPlace) => {
         setNewPlace(selectedPlace);
+        console.log(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
         try {
             const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
@@ -148,7 +149,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                 <div className="sm:flex-1 flex flex-col p-2 rounded shadow-sm relative h-64 md:h-[200px]">
                         <PlaceAutocomplete 
                             editMode={editMode}
-                            handleSelect={selectNewPlace}/>
+                            handleSelect={selectNewPlace}
+                            clearPlace={true}/>
                         <Map 
                             locations={locations}
                             coords={coords}/>
