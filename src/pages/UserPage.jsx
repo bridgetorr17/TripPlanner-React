@@ -194,9 +194,11 @@ const UserPage = () => {
 }
 
 //User GET
-const userLoader = async ({params}) => {
-    const {userName} = params;
-    const user = await fetch(`/api/dashboard/${userName}`);
+const userLoader = async ({ params }) => {
+
+    const { id } = params;
+
+    const user = await fetch(`/api/dashboard/${id}`);
     const data = await user.json();
 
     if (!data.success) {
