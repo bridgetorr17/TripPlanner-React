@@ -108,46 +108,70 @@ const editMemory = async (req: Request, res: Response) => {
 
 //DELETE - delete a memory in a trip
 const deleteMemory = async (req: Request, res: Response) => {
-    const tripId = req.params.id;
-    const memoryId = req.body.id;
+    try{
+        const tripId = req.params.id;
+        const memoryId = req.body.id;
 
-    const trip = await Trip.findById(tripId) as ITrip;
-    
-    trip.memories.pull({_id: memoryId})
-    await trip.save();
+        const trip = await Trip.findById(tripId) as ITrip;
+        
+        trip.memories.pull({_id: memoryId})
+        await trip.save();
 
-    await trip.populate({
-        path: `memories.user`,
-        select: 'userName profilePicture'
-    })
+        await trip.populate({
+            path: `memories.user`,
+            select: 'userName profilePicture'
+        })
 
-    return res.json(trip.memories)
+        return res.json(trip.memories)
+    }
+    catch(err){
+        return res.json({
+            success: false,
+            message: 'Error deleting that memory.'
+        });
+    }
 }
 
 //DELETE - delete a photo in a trip
 const deletePhoto = async (req: Request, res: Response) => {
-    const tripId = req.params.id;
-    const photoId = req.body.id;
+    try{
+        const tripId = req.params.id;
+        const photoId = req.body.id;
 
-    const trip = await Trip.findById(tripId) as ITrip;
-    
-    trip.photos.pull({_id: photoId})
-    await trip.save();
+        const trip = await Trip.findById(tripId) as ITrip;
 
-    return res.json(trip.photos)
+        trip.photos.pull({_id: photoId})
+        await trip.save();
+
+        return res.json(trip.photos)
+    }
+    catch(err){
+        return res.json({
+            success: false,
+            message: 'Error deleting that photo.'
+        });
+    }
 }
 
 //DELETE - delete a location in a trip
 const deleteLocation = async (req: Request, res: Response) => {
-    const tripId = req.params.id;
-    const locationId = req.body.id;
+    try{
+        const tripId = req.params.id;
+        const locationId = req.body.id;
 
-    const trip = await Trip.findById(tripId) as ITrip;
+        const trip = await Trip.findById(tripId) as ITrip;
 
-    trip.locations.pull({_id: locationId})
-    await trip.save();
+        trip.locations.pull({_id: locationId})
+        await trip.save();
 
-    return res.json(trip.locations)
+        return res.json(trip.locations)
+    }
+    catch(err){
+        return res.json({
+            success: false,
+            message: 'Error deleting that location.'
+        });
+    }
 }
 
 export {editTripField,

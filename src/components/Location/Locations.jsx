@@ -72,7 +72,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         }
         catch {
             console.log(err);
-            navigate('/errorpage')
         }
         finally{
             setNewPlace(null);
@@ -99,7 +98,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             setLocations(updatedLocations);
         }
         catch(err){
-            navigate('/errorpage')
             console.log(err);
         }
     }
