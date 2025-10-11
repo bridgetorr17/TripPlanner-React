@@ -84,13 +84,19 @@ const UserPage = () => {
     }
 
     const handleDelete = async () => {
-        const deleteAccount = await fetch('/api/delete', {
-            method: 'DELETE'
-        });
+        try{
+            const res = await fetch('/api/delete', {
+                method: 'DELETE'
+            });
 
-        const deleteRes = await deleteAccount.json();
-        
-        nav('/')
+            if (!res.ok) throw new Error (`Delete failed: ${res.status}`)
+        }
+        catch(err){
+            console.error(err)
+        }
+        finally{
+            nav('/')
+        }
     };
 
     const handleLogout = async () => {
