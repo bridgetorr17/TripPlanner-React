@@ -9,15 +9,18 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
     const [newPlace, setNewPlace] = useState(null);
     const [newPlaceCoords, setNewPlaceCoords] = useState([])
     const [coords, setCoords] = 
-        useState(locations[0] 
-            ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
-            : [38.7946, -100.534]
+        useState((locations[0] === undefined)
+            ? [38.7946, -100.534]
+            : [locations[0].coordinates?.latitude, locations[0].coordinates?.longitude]
     )
     const navigate = useNavigate();
 
     useEffect(() => {
         setNewPlace(null);
-        setCoords([locations[0].coordinates.latitude, locations[0].coordinates.longitude])
+        setCoords((locations[0] === undefined)
+            ? [38.7946, -100.534]
+            : [locations[0].coordinates?.latitude, locations[0].coordinates?.longitude]
+        )
     }, [editMode])
     
     const selectNewPlace = async (selectedPlace) => {

@@ -29,7 +29,7 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
                     longitude: result.location?.longitude
                 }
             }
-
+            
             setLocations(prev => [...prev, created])
         } 
         catch {
