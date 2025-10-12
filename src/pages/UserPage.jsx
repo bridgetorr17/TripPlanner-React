@@ -135,6 +135,7 @@ const UserPage = () => {
                 </div>
                 <ChangeableField
                     name='userName'
+                    isOwner={isOwner}
                     label='User Name'
                     value={userName}
                     setValue={setUserName}
@@ -144,6 +145,7 @@ const UserPage = () => {
                 />
                 <ChangeableField
                     name='email'
+                    isOwner={isOwner}
                     label='Email'
                     value={email}
                     setValue={setEmail}
@@ -153,6 +155,7 @@ const UserPage = () => {
                 />
                 <ChangeableField
                     name='bio'
+                    isOwner={isOwner}
                     label='Biography'
                     value={bio}
                     setValue={setBio}

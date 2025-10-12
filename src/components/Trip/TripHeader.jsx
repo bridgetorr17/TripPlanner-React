@@ -57,6 +57,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                 <>
                     <ChangeableField
                         name="name"
+                        isOwner={true}
                         label=""
                         value={tripTitle}
                         setValue={setTripTitle}
@@ -69,6 +70,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                     />
                     <ChangeableField
                         name="subtitle"
+                        isOwner={true}
                         label=""
                         value={tripSubtitle}
                         setValue={setTripSubtitle}
