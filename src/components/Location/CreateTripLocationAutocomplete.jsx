@@ -29,7 +29,7 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
                     longitude: result.location?.longitude
                 }
             }
-
+            
             setLocations(prev => [...prev, created])
         } 
         catch {
@@ -46,7 +46,8 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
                         <div className="w-full">
                             <PlaceAutocomplete 
                                 editMode={true}
-                                handleSelect={(selected) => handleSelect(selected)}/>
+                                handleSelect={(selected) => handleSelect(selected)}
+                                clearPlace={false}/>
                         </div>
                         {locations.length > 1 && (
                             <button 
