@@ -33,7 +33,7 @@ const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) =>
                             type="button"
                             onClick={(e) => {
                                 e.preventDefault();
-                                setSelectedDate(date);
+                                setSelectedDate(new Date(date.year, monthNames.indexOf(date.month)));
                                 setEdit(false);
                             }}
                             className={`p-2 text-gray-500 hover:text-gray-700`}
