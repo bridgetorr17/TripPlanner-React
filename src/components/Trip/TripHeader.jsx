@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import EditDate from "./EditDate"
 import ChangeableField from "../StyledComponents/ChangeableField"
+import { spanStylesMedium } from "../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
     const [tripTitle, setTripTitle] = useState(tripData.title);
@@ -91,7 +92,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                     <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-blue-900">
                         {tripData.title}
                     </h1>
-                    <span className="text-2xl font-medium text-blue-700">
+                    <span className={spanStylesMedium}>
                         {tripData.subtitle}
                     </span>
                     <span className="text-xl font-normal text-blue-600">

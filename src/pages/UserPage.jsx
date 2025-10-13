@@ -6,6 +6,7 @@ import { redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
 import ChangeableField from "../components/StyledComponents/ChangeableField";
+import { spanStylesMedium } from "../components/Utilities/commonStyles";
 
 const UserPage = () => {
     const { isOwner,
@@ -139,6 +140,8 @@ const UserPage = () => {
                         : null}
                     <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
                 </div>
+                {isOwner ? 
+                <>
                 <ChangeableField
                     name='userName'
                     isOwner={isOwner}
@@ -172,34 +175,45 @@ const UserPage = () => {
                     save={handleSave}
                     size="medium"   
                 />
-                {isOwner 
-                    ?
-                    <>
-                        <StyledButton 
-                            onClickFn={() => handleLogout()}
-                            color={"teal"}
-                            >
-                            <FaSignOutAlt className="text-lg"/>
-                            Logout
-                        </StyledButton>
-                        <StyledButton
-                            onClickFn={() => setModalOpen(true)}
-                            color={"red"}
-                        >
-                            <FaTrash className="text-lg" />
-                            Delete Account
-                        </StyledButton>
-                        <ConfirmDelete
-                            isOpen={modalOpen}
-                            onClose={() => setModalOpen(false)}
-                            onConfirm={() => {
-                                handleDelete();
-                                setModalOpen(false);
-                            }}
-                            itemName={userName}
-                        /> 
-                    </>
-                    : null}
+
+                <StyledButton 
+                    onClickFn={() => handleLogout()}
+                    color={"teal"}
+                    >
+                    <FaSignOutAlt className="text-lg"/>
+                    Logout
+                </StyledButton>
+                <StyledButton
+                    onClickFn={() => setModalOpen(true)}
+                    color={"red"}
+                >
+                    <FaTrash className="text-lg" />
+                    Delete Account
+                </StyledButton>
+                <ConfirmDelete
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onConfirm={() => {
+                        handleDelete();
+                        setModalOpen(false);
+                    }}
+                    itemName={userName}
+                /> 
+            </> : 
+            <>
+                <span className={spanStylesMedium}>
+                    {userName}
+                </span>
+                <br/>
+                <span className={spanStylesMedium}>
+                    {email}
+                </span>
+                <br/>
+                <span className={spanStylesMedium}>
+                    {bio}
+                </span>
+            </>
+            }
             </div>
         </div>
     )
@@ -207,12 +221,10 @@ const UserPage = () => {
 
 //User GET
 const userLoader = async ({ params }) => {
+    const {userName} = params;
 
-    const { id } = params;
-
-    const user = await fetch(`/api/dashboard/${id}`);
+    const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
-
     if (!data.success) {
         return redirect('/')
     }

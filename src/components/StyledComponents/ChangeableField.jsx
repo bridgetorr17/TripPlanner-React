@@ -1,6 +1,7 @@
 import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
 import IconButton from './IconButton'
+import { spanStylesMedium } from '../Utilities/commonStyles';
 
 const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit, save, size }) => {
 
@@ -8,12 +9,12 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
     const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
     const displayStyles = {
         large: "text-4xl font-bold text-blue-900",
-        medium: "text-2xl font-medium text-blue-700"
+        medium: spanStylesMedium
     }
 
     const inputStyles = {
         large: "text-4xl font-bold text-blue-900 border-blue-400",
-        medium: "text-2xl font-medium text-blue-700 border-blue-400"
+        medium: `${spanStylesMedium} border-blue-400`
     }
 
     const iconStyles = {
