@@ -71,7 +71,7 @@ const App = () => {
                 <Route path='/resetPassword' element={<ResetPasswordPage />} errorElement={<ErrorPage/>}/>
                 <Route path='/preview' element={<PreviewPage/>} errorElement={<ErrorPage/>}/>
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader} errorElement={<ErrorPage/>}/>
-                <Route path='/dashboard/:id' element={<UserPage/>} loader={userLoader} errorElement={<ErrorPage/>}/>
+                <Route path='/dashboard/:userName' element={<UserPage/>} loader={userLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/createNew' element={<CreateTripPage />} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/viewer/:id' element={<TripPage/>} loader={viewerTripLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/:id' element={<TripPage/>} loader={authTripLoader} errorElement={<ErrorPage/>}/>
