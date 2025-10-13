@@ -1,10 +1,25 @@
 import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
+import IconButton from './IconButton'
 
-const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit, save, classNameDisplay = '', classNameInput = '', classNameIcon = ''}) => {
+const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit, save, size }) => {
 
     const [tempValue, setTempValue] = useState(value);
+    const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+    const displayStyles = {
+        large: "text-4xl font-bold text-blue-900",
+        medium: "text-2xl font-medium text-blue-700"
+    }
 
+    const inputStyles = {
+        large: "text-4xl font-bold text-blue-900 border-blue-400",
+        medium: "text-2xl font-medium text-blue-700 border-blue-400"
+    }
+
+    const iconStyles = {
+        large: "ml-2",
+        medium: "ml-1"
+    }
     return (
         <>
             <form onSubmit={(e) => {
@@ -19,11 +34,11 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                             type="text"
                             value={tempValue}
                             onChange={(e) => setTempValue(e.target.value)}
-                            className={`flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 ${classNameInput}`}
+                            className={`${baseInputStyles} ${inputStyles[size]}`}
                         />
                         <IconButton
                             type="submit" 
-                            className={classNameIcon}>
+                            className={iconStyles[size]}>
                             <FaSave className="w-5 h-5" />
                         </IconButton>
                         <IconButton
@@ -33,7 +48,7 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                                 setEdit(false);
                             }}
                             color="gray"
-                            className={classNameIcon}
+                            className={iconStyles[size]}
                             aria-label="Cancel"
                         >
                             <FaTimes className="w-5 h-5" />
@@ -41,7 +56,7 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                     </div>
                 ) : (
                 <div className="flex items-center justify-between">
-                    <span className={`text-blue-800 ${classNameDisplay}`}>
+                    <span className={`text-blue-800 ${displayStyles[size]}`}>
                         {value !== '' ? value : `Add ${name} here`}
                     </span>
                     {isOwner && (
@@ -50,7 +65,7 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                             e.preventDefault();
                             setEdit(true);
                         }}
-                        className={classNameIcon}
+                        className={iconStyles[size]}
                         aria-label={`Edit ${name}`}
                     >
                         <FaEdit className="w-5 h-5" />

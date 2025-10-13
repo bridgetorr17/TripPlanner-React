@@ -141,7 +141,8 @@ const UserPage = () => {
                     setValue={setUserName}
                     edit={editName}
                     setEdit={setEditName}
-                    save={handleSave}    
+                    save={handleSave}
+                    size="medium"   
                 />
                 <ChangeableField
                     name='email'
@@ -151,7 +152,8 @@ const UserPage = () => {
                     setValue={setEmail}
                     edit={editEmail}
                     setEdit={setEditEmail}
-                    save={handleSave}    
+                    save={handleSave}
+                    size="medium"   
                 />
                 <ChangeableField
                     name='bio'
@@ -161,7 +163,8 @@ const UserPage = () => {
                     setValue={setBio}
                     edit={editBio}
                     setEdit={setEditBio}
-                    save={handleSave}    
+                    save={handleSave}
+                    size="medium"   
                 />
                 {isOwner 
                     ?

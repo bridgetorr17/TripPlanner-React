@@ -64,9 +64,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         edit={editTripTitle}
                         setEdit={setEditTripTitle}
                         save={handleSave}
-                        classNameDisplay="text-4xl font-bold text-blue-900"
-                        classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
-                        classNameIcon="ml-2"
+                        size="large"
                     />
                     <ChangeableField
                         name="subtitle"
@@ -77,9 +75,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         edit={editTripSubtitle}
                         setEdit={setEditTripSubtitle}
                         save={handleSave}
-                        classNameDisplay="text-2xl font-medium text-blue-700"
-                        classNameInput="text-2xl font-medium text-blue-700 border-blue-400"
-                        classNameIcon="ml-1"
+                        size="medium"
                     />
                     <EditDate 
                         name="date"
