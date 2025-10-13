@@ -14,8 +14,8 @@ interface ITripPopulated {
     locations: ILocation[];
     month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
     year: number;
-    memories: Array< IMemory | { text: string; location: string; user: {_id: Types.ObjectId; userName: string; profilePicture: string;}}>;
-    photos: IPhoto[];
+    memories: Array<{ text: string; location: string; user: {_id: Types.ObjectId; userName: string; profilePicture: string;}}>;
+    photos: Array<{ url: string; user: {_id: Types.ObjectId; userName: string;} }>;
 }
 
 interface TripDetailsSuccess {
@@ -43,6 +43,10 @@ const tripDetails = async (
         .populate({
             path: 'memories.user',
             select: 'userName profilePicture'
+        })
+        .populate({
+            path: 'photos.user',
+            select: 'userName'
         })
         .lean();
     

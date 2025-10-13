@@ -9,19 +9,23 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
     const [newPlace, setNewPlace] = useState(null);
     const [newPlaceCoords, setNewPlaceCoords] = useState([])
     const [coords, setCoords] = 
-        useState(locations[0] 
-            ? [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
-            : [38.7946, -100.534]
+        useState((locations[0] === undefined)
+            ? [38.7946, -100.534]
+            : [locations[0].coordinates?.latitude, locations[0].coordinates?.longitude]
     )
     const navigate = useNavigate();
 
     useEffect(() => {
         setNewPlace(null);
-        setCoords([locations[0].coordinates.latitude, locations[0].coordinates.longitude])
+        setCoords((locations[0] === undefined)
+            ? [38.7946, -100.534]
+            : [locations[0].coordinates?.latitude, locations[0].coordinates?.longitude]
+        )
     }, [editMode])
     
     const selectNewPlace = async (selectedPlace) => {
         setNewPlace(selectedPlace);
+        console.log(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
         try {
             const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
@@ -72,7 +76,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         }
         catch {
             console.log(err);
-            navigate('/errorpage')
         }
         finally{
             setNewPlace(null);
@@ -99,7 +102,6 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             setLocations(updatedLocations);
         }
         catch(err){
-            navigate('/errorpage')
             console.log(err);
         }
     }
@@ -150,7 +152,8 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
                 <div className="sm:flex-1 flex flex-col p-2 rounded shadow-sm relative h-64 md:h-[200px]">
                         <PlaceAutocomplete 
                             editMode={editMode}
-                            handleSelect={selectNewPlace}/>
+                            handleSelect={selectNewPlace}
+                            clearPlace={true}/>
                         <Map 
                             locations={locations}
                             coords={coords}/>

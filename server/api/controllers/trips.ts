@@ -152,13 +152,13 @@ const postNewPhoto = async (req: Request, res: Response) => {
 
          trip.photos.push({
             url: blobUrl,
-            user: user._id,
-            userName: user.userName
+            user: user._id
         });
 
         await trip.save();
         
-        const lastPhoto = trip.photos[trip.photos.length - 1]
+        const lastPhoto = trip.photos[trip.photos.length - 1];
+
         return res.json(lastPhoto);
     }
     catch(err){

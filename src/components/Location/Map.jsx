@@ -13,7 +13,6 @@ const ZoomTo = ({ coords, zoom }) => {
 };
 
 const Map = ({locations, coords}) => {
-
     const mapRef = useRef(null);
     const [centerCoords, setCenterCoords] = useState(coords);
     const [zoom, setZoom] = useState(2);

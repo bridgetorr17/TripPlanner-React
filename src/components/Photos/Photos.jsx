@@ -29,7 +29,16 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 
             const photo = await res.json();
 
-            setPhotos(prev => [...prev, photo])
+            const addedPhoto = {
+                url: photo.url,
+                user: {
+                    _id: photo.user,
+                    userName: loggedInUser,
+                },
+                _id: photo._id
+            }
+
+            setPhotos(prev => [...prev, addedPhoto])
             closeModal();
         }
         catch(err){
@@ -96,15 +105,15 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
                     <div key={photo._id} className="flex flex-col items-center">
                         <img
                             src={photo.url}
-                            alt={`Posted by ${photo.userName}`}
+                            alt={`Posted by ${photo.user.userName}`}
                             className="w-full h-48 object-cover rounded-lg"
                             />
                         <div className="flex items-center space-x-2">
                             <span className="text-xs text-gray-700 italic">
-                                {photo.userName}
+                                {photo.user.userName}
                             </span>
                             <div>
-                                {loggedInUser === photo.userName && (
+                                {loggedInUser === photo.user.userName && (
                                     <button
                                         className="text-red-600 hover:text-red-800 focus:outline-none"
                                         onClick={() => deletePhoto(photo._id)}>
