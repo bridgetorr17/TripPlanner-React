@@ -39,7 +39,7 @@
   "homepage": "https://github.com/bridgetorr17/TripPlanner-React#readme",
   "devDependencies": {
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^4.6.0",
     "vite": "^7.0.4"
   }
