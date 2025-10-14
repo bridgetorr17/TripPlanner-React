@@ -204,9 +204,11 @@ const UserPage = () => {
                 <span className={spanStylesMedium}>
                     {userName}
                 </span>
+                <br/>
                 <span className={spanStylesMedium}>
                     {email}
                 </span>
+                <br/>
                 <span className={spanStylesMedium}>
                     {bio}
                 </span>
@@ -218,17 +220,13 @@ const UserPage = () => {
 }
 
 //User GET
-const userLoader = async ({ params }) => {
-
-    const { id } = params;
-
-    const user = await fetch(`/api/dashboard/${id}`);
+const userLoader = async ({params}) => {
+    const {userName} = params;
+    const user = await fetch(`/api/dashboard/${userName}`);
     const data = await user.json();
-
     if (!data.success) {
         return redirect('/')
     }
-
     return data;
 }
 
