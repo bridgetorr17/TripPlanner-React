@@ -1,11 +1,12 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-import ProfileField from "../components/Dashboard/ProfileField";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
 import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
 import { redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
+import ChangeableField from "../components/StyledComponents/ChangeableField";
+import { inputLabelStyles, spanStylesMedium } from "../components/Utilities/commonStyles";
 
 const UserPage = () => {
     const { isOwner,
@@ -139,64 +140,86 @@ const UserPage = () => {
                         : null}
                     <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
                 </div>
-                <ProfileField 
+                {isOwner ? 
+                <>
+                <ChangeableField
                     name='userName'
+                    isOwner={isOwner}
                     label='User Name'
                     value={userName}
                     setValue={setUserName}
                     edit={editName}
                     setEdit={setEditName}
-                    isOwner={isOwner}
-                    save={handleSave}    
+                    save={handleSave}
+                    size="medium"   
                 />
-                <ProfileField 
+                <ChangeableField
                     name='email'
+                    isOwner={isOwner}
                     label='Email'
                     value={email}
                     setValue={setEmail}
                     edit={editEmail}
                     setEdit={setEditEmail}
-                    isOwner={isOwner}
-                    save={handleSave}    
+                    save={handleSave}
+                    size="medium"   
                 />
-                <ProfileField 
+                <ChangeableField
                     name='bio'
+                    isOwner={isOwner}
                     label='Biography'
                     value={bio}
                     setValue={setBio}
                     edit={editBio}
                     setEdit={setEditBio}
-                    isOwner={isOwner}
-                    save={handleSave}    
+                    save={handleSave}
+                    size="medium"   
                 />
-                {isOwner 
-                    ?
-                    <>
-                        <StyledButton 
-                            onClickFn={() => handleLogout()}
-                            color={"teal"}
-                            >
-                            <FaSignOutAlt className="text-lg"/>
-                            Logout
-                        </StyledButton>
-                        <StyledButton
-                            onClickFn={() => setModalOpen(true)}
-                            color={"red"}
-                        >
-                            <FaTrash className="text-lg" />
-                            Delete Account
-                        </StyledButton>
-                        <ConfirmDelete
-                            isOpen={modalOpen}
-                            onClose={() => setModalOpen(false)}
-                            onConfirm={() => {
-                                handleDelete();
-                                setModalOpen(false);
-                            }}
-                            itemName={userName}
-                        /> 
-                    </>
-                    : null}
+
+                <StyledButton 
+                    onClickFn={() => handleLogout()}
+                    color={"teal"}
+                    >
+                    <FaSignOutAlt className="text-lg"/>
+                    Logout
+                </StyledButton>
+                <StyledButton
+                    onClickFn={() => setModalOpen(true)}
+                    color={"red"}
+                >
+                    <FaTrash className="text-lg" />
+                    Delete Account
+                </StyledButton>
+                <ConfirmDelete
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onConfirm={() => {
+                        handleDelete();
+                        setModalOpen(false);
+                    }}
+                    itemName={userName}
+                /> 
+            </> : 
+            <>
+                <label className={() => inputLabelStyles("black")}> User name:</label>
+                <br/>
+                <span className={spanStylesMedium}>
+                    {userName}
+                </span>
+                <br/>
+                <label className={() => inputLabelStyles("black")}> Email:</label>
+                <br/>
+                <span className={spanStylesMedium}>
+                    {email}
+                </span>
+                <br/>
+                <label className={() => inputLabelStyles("black")}> About user:</label>
+                <br/>
+                <span className={spanStylesMedium}>
+                    {bio}
+                </span>
+            </>
+            }
             </div>
         </div>
     )
@@ -204,14 +227,12 @@ const UserPage = () => {
 
 //User GET
 const userLoader = async ({params}) => {
-    const {userName} = params;
-    const user = await fetch(`/api/dashboard/${userName}`);
+    const {id} = params;
+    const user = await fetch(`/api/dashboard/${id}`);
     const data = await user.json();
-
     if (!data.success) {
         return redirect('/')
     }
-
     return data;
 }
 

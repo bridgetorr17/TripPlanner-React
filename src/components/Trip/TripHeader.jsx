@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import TripField from "./TripField"
 import EditDate from "./EditDate"
+import ChangeableField from "../StyledComponents/ChangeableField"
+import { spanStylesMedium } from "../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
     const [tripTitle, setTripTitle] = useState(tripData.title);
@@ -55,27 +56,27 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
             <div className="flex flex-col items-start space-y-4">
                 {isOwner ? (
                 <>
-                    <TripField
+                    <ChangeableField
                         name="name"
+                        isOwner={true}
+                        label=""
                         value={tripTitle}
                         setValue={setTripTitle}
                         edit={editTripTitle}
                         setEdit={setEditTripTitle}
                         save={handleSave}
-                        classNameDisplay="text-4xl font-bold text-blue-900"
-                        classNameInput="text-4xl font-bold text-blue-900 border-blue-400"
-                        classNameIcon="ml-2"
+                        size="large"
                     />
-                    <TripField
+                    <ChangeableField
                         name="subtitle"
+                        isOwner={true}
+                        label=""
                         value={tripSubtitle}
                         setValue={setTripSubtitle}
                         edit={editTripSubtitle}
                         setEdit={setEditTripSubtitle}
                         save={handleSave}
-                        classNameDisplay="text-2xl font-medium text-blue-700"
-                        classNameInput="text-2xl font-medium text-blue-700 border-blue-400"
-                        classNameIcon="ml-1"
+                        size="medium"
                     />
                     <EditDate 
                         name="date"
@@ -91,7 +92,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                     <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-blue-900">
                         {tripData.title}
                     </h1>
-                    <span className="text-2xl font-medium text-blue-700">
+                    <span className={spanStylesMedium}>
                         {tripData.subtitle}
                     </span>
                     <span className="text-xl font-normal text-blue-600">

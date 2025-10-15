@@ -1,5 +1,6 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { inputFieldStyles } from "../../components/Utilities/commonStyles";
 
 const MonthYear = ( {selectedDate, setSelectedDate} ) => {
 
@@ -11,7 +12,7 @@ const MonthYear = ( {selectedDate, setSelectedDate} ) => {
   
   return (
     <DatePicker
-      className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      className={inputFieldStyles}
       showIcon
       toggleCalendarOnIconClick
       showMonthYearPicker

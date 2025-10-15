@@ -103,7 +103,7 @@ const TripPage = () => {
                 isOwner={(userStatus === 'owner')}
                 tripData={tripData}
                 tripId={trip._id}
-                />
+            />
             <div className="w-full max-w-3xl space-y-6">
                 <FeaturePanel 
                     userStatus={userStatus}
@@ -149,8 +149,6 @@ const TripPage = () => {
                         tripId={trip._id}
                         loggedInUser={currentUser.userName}/>
                 </FeaturePanel>
-
-
                 <FeaturePanel
                     userStatus={userStatus}
                     toggleEdit={toggleEdit}

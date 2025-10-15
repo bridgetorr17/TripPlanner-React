@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
+import { inputLabelStyles, inputFieldStyles } from "../components/Utilities/commonStyles";
 
 const newTripAttempt = async (tripInfo) => {
     try {
@@ -78,7 +79,7 @@ const CreateTripPage = () => {
                     <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                         <div className="flex-1 flex flex-col">
                             <label 
-                                className="mb-1 text-blue-700 font-semibold"
+                                className={() => inputLabelStyles("blue")}
                                 htmlFor="trip-name">
                                 Trip Name
                             </label>
@@ -90,18 +91,18 @@ const CreateTripPage = () => {
                                 placeholder="Name your trip"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)} 
-                                className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                                className={inputFieldStyles}/>
                         </div>
                         <div className="flex-1 flex flex-col">
                             <label 
-                                className="mb-1 text-blue-700 font-semibold block"
+                                className={`${() => inputLabelStyles("blue")} block`}
                                 htmlFor="trip-date">
                                 Date
                             </label>
                             <MonthYear
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
-                                className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className={inputFieldStyles}
                             />
                         </div>
                     </div>
@@ -113,7 +114,7 @@ const CreateTripPage = () => {
                             placeholder="Add a short description"
                             value={subtitle}
                             onChange={(e) => setSubtitle(e.target.value)} 
-                            className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                            className={inputFieldStyles}/>
                     </div>
                 </div>
 
