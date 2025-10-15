@@ -2,12 +2,30 @@ import MonthYear from "./MonthYear";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 
-const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) => {
+interface props {
+    name: string;
+    startingMonth: string;
+    startingYear: number;
+    edit: boolean;
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+    save: (
+        field: string,
+        newValue: any,
+        setEdit: React.Dispatch<React.SetStateAction<boolean>>,
+    ) => Promise<void>;
+}
+
+type dateData = {
+    month: string;
+    year: number;
+}
+
+const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: props) => {
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-    const [date, setDate] = useState({month: startingMonth, year: startingYear})
-    const [selectedDate, setSelectedDate] = useState(new Date(startingYear, monthNames.indexOf(startingMonth)))
+    const [date, setDate] = useState<dateData>({month: startingMonth, year: startingYear})
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date(startingYear, monthNames.indexOf(startingMonth)))
     
     return (
         <>
@@ -22,7 +40,6 @@ const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) =>
                         <MonthYear
                             selectedDate={selectedDate}
                             setSelectedDate={setSelectedDate}
-                            className="w-full border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                         <button 
                             type="submit" 

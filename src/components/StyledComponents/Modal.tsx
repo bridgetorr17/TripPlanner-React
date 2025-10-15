@@ -1,13 +1,13 @@
 import { useEffect, ReactNode } from 'react';
 
-interface ModalProps {
+interface props {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
     children: ReactNode;
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export default function Modal({ isOpen, onClose, title, children }: props) {
     // Close on Escape key press
     useEffect(() => {
         function handleKey(e: KeyboardEvent) {
