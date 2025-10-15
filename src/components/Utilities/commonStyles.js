@@ -15,3 +15,10 @@ export const passwordInputStyles =
     
 export const spanStylesMedium = 
      "text-2xl font-medium text-blue-700"
+
+export const inputLabelStyles = (color) => {
+    return `mb-1 text-${color}-700 font-semibold`
+}
+
+export const inputFieldStyles = 
+    "w-full border border-blue-300 rounded-md px-3 py-2"

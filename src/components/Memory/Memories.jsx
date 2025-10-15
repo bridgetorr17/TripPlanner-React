@@ -71,7 +71,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                     onSubmit={createMemory}
                     className="flex flex-col w-full p-4 space-y-6"
                 >
-                    <label className="mb-1 text-blue-700 font-semibold">Location</label>
+                    <label className={() => inputLabelStyles("blue")}>Location</label>
                     <input 
                         type="text"
                         name="location"
@@ -80,7 +80,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                         onChange={(e) => setLocation(e.target.value)} 
                         className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
                         />
-                    <label className="mb-1 text-blue-700 font-semibold">Memory</label>
+                    <label className={() => inputLabelStyles("blue")}>Memory</label>
                     <textarea 
                         required
                         rows={4}

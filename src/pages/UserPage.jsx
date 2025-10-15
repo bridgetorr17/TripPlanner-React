@@ -6,7 +6,7 @@ import { redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
 import ChangeableField from "../components/StyledComponents/ChangeableField";
-import { spanStylesMedium } from "../components/Utilities/commonStyles";
+import { inputLabelStyles, spanStylesMedium } from "../components/Utilities/commonStyles";
 
 const UserPage = () => {
     const { isOwner,
@@ -201,13 +201,19 @@ const UserPage = () => {
                 /> 
             </> : 
             <>
+                <label className={() => inputLabelStyles("black")}> User name:</label>
+                <br/>
                 <span className={spanStylesMedium}>
                     {userName}
                 </span>
                 <br/>
+                <label className={() => inputLabelStyles("black")}> Email:</label>
+                <br/>
                 <span className={spanStylesMedium}>
                     {email}
                 </span>
+                <br/>
+                <label className={() => inputLabelStyles("black")}> About user:</label>
                 <br/>
                 <span className={spanStylesMedium}>
                     {bio}
