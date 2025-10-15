@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
+  build: { //add this property
+    sourcemap: true
+  }
   // server: {
   //   proxy: {
   //     '/api': {
