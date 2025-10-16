@@ -6,7 +6,16 @@ import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
 import { inputLabelStyles, inputFieldStyles } from "../components/Utilities/commonStyles";
 
-const newTripAttempt = async (tripInfo) => {
+export type tripInfoData = {
+    name: string;
+    subtitle: string;
+    locations: {}[];
+    contributors: string[];
+    month: number;
+    year: number;
+}
+
+const newTripAttempt = async (tripInfo: tripInfoData) => {
     try {
         const res = await fetch('/api/trips/createNew', {
             method: 'POST',
@@ -19,21 +28,21 @@ const newTripAttempt = async (tripInfo) => {
 
         const result = await res.json();
         return result;
-    } catch {
+    } catch(err) {
         throw err;
     }
 }
 
 const CreateTripPage = () => {
 
-    const [name, setName] = useState('');
-    const [subtitle, setSubtitle] = useState('');
+    const [name, setName] = useState<string>('');
+    const [subtitle, setSubtitle] = useState<string>('');
     const [locations, setLocations] = useState([{}]);
-    const [contributors, setContributors] = useState(['']);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [contributors, setContributors] = useState<string[]>(['']);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const navigate = useNavigate();
 
-    const createTrip = async (e) => {
+    const createTrip = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         locations.shift();
@@ -79,7 +88,7 @@ const CreateTripPage = () => {
                     <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                         <div className="flex-1 flex flex-col">
                             <label 
-                                className={() => inputLabelStyles("blue")}
+                                className={inputLabelStyles("blue")}
                                 htmlFor="trip-name">
                                 Trip Name
                             </label>
@@ -95,14 +104,13 @@ const CreateTripPage = () => {
                         </div>
                         <div className="flex-1 flex flex-col">
                             <label 
-                                className={`${() => inputLabelStyles("blue")} block`}
+                                className={inputLabelStyles("blue")}
                                 htmlFor="trip-date">
                                 Date
                             </label>
                             <MonthYear
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
-                                className={inputFieldStyles}
                             />
                         </div>
                     </div>
