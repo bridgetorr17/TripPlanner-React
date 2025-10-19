@@ -8,8 +8,12 @@
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["react", "react-dom"],
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true
+    "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tripplanner/shared": ["../shared"]
+    }
   },
   "include": ["."]
 }

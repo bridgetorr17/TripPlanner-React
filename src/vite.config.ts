@@ -6,15 +6,7 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
-  build: { //add this property
+  build: {
     sourcemap: true
   }
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: `http://localhost:8000`,
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
 });
