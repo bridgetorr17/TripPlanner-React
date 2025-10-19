@@ -15,8 +15,6 @@
       "@tripplanner/shared": ["../shared"]
     }
   },
-    "include": [
-    "api/**/*"
-  ],
+    "include": ["api/**/*"],
   "exclude": ["node_modules"]
 }
