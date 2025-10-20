@@ -4,7 +4,7 @@
     "target": "ES2020",
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "outDir": "./dist",
+    "outDir": "dist",
     "rootDir": "api",
     "strict": true,
     "esModuleInterop": true,
