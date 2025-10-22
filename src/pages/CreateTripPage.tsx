@@ -5,11 +5,12 @@ import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
 import { inputLabelStyles, inputFieldStyles } from "../components/Utilities/commonStyles";
+import { LocationType } from '../../shared/types/Location'
 
 export type tripInfoData = {
     name: string;
     subtitle: string;
-    locations: {}[];
+    locations: LocationType[];
     contributors: string[];
     month: number;
     year: number;
@@ -37,7 +38,7 @@ const CreateTripPage = () => {
 
     const [name, setName] = useState<string>('');
     const [subtitle, setSubtitle] = useState<string>('');
-    const [locations, setLocations] = useState([{}]);
+    const [locations, setLocations] = useState<LocationType[]>([]);
     const [contributors, setContributors] = useState<string[]>(['']);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const navigate = useNavigate();

@@ -5,7 +5,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "outDir": "dist",
-    "rootDir": "api",
+    "rootDir": "../",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
