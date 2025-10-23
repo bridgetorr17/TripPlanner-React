@@ -1,6 +1,7 @@
 import MonthYear from "./MonthYear";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { useState } from "react";
+import { inputFieldStyles } from "../Utilities/commonStyles"
 
 const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) => {
 
