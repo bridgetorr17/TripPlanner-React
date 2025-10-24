@@ -3,7 +3,7 @@ import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import { inputFieldStyles } from "../Utilities/commonStyles"
 
-interface props {
+interface EditDateProps {
     name: string;
     startingMonth: string;
     startingYear: number;
@@ -21,7 +21,7 @@ type dateData = {
     year: number;
 }
 
-const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: props) => {
+const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: EditDateProps) => {
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 

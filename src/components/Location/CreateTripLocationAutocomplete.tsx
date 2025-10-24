@@ -1,8 +1,14 @@
 import { FaTrash } from "react-icons/fa"
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { useNavigate } from "react-router-dom";
+import { LocationType } from "../../../shared/types/Location"
 
-const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
+interface CreateTripLocationAutocompleteProps {
+    locations: LocationType[];
+    setLocations: React.Dispatch<React.SetStateAction<LocationType[]>>;
+}
+
+const CreateTripLocationAutocomplete = ({ locations, setLocations }: CreateTripLocationAutocompleteProps) => {
     const navigate = useNavigate()
     const handleSelect = async (selected) => {
         const placeId = selected.placePrediction.placeId;
@@ -28,7 +34,7 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations}) => {
                     latitude: result.location?.latitude,
                     longitude: result.location?.longitude
                 }
-            }
+            } as LocationType;
             
             setLocations(prev => [...prev, created])
         } 
