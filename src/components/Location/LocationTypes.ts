@@ -18,12 +18,12 @@ export interface LocationsProps {
     tripId: string;
 }
 
-export interface ZoomToArgs {
+export type ZoomToArgs ={
     coords: Coordinates;
     zoom: number;
 }
 
-export interface MapProps {
+export type MapProps = {
     locations: LocationType[];
     coords: Coordinates;
 }

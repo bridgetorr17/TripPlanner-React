@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { PlaceAutocompleteProps, AutocompletePrediction } from "./LocTypes"
+import { PlaceAutocompleteProps, AutocompletePrediction } from "./LocationTypes"
 
 const PlaceAutocomplete = ({ editMode, handleSelect, clearPlace }: PlaceAutocompleteProps) => {
 

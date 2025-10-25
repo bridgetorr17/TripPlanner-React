@@ -4,7 +4,7 @@ import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { LocationType } from "../../../shared/types/Location"
-import { LocationsProps, AutocompletePrediction, Coordinates } from "./LocTypes";
+import { LocationsProps, AutocompletePrediction, Coordinates } from "./LocationTypes";
 
 const Locations = ({editMode, locations, setLocations, tripId}: LocationsProps) => {
     

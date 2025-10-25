@@ -2,14 +2,16 @@ import { useState } from "react";
 import Memory from "./Memory"
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../StyledComponents/SubmitButton";
+import { MemoriesProps } from "./MemoryTypes";
+import { inputLabelStyles } from "../Utilities/commonStyles"
 
-const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) => {
+const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}: MemoriesProps) => {
 
     const [memory, setMemory] = useState('');
     const [location, setLocation] = useState('');
     const [memories, setMemories] = useState(memoriesInit);
     const navigate = useNavigate()
-    const createMemory = async (e) => {
+    const createMemory = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newMemory = {
@@ -41,7 +43,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
         }
     }
 
-    const deleteMemory = async (id) => {
+    const deleteMemory = async (id: string) => {
         const memoryId = {
             id: id
         }
@@ -71,7 +73,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                     onSubmit={createMemory}
                     className="flex flex-col w-full p-4 space-y-6"
                 >
-                    <label className={() => inputLabelStyles("blue")}>Location</label>
+                    <label className={inputLabelStyles("blue")}>Location</label>
                     <input 
                         type="text"
                         name="location"
@@ -80,7 +82,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                         onChange={(e) => setLocation(e.target.value)} 
                         className="border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
                         />
-                    <label className={() => inputLabelStyles("blue")}>Memory</label>
+                    <label className={inputLabelStyles("blue")}>Memory</label>
                     <textarea 
                         required
                         rows={4}
@@ -98,8 +100,7 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}) =
                 </form>
             :   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
                     {memories.map((mem) => (
-                        <Memory id={mem._id}
-                                key={mem._id}
+                        <Memory key={mem._id}
                                 memory={mem}
                                 tripId={tripId}
                                 loggedInUser={loggedInUser}

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L, { LatLngBoundsExpression } from "leaflet"
-import { ZoomToArgs, MapProps, Coordinates } from "./LocTypes";
+import { ZoomToArgs, MapProps, Coordinates } from "./LocationTypes";
 
 const ZoomTo = ({ coords, zoom }: ZoomToArgs) => {
     const map = useMap();

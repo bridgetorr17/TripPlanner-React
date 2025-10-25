@@ -1,7 +1,7 @@
 import { FaTrash } from "react-icons/fa"
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { useNavigate } from "react-router-dom";
-import { CreateTripLocationAutocompleteProps, AutocompletePrediction } from "./LocTypes";
+import { CreateTripLocationAutocompleteProps, AutocompletePrediction } from "./LocationTypes";
 import { LocationType } from "../../../shared/types/Location"
 
 const CreateTripLocationAutocomplete = ({ locations, setLocations }: CreateTripLocationAutocompleteProps) => {

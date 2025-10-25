@@ -1,10 +1,10 @@
 import mongoose, { Types, Document } from "mongoose";
+import { MemoryType } from "../../../shared/types/Memory.js"
 
-export interface IMemory extends Document{
+type MemoryBase = Omit<MemoryType, "_id" | "user">
+export interface IMemory extends MemoryBase, Document{
     _id: Types.ObjectId;
-    text: string;
     user: Types.ObjectId;
-    location: string;
 }
 
 const MemorySchema = new mongoose.Schema<IMemory>({
