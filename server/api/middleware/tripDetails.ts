@@ -1,9 +1,7 @@
-import Trip from '../models/Trip';
-import { IUserMinimal } from '../models/User'
+import Trip from '../models/Trip.js';
+import { IUserMinimal } from '../models/User.js'
 import { Types } from 'mongoose';
-import { IPhoto }  from "../models/Photo"
-import { ILocation }  from '../models/Location';
-import { IMemory } from '../models/Memory';
+import { ILocation }  from '../models/Location.js';
 
 interface ITripPopulated {
     _id: Types.ObjectId;

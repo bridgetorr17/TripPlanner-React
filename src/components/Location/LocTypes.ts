@@ -11,6 +11,25 @@ export interface CreateTripLocationAutocompleteProps {
     setLocations: React.Dispatch<React.SetStateAction<LocationType[]>>;
 }
 
+export interface LocationsProps {
+    editMode: Boolean;
+    locations: LocationType[];
+    setLocations: React.Dispatch<React.SetStateAction<LocationType[]>>;
+    tripId: string;
+}
+
+export interface ZoomToArgs {
+    coords: Coordinates;
+    zoom: number;
+}
+
+export interface MapProps {
+    locations: LocationType[];
+    coords: Coordinates;
+}
+
+export type Coordinates = [number, number]
+
 export type AutocompletePrediction =  {
     placePrediction: {
         place: string;
@@ -23,12 +42,12 @@ export type AutocompletePrediction =  {
             secondaryText?: {
                 text: string;
                 matches: [{}];
-            },
-            text: {
-                matches: [{}];
-                text: string;
             }
-            types: [String];
+        },
+        text: {
+            matches: [{}];
+            text: string;
         }
+        types: [String];
     }
 }

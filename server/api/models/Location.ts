@@ -1,5 +1,5 @@
 import mongoose, { Document, Types } from "mongoose";
-import { LocationType } from "../../../shared/types/Location"
+import { LocationType } from "../../../shared/types/Location.js"
 
 type LocationBase = Omit<LocationType, "_id">
 export interface ILocation extends LocationBase, Document{

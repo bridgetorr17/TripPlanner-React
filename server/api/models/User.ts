@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import mongoose, { Document, Model, Types } from 'mongoose';
+import mongoose, { Document, Model, Types, Schema } from 'mongoose';
 
 //Minimal user interface - provides only user details for read-only logic
 export interface IUserMinimal {
@@ -16,7 +16,7 @@ export interface IUser extends IUserMinimal, Document<Types.ObjectId>{
   comparePassword(candidatePassword: string, cb: (err: any, isMatch: boolean) => void): void
 }
 
-const UserSchema = new mongoose.Schema<IUser>({
+const UserSchema = new Schema<IUser>({
     userName: {
       type: String, 
       unique: true,
@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema<IUser>({
 });
 
 // Password hash middleware.
- UserSchema.pre('save', function save(next) {
+ UserSchema.pre<IUser>('save', function save(next) {
   const user = this;
   if (!user.isModified('password')) { return next() }
   bcrypt.genSalt(10, (err, salt) => {

@@ -6,7 +6,7 @@ import { LocationType } from "../../../shared/types/Location"
 
 const CreateTripLocationAutocomplete = ({ locations, setLocations }: CreateTripLocationAutocompleteProps) => {
     const navigate = useNavigate()
-    const handleSelect = async (selected) => {
+    const handleSelect = async (selected: AutocompletePrediction) => {
         const placeId = selected.placePrediction.placeId;
         try {
             const response = await fetch( `https://places.googleapis.com/v1/places/${placeId}`,
@@ -64,7 +64,17 @@ const CreateTripLocationAutocomplete = ({ locations, setLocations }: CreateTripL
             })}
             <button 
                 type="button" 
-                onClick={() => setLocations(prev => [...prev, {}])}
+                onClick={() => 
+                    setLocations(prev => {
+                        return [
+                            ...prev,
+                            {
+                                name: { mainText: "", secondaryText: ""},
+                                coordinates: { latitude: 0, longitude: 0}
+                            }
+                        ]
+                    })
+                }
                 className={`text-blue-600 hover:text-blue-800 font-semibold mt-2`}
             > + Add Stop</button>
         </div>
