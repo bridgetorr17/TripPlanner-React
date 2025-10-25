@@ -1,8 +1,10 @@
 import { useRef } from "react";
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L, { LatLngBoundsExpression } from "leaflet"
+import { ZoomToArgs, MapProps, Coordinates } from "./LocTypes";
 
-const ZoomTo = ({ coords, zoom }) => {
+const ZoomTo = ({ coords, zoom }: ZoomToArgs) => {
     const map = useMap();
     useEffect(() => {
         if (coords?.[0] != null && coords?.[1] != null) {
@@ -12,10 +14,10 @@ const ZoomTo = ({ coords, zoom }) => {
     return null;
 };
 
-const Map = ({locations, coords}) => {
-    const mapRef = useRef(null);
-    const [centerCoords, setCenterCoords] = useState(coords);
-    const [zoom, setZoom] = useState(2);
+const Map = ({locations, coords}: MapProps) => {
+    const mapRef = useRef<L.Map | null>(null);
+    const [centerCoords, setCenterCoords] = useState<Coordinates>(coords);
+    const [zoom, setZoom] = useState<number>(2);
 
     useEffect(() => { 
         setCenterCoords(coords) 
@@ -46,7 +48,7 @@ const Map = ({locations, coords}) => {
         const bounds = [
             [minLat, minLng],
             [maxLat, maxLng]
-        ];
+        ] as LatLngBoundsExpression;
 
         leafletMap.fitBounds(bounds, { padding: [50, 50], animate: true })
     }

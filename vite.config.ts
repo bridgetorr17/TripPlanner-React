@@ -5,16 +5,5 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [react(),
     tailwindcss()
-  ],
-  build: { //add this property
-    sourcemap: true
-  }
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: `http://localhost:8000`,
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // },
+  ]
 });

@@ -1,4 +1,4 @@
-import User, { IUser } from '../models/User';
+import User, { IUser } from '../models/User.js';
 import {Strategy as LocalStrategy} from 'passport-local';
 import passport from 'passport';
 import { CallbackError } from 'mongoose';

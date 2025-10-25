@@ -3,14 +3,14 @@ import express from 'express';
 const app = express();
 
 //mongodb
-import { connectDB } from './config/database'
+import { connectDB } from "./config/database.js"
 
 //env variables
 import dotenv from 'dotenv';
 dotenv.config({path: '../../.env', quiet: true})
 
 //auth
-import passport from './config/passport'
+import passport from './config/passport.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import flash from 'express-flash'

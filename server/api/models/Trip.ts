@@ -1,7 +1,7 @@
 import mongoose, { Document, Types } from 'mongoose';
-import MemorySchema, { IMemory } from "./Memory"
-import PhotoSchema, { IPhoto }  from "./Photo"
-import LocationSchema, { ILocation }  from './Location';
+import MemorySchema, { IMemory } from "./Memory.js"
+import PhotoSchema, { IPhoto }  from "./Photo.js"
+import LocationSchema, { ILocation }  from './Location.js';
 
 export interface ITrip extends Document {
     _id: Types.ObjectId;

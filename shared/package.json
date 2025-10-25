@@ -1,0 +1,7 @@
+{
+  "name": "@tripplanner/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.ts",
+  "license": "ISC"
+}

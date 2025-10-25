@@ -1,7 +1,14 @@
 import { useState } from "react";
 import Modal from "./Modal";
 
-const ConfirmDelete = ({isOpen, onClose, onConfirm, itemName}) =>{
+interface props {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    itemName: string;
+}
+
+const ConfirmDelete = ({isOpen, onClose, onConfirm, itemName}: props) =>{
 
     const [input, setInput] = useState('');
 

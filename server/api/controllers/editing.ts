@@ -1,9 +1,9 @@
-import Trip, { ITrip } from '../models/Trip';
-import User, { IUser } from '../models/User';
+import Trip, { ITrip } from '../models/Trip.js';
+import User, { IUser } from '../models/User.js';
 import dotenv from 'dotenv';
 import { Types } from 'mongoose';
 import { Request,  Response } from 'express';
-import { IMemory } from '../models/Memory';
+import { IMemory } from '../models/Memory.js';
 dotenv.config({path: './config/.env'})
 
 //PUT - update fieds of the trip, such as title, subtitle, and date

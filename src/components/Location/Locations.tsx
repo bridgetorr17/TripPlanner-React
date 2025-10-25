@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { LocationType } from "../../../shared/types/Location"
+import { LocationsProps, AutocompletePrediction, Coordinates } from "./LocTypes";
 
-const Locations = ({editMode, locations, setLocations, tripId}) => {
-
-    const [newPlace, setNewPlace] = useState(null);
-    const [newPlaceCoords, setNewPlaceCoords] = useState([])
+const Locations = ({editMode, locations, setLocations, tripId}: LocationsProps) => {
+    
+    const [newPlace, setNewPlace] = useState<AutocompletePrediction | null>(null);
+    const [newPlaceCoords, setNewPlaceCoords] = useState<Coordinates>([0,0])
     const [coords, setCoords] = 
-        useState((locations[0] === undefined)
+        useState<Coordinates>((locations[0] === undefined)
             ? [38.7946, -100.534]
             : [locations[0].coordinates?.latitude, locations[0].coordinates?.longitude]
     )
@@ -23,7 +25,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         )
     }, [editMode])
     
-    const selectNewPlace = async (selectedPlace) => {
+    const selectNewPlace = async (selectedPlace: AutocompletePrediction) => {
         setNewPlace(selectedPlace);
         console.log(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
@@ -52,14 +54,14 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
     const addLocation = async () => {
         const addPlace = {
             name: {
-                mainText: newPlace.placePrediction.structuredFormat.mainText?.text,
-                secondaryText: newPlace.placePrediction.structuredFormat.secondaryText?.text,
+                mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
+                secondaryText: newPlace?.placePrediction.structuredFormat.secondaryText?.text,
             },
             coordinates: {
                 latitude: coords[0],
                 longitude: coords[1]
             }
-        }
+        } as LocationType;
 
         try{
             const res = await fetch(`/api/trips/addPlace/${tripId}`, {
@@ -74,7 +76,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             const created = await res.json();
             setLocations(prev => [...prev, created])
         }
-        catch {
+        catch (err) {
             console.log(err);
         }
         finally{
@@ -82,7 +84,9 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
         }
     }
 
-    const deleteLocation = async (id) => {
+    const deleteLocation = async (id: string | undefined) => {
+
+        if (!id) throw new Error('this location was not found');
 
         const locationId = {
             id: id
@@ -111,7 +115,7 @@ const Locations = ({editMode, locations, setLocations, tripId}) => {
             <div className="flex flex-col sm:flex-row justify-around items-stretch space-y-4 md:space-y-0 md:space-x-4">
                 <div className="flex-1 p-4">
                     <ul className="space-y-1 text-gray-800">
-                        {locations.map((el, ind) => (
+                        {locations.map((el: LocationType, ind: number) => (
                             <li 
                                 key={ind} 
                                 className="flex items-center justify-between px-1 py-1 transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"

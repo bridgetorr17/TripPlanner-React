@@ -1,9 +1,9 @@
 import passport from 'passport';
 import validator from 'validator';
-import User, { IUser, IUserMinimal } from '../models/User';
-import Trip, { ITrip } from '../models/Trip'
-import ResetToken, { IResetToken } from '../models/ResetToken';
-import { sendEmail } from '../middleware/sendEmail';
+import User, { IUser, IUserMinimal } from '../models/User.js';
+import Trip, { ITrip } from '../models/Trip.js'
+import ResetToken, { IResetToken } from '../models/ResetToken.js';
+import { sendEmail } from '../middleware/sendEmail.js';
 import crypto from 'crypto';
 import { Request,  Response, NextFunction } from 'express';
 
