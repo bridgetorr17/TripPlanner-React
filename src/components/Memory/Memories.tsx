@@ -3,13 +3,14 @@ import Memory from "./Memory"
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../StyledComponents/SubmitButton";
 import { MemoriesProps } from "./MemoryTypes";
+import { MemoryType } from "../../../shared/types/Memory";
 import { inputLabelStyles } from "../Utilities/commonStyles"
 
 const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}: MemoriesProps) => {
 
-    const [memory, setMemory] = useState('');
-    const [location, setLocation] = useState('');
-    const [memories, setMemories] = useState(memoriesInit);
+    const [memory, setMemory] = useState<string>('');
+    const [location, setLocation] = useState<string>('');
+    const [memories, setMemories] = useState<MemoryType[]>(memoriesInit);
     const navigate = useNavigate()
     const createMemory = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
