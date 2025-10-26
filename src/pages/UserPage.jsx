@@ -17,15 +17,9 @@ const UserPage = () => {
 
     const nav = useNavigate();
     
-    const [userName, setUserName] = useState(initUserName);
-    const [email, setEmail] = useState(initEmail);
-    const [bio, setBio] = useState(initBio);
     const [profilePictureURL, setProfilePictureURL] = useState(profilePicture || "");
     const fileInputRef = useRef(null);
 
-    const [editName, setEditName] = useState(false);
-    const [editEmail, setEditEmail] = useState(false);
-    const [editBio, setEditBio] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
     const uploadPhoto = async (file) => {
@@ -146,10 +140,7 @@ const UserPage = () => {
                     name='userName'
                     isOwner={isOwner}
                     label='User Name'
-                    value={userName}
-                    setValue={setUserName}
-                    edit={editName}
-                    setEdit={setEditName}
+                    initValue={initUserName}
                     save={handleSave}
                     size="medium"   
                 />
@@ -157,10 +148,7 @@ const UserPage = () => {
                     name='email'
                     isOwner={isOwner}
                     label='Email'
-                    value={email}
-                    setValue={setEmail}
-                    edit={editEmail}
-                    setEdit={setEditEmail}
+                    initValue={initEmail}
                     save={handleSave}
                     size="medium"   
                 />
@@ -168,10 +156,7 @@ const UserPage = () => {
                     name='bio'
                     isOwner={isOwner}
                     label='Biography'
-                    value={bio}
-                    setValue={setBio}
-                    edit={editBio}
-                    setEdit={setEditBio}
+                    initValue={initBio}
                     save={handleSave}
                     size="medium"   
                 />

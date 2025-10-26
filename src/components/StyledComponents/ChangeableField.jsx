@@ -3,8 +3,9 @@ import { useState } from 'react';
 import IconButton from './IconButton'
 import { spanStylesMedium } from '../Utilities/commonStyles';
 
-const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit, save, size }) => {
-
+const ChangeableField = ({ name, isOwner, label, initValue, save, size }) => {
+    const [edit, setEdit] = useState(false);
+    const [value, setValue] = useState(initValue);
     const [tempValue, setTempValue] = useState(value);
     const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
     const displayStyles = {

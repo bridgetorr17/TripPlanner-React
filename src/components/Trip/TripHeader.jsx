@@ -5,10 +5,6 @@ import ChangeableField from "../StyledComponents/ChangeableField"
 import { spanStylesMedium } from "../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
-    const [tripTitle, setTripTitle] = useState(tripData.title);
-    const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
-    const [editTripTitle, setEditTripTitle] = useState(false);
-    const [editTripSubtitle, setEditTripSubtitle] = useState(false);
     const [editTripDate, setEditTripDate] = useState(false);
     const navigate = useNavigate();
 
@@ -60,10 +56,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         name="name"
                         isOwner={true}
                         label=""
-                        value={tripTitle}
-                        setValue={setTripTitle}
-                        edit={editTripTitle}
-                        setEdit={setEditTripTitle}
+                        initValue={tripData.title}
                         save={handleSave}
                         size="large"
                     />
@@ -71,10 +64,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         name="subtitle"
                         isOwner={true}
                         label=""
-                        value={tripSubtitle}
-                        setValue={setTripSubtitle}
-                        edit={editTripSubtitle}
-                        setEdit={setEditTripSubtitle}
+                        initValue={tripData.subtitle}
                         save={handleSave}
                         size="medium"
                     />
