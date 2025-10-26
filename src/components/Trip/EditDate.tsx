@@ -3,12 +3,30 @@ import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import { inputFieldStyles } from "../Utilities/commonStyles"
 
-const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) => {
+interface EditDateProps {
+    name: string;
+    startingMonth: string;
+    startingYear: number;
+    edit: boolean;
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+    save: (
+        field: string,
+        newValue: any,
+        setEdit: React.Dispatch<React.SetStateAction<boolean>>,
+    ) => Promise<void>;
+}
+
+type dateData = {
+    month: string;
+    year: number;
+}
+
+const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: EditDateProps) => {
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-    const [date, setDate] = useState({month: startingMonth, year: startingYear})
-    const [selectedDate, setSelectedDate] = useState(new Date(startingYear, monthNames.indexOf(startingMonth)))
+    const [date, setDate] = useState<dateData>({month: startingMonth, year: startingYear})
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date(startingYear, monthNames.indexOf(startingMonth)))
     
     return (
         <>
@@ -23,7 +41,6 @@ const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }) =>
                         <MonthYear
                             selectedDate={selectedDate}
                             setSelectedDate={setSelectedDate}
-                            className={inputFieldStyles}
                         />
                         <button 
                             type="submit" 

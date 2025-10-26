@@ -1,0 +1,13 @@
+{
+  "name": "@tripplanner/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.ts",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^8.19.2"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.11.96"
+  }
+}

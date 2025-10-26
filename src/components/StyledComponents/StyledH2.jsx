@@ -1,7 +1,4 @@
-const StyledH2 = ({
-    color,
-    children
-}) => {
+const StyledH2 = ({color, children}) => {
     const baseStyles = "text-2xl font-semibold text-center mb-6"
 
     return (

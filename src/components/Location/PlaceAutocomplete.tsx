@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { PlaceAutocompleteProps, AutocompletePrediction } from "./LocationTypes"
 
-const PlaceAutocomplete = ({ editMode, handleSelect, clearPlace }) => {
+const PlaceAutocomplete = ({ editMode, handleSelect, clearPlace }: PlaceAutocompleteProps) => {
 
     const [place, setPlace] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
+    const [suggestions, setSuggestions] = useState<AutocompletePrediction[]>([]);
     const [selectMode, setSelectMode] = useState(false);
     const navigate = useNavigate()
 
@@ -31,16 +32,7 @@ const PlaceAutocomplete = ({ editMode, handleSelect, clearPlace }) => {
     const POSTreq = async ()  => {
 
         const data = {
-            "input": place,
-            "locationBias": {
-                "circle": {
-                    "center": {
-                        "latitude": 37.7937,
-                        "longitude": -122.3965
-                    },
-                "radius": 500.0
-                }
-            }
+            "input": place
         }
 
         try{

@@ -2,19 +2,20 @@ import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
 import Modal from "../StyledComponents/Modal"
 import { Link, useNavigate } from "react-router-dom";
+import { MemoryProps, ToggleEditProps } from "./MemoryTypes";
 
-const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
+const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
 
-    const [editMemory, setEditMemory] = useState(false);
-    const [memoryText, setMemoryText] = useState(memory.text);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [seeMore, setSeeMore] = useState(false);
+    const [editMemory, setEditMemory] = useState<boolean>(false);
+    const [memoryText, setMemoryText] = useState<string>(memory.text);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [seeMore, setSeeMore] = useState<boolean>(false);
     const navigate = useNavigate()
 
     const longLength = memoryText.length > 200;
     const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
 
-    const toggleEdit = (edit, saveFn, setEdit) => {
+    const toggleEdit = ({edit, saveFn, setEdit}: ToggleEditProps) => {
         if (edit) saveFn();
         else setEdit(true);
     }
@@ -47,7 +48,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
     }
 
     const handleDelete = () => {
-        deleteMemory(memory._id);
+        if(memory._id) deleteMemory(memory._id);
         setModalOpen(false);
     }
 
@@ -56,10 +57,10 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
             <div
                 key={memory._id}
                 className="relative inline-block rounded-3xl p-4 bg-gradient-to-br to-sky-200 text-blue-900 shadow:md hover:shadow-lg transition-shadow w-full max-w-md">
-                    {loggedInUser === memory.user.userName && (
+                    {loggedInUser === memory.user?.userName && (
                         <div className="absolute top-3 right-3 flex space-x-2">
                             <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
-                                    onClick={() => toggleEdit(editMemory, updateMemory, setEditMemory)}>
+                                    onClick={() => toggleEdit({edit: editMemory, saveFn: updateMemory, setEdit: setEditMemory})}>
                                 {editMemory ? "Save" : "Edit"}
                             </button>
                             <button
@@ -95,14 +96,14 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}) => {
                     </p>}
                     
                 </div>
-                <Link to={`/dashboard/${memory.user._id}`}>
+                <Link to={`/dashboard/${memory.user?._id}`}>
                     <div className="mt-2 text-right text-xs italic text-blue-800 opacity-90">
                         <img 
-                            src={memory.user.profilePicture} 
-                            alt={`${memory.user.userName}'s profile picture`} 
+                            src={memory.user?.profilePicture} 
+                            alt={`${memory.user?.userName}'s profile picture`} 
                             className="inline-block w-3 h-3 mr-1 rounded-full align-text-bottom"/>
                         <span className="cursor-pointer hover:underline hover:text-blue-600 transition-colors duration-200 ease-in-out">
-                            {memory.user.userName}
+                            {memory.user?.userName}
                         </span>
                     </div>
                 </Link>

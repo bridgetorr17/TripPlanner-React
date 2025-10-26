@@ -1,30 +1,19 @@
 import mongoose, { Document, Types } from "mongoose";
+import { LocationType } from "../../../shared/types/Location.js"
 
-export interface ILocation extends Document{
+type LocationBase = Omit<LocationType, "_id">
+export interface ILocation extends LocationBase, Document{
     _id: Types.ObjectId;
-    name: {
-        mainText: string;
-        secondaryText: string;
-    };
-    coordinates: {
-        latitude: number;
-        longitude: number;
-    };
 }
 
 const LocationSchema = new mongoose.Schema<ILocation>({
     name: {
-        type: {
-            mainText: String,
-            secondaryText: String
-        },
-        required: true
+        mainText: { type: String, required: true},
+        secondaryText: { type: String },
     },
     coordinates: {
-        type: {
-            latitude: Number,
-            longitude: Number
-        }
+        latitude: { type: Number, required: true },
+        longitude: { type: Number, required: true }
     }
 });
 
