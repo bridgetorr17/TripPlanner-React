@@ -1,14 +1,15 @@
-import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { useState } from "react";
 import EditDate from "./EditDate"
 import ChangeableField from "../StyledComponents/ChangeableField"
 import { spanStylesMedium } from "../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
-    const [editTripDate, setEditTripDate] = useState(false);
+    const [editField, setEditField] = useState(false);
+    
     const navigate = useNavigate();
 
-    const handleSave = async (field, newValue, setEdit) => {
+    const handleSave = async (field, newValue) => {
 
         const updatedTripData = {
             field: field,
@@ -34,9 +35,8 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
         catch(err){
             navigate('/errorpage')
             console.log(err);
-        }
-        finally{
-            setEdit(false);
+        } finally {
+            setEditField(false)
         }
     }
 
@@ -57,6 +57,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         isOwner={true}
                         label=""
                         initValue={tripData.title}
+                        editField={editField}
                         save={handleSave}
                         size="large"
                     />
@@ -65,6 +66,7 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         isOwner={true}
                         label=""
                         initValue={tripData.subtitle}
+                        editField={editField}
                         save={handleSave}
                         size="medium"
                     />
@@ -72,10 +74,8 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                         name="date"
                         startingMonth={tripData.month}
                         startingYear={tripData.year}
-                        edit={editTripDate}
-                        setEdit={setEditTripDate}
                         save={handleSave}
-                        />
+                    />
                 </>
                 ) : (
                 <>

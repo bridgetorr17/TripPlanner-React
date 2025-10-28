@@ -16,7 +16,8 @@ const UserPage = () => {
             bio: initBio} = useLoaderData();
 
     const nav = useNavigate();
-    
+    const [editField, setEditField] = useState(false);
+
     const [profilePictureURL, setProfilePictureURL] = useState(profilePicture || "");
     const fileInputRef = useRef(null);
 
@@ -74,7 +75,7 @@ const UserPage = () => {
             console.log(err);
         }
         finally{
-            setEdit(false);
+            setEditField(false);
         }
     }
 
@@ -141,6 +142,7 @@ const UserPage = () => {
                     isOwner={isOwner}
                     label='User Name'
                     initValue={initUserName}
+                    editField={editField}
                     save={handleSave}
                     size="medium"   
                 />
@@ -149,6 +151,7 @@ const UserPage = () => {
                     isOwner={isOwner}
                     label='Email'
                     initValue={initEmail}
+                    editField={editField}
                     save={handleSave}
                     size="medium"   
                 />
@@ -157,6 +160,7 @@ const UserPage = () => {
                     isOwner={isOwner}
                     label='Biography'
                     initValue={initBio}
+                    editField={editField}
                     save={handleSave}
                     size="medium"   
                 />

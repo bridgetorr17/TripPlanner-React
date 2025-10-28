@@ -3,10 +3,9 @@ import { useState } from 'react';
 import IconButton from './IconButton'
 import { spanStylesMedium } from '../Utilities/commonStyles';
 
-const ChangeableField = ({ name, isOwner, label, initValue, save, size }) => {
-    const [edit, setEdit] = useState(false);
+const ChangeableField = ({ name, isOwner, label, initValue, editField, save, size }) => {
+    const [edit, setEdit] = useState(editField);
     const [value, setValue] = useState(initValue);
-    const [tempValue, setTempValue] = useState(value);
     const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
     const displayStyles = {
         large: "text-4xl font-bold text-blue-900",
@@ -22,20 +21,22 @@ const ChangeableField = ({ name, isOwner, label, initValue, save, size }) => {
         large: "ml-2",
         medium: "ml-1"
     }
+
+    const handleSubmit = async (e) => {
+        // e.preventDefault();
+        setValue(value);
+        await save(name, value);
+    }
     return (
         <>
-            <form onSubmit={(e) => {
-                    e.preventDefault();
-                    setValue(tempValue);
-                    save(name, tempValue, setEdit);
-                }} className="mb-6">
+            <form onSubmit={handleSubmit} className="mb-6">
                 {label && <label className="block text-teal-800 font-semibold mb-1">{label}</label>}
                 {edit ? (
                     <div className="flex items-center space-x-2">
                         <input
                             type="text"
-                            value={tempValue}
-                            onChange={(e) => setTempValue(e.target.value)}
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
                             className={`${baseInputStyles} ${inputStyles[size]}`}
                         />
                         <IconButton
@@ -46,7 +47,7 @@ const ChangeableField = ({ name, isOwner, label, initValue, save, size }) => {
                         <IconButton
                             onClick={(e) => {
                                 e.preventDefault();
-                                setTempValue(value);
+                                setValue(value);
                                 setEdit(false);
                             }}
                             color="gray"

@@ -1,18 +1,15 @@
 import MonthYear from "./MonthYear";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { useState } from "react";
-import { inputFieldStyles } from "../Utilities/commonStyles"
+import IconButton from "../StyledComponents/IconButton";
 
 interface EditDateProps {
     name: string;
     startingMonth: string;
     startingYear: number;
-    edit: boolean;
-    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
     save: (
         field: string,
         newValue: any,
-        setEdit: React.Dispatch<React.SetStateAction<boolean>>,
     ) => Promise<void>;
 }
 
@@ -21,7 +18,8 @@ type dateData = {
     year: number;
 }
 
-const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: EditDateProps) => {
+const EditDate = ({ name, startingMonth, startingYear, save }: EditDateProps) => {
+    const [edit, setEdit] = useState(false);
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -42,11 +40,15 @@ const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: Ed
                             selectedDate={selectedDate}
                             setSelectedDate={setSelectedDate}
                         />
-                        <button 
+                        <IconButton
                             type="submit" 
-                            className={`p-2 text-blue-600 hover:text-blue-800`}>
+                            onClick={() => {}}
+                            color="blue"
+                            className="ml-1"
+                            aria-label="Save"
+                        >
                             <FaSave className="w-5 h-5" />
-                        </button>
+                        </IconButton>
                         <button
                             type="button"
                             onClick={(e) => {
