@@ -27,7 +27,7 @@ const UserPage = () => {
         formData.append("newPhoto", file);
 
         try{
-            const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
+            const res = await fetch(`/api/dashboard/uploadProfilePicture/${initUserName}`, {
                 method: "POST",
                 body: formData
             });
@@ -102,7 +102,7 @@ const UserPage = () => {
                                 />
                             </>
                         : null}
-                    <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
+                    <h1 className="text-2xl font-bold text-blue-700">{initUserName.toUpperCase()}'s PROFILE</h1>
                 </div>
                 {isOwner ? 
                 <>
@@ -149,26 +149,26 @@ const UserPage = () => {
                         handleDelete();
                         setModalOpen(false);
                     }}
-                    itemName={userName}
+                    itemName={initUserName}
                 /> 
             </> : 
             <>
                 <label className={() => inputLabelStyles("black")}> User name:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {userName}
+                    {initUserName}
                 </span>
                 <br/>
                 <label className={() => inputLabelStyles("black")}> Email:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {email}
+                    {initEmail}
                 </span>
                 <br/>
                 <label className={() => inputLabelStyles("black")}> About user:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {bio}
+                    {initBio}
                 </span>
             </>
             }
