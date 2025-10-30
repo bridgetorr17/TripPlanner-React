@@ -5,41 +5,7 @@ import ChangeableField from "../StyledComponents/ChangeableField"
 import { spanStylesMedium } from "../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
-    const [editField, setEditField] = useState(false);
     
-    const navigate = useNavigate();
-
-    const handleSave = async (field, newValue) => {
-
-        const updatedTripData = {
-            field: field,
-            value: newValue
-        }
-
-        try{
-                const res = await fetch(`/api/trips/editTripField/${tripId}`, {
-                    method: 'PUT',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(updatedTripData)
-                });
-
-                const data = await res.json();
-
-                if(!data.success){
-                    throw data.message
-                }
-        }
-        catch(err){
-            navigate('/errorpage')
-            console.log(err);
-        } finally {
-            setEditField(false)
-        }
-    }
-
     return (
         <div className="w-full max-w-3xl mb-8 flex flex-col space-y-4">
             <div className="flex justify-end">
@@ -54,27 +20,21 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                 <>
                     <ChangeableField
                         name="name"
-                        isOwner={true}
-                        label=""
                         initValue={tripData.title}
-                        editField={editField}
-                        save={handleSave}
+                        tripId={tripId}
                         size="large"
                     />
                     <ChangeableField
                         name="subtitle"
-                        isOwner={true}
-                        label=""
                         initValue={tripData.subtitle}
-                        editField={editField}
-                        save={handleSave}
+                        tripId={tripId}
                         size="medium"
                     />
                     <EditDate 
                         name="date"
                         startingMonth={tripData.month}
                         startingYear={tripData.year}
-                        save={handleSave}
+                        tripId={tripId}
                     />
                 </>
                 ) : (
