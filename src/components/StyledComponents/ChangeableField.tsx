@@ -7,12 +7,13 @@ type FieldSize = "large" | "medium";
 
 interface ChangeableFieldProps {
     name: string;
+    label: string;
     initValue: string;
-    tripId: string;
     size: FieldSize;
+    url: string
 }
 
-const ChangeableField = ({ name, initValue, tripId, size }: ChangeableFieldProps) => {
+const ChangeableField = ({ name, label, initValue, url, size }: ChangeableFieldProps) => {
     const [edit, setEdit] = useState(false);
     const [value, setValue] = useState(initValue);
     const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -38,7 +39,7 @@ const ChangeableField = ({ name, initValue, tripId, size }: ChangeableFieldProps
             field: name,
             value: value
         }
-        const res = await fetch(`/api/trips/editTripField/${tripId}`, {
+        const res = await fetch(url, {
             method: 'PUT',
             credentials: 'include',
             headers: {
@@ -57,6 +58,7 @@ const ChangeableField = ({ name, initValue, tripId, size }: ChangeableFieldProps
     return (
         <>
             <form onSubmit={handleSubmit} className="mb-6">
+                {label && <label className="block text-teal-800 font-semibold mb-1">{label}</label>}
                 {edit ? (
                     <div className="flex items-center space-x-2">
                         <input

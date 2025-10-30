@@ -20,15 +20,17 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                 <>
                     <ChangeableField
                         name="name"
+                        label=""
                         initValue={tripData.title}
-                        tripId={tripId}
                         size="large"
+                        url={`/api/trips/editTripField/${tripId}`}
                     />
                     <ChangeableField
                         name="subtitle"
+                        label=""
                         initValue={tripData.subtitle}
-                        tripId={tripId}
                         size="medium"
+                        url={`/api/trips/editTripField/${tripId}`}
                     />
                     <EditDate 
                         name="date"

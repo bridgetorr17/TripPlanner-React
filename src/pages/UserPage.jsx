@@ -16,7 +16,6 @@ const UserPage = () => {
             bio: initBio} = useLoaderData();
 
     const nav = useNavigate();
-    const [editField, setEditField] = useState(false);
 
     const [profilePictureURL, setProfilePictureURL] = useState(profilePicture || "");
     const fileInputRef = useRef(null);
@@ -47,36 +46,6 @@ const UserPage = () => {
     const handleFileChange = (e) => {
         const file = e.target.files?.[0] || null;
         if (file) uploadPhoto(file);
-    }
-
-    const handleSave = async (field, newValue, setEdit) => {
-        const editField = {
-            field: field,
-            value: newValue
-        }
-
-        try{
-            const result = await fetch(`/api/dashboard/editUserField`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(editField)
-            });
-
-            const data = await result.json();
-
-            if (!data.success){
-                throw data.message
-            } 
-        }
-        catch (err){
-            nav('/errorpage')
-            console.log(err);
-        }
-        finally{
-            setEditField(false);
-        }
     }
 
     const handleDelete = async () => {
@@ -139,30 +108,24 @@ const UserPage = () => {
                 <>
                 <ChangeableField
                     name='userName'
-                    isOwner={isOwner}
                     label='User Name'
                     initValue={initUserName}
-                    editField={editField}
-                    save={handleSave}
-                    size="medium"   
+                    size="medium" 
+                    url="/api/dashboard/editUserField"  
                 />
                 <ChangeableField
                     name='email'
-                    isOwner={isOwner}
                     label='Email'
                     initValue={initEmail}
-                    editField={editField}
-                    save={handleSave}
-                    size="medium"   
+                    size="medium"
+                    url="/api/dashboard/editUserField"   
                 />
                 <ChangeableField
                     name='bio'
-                    isOwner={isOwner}
                     label='Biography'
                     initValue={initBio}
-                    editField={editField}
-                    save={handleSave}
-                    size="medium"   
+                    size="medium"
+                    url="/api/dashboard/editUserField"   
                 />
 
                 <StyledButton 
