@@ -5,8 +5,10 @@ type PhotoBase = Omit<PhotoType, "_id" | "user">
 export interface IPhoto extends PhotoBase, Document{
     _id: Types.ObjectId;
     url: string;
-    user: Types.ObjectId;
-    userName: string;
+    user: {
+        _id: Types.ObjectId;
+        userName: string
+    }
 }
 
 const PhotoSchema = new mongoose.Schema<IPhoto>({

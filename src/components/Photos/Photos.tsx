@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../StyledComponents/Modal";
 import { FaTrash } from "react-icons/fa6";
 import Spinner from "../StyledComponents/Spinner";
+import { PhotoProps } from "./PhotoTypes";
+import { PhotoType } from "../../../shared/types/Photo"
 
-const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
+const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: PhotoProps) => {
 
     const fileInputRef = useRef(null);
     const [selectedPhoto, setSelectedPhoto] = useState(null);
-    const [photos, setPhotos] = useState(photosInit)
-    const [previewUrl, setPreviewUrl] = useState(null);
-    const [buttonLabel, setButtonLabel] = useState('Choose Photo')
+    const [photos, setPhotos] = useState<PhotoType[]>(photosInit)
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [buttonLabel, setButtonLabel] = useState<'Upload this photo' | 'Choose Photo'>('Choose Photo')
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate()
@@ -77,7 +79,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
             const reader = new FileReader();
             reader.onloadend = () => setPreviewUrl(reader.result);
             reader.readAsDataURL(file);
-            setButtonLabel("Upload this photo");
+            setButtonLabel('Upload this photo');
         }
     }
 
