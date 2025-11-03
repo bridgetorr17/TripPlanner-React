@@ -1,6 +1,8 @@
 import mongoose, { Types, Document } from "mongoose";
+import { PhotoType } from "../../../shared/types/Photo.js"
 
-export interface IPhoto extends Document{
+type PhotoBase = Omit<PhotoType, "_id" | "user">
+export interface IPhoto extends PhotoBase, Document{
     _id: Types.ObjectId;
     url: string;
     user: Types.ObjectId;
