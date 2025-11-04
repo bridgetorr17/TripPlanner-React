@@ -1,49 +1,11 @@
-import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { useState } from "react";
 import EditDate from "./EditDate"
 import ChangeableField from "../StyledComponents/ChangeableField"
 import { spanStylesMedium } from "../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
-    const [tripTitle, setTripTitle] = useState(tripData.title);
-    const [tripSubtitle, setTripSubtitle] = useState(tripData.subtitle);
-    const [editTripTitle, setEditTripTitle] = useState(false);
-    const [editTripSubtitle, setEditTripSubtitle] = useState(false);
-    const [editTripDate, setEditTripDate] = useState(false);
-    const navigate = useNavigate();
-
-    const handleSave = async (field, newValue, setEdit) => {
-
-        const updatedTripData = {
-            field: field,
-            value: newValue
-        }
-
-        try{
-                const res = await fetch(`/api/trips/editTripField/${tripId}`, {
-                    method: 'PUT',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(updatedTripData)
-                });
-
-                const data = await res.json();
-
-                if(!data.success){
-                    throw data.message
-                }
-        }
-        catch(err){
-            navigate('/errorpage')
-            console.log(err);
-        }
-        finally{
-            setEdit(false);
-        }
-    }
-
+    
     return (
         <div className="w-full max-w-3xl mb-8 flex flex-col space-y-4">
             <div className="flex justify-end">
@@ -58,34 +20,24 @@ const TripHeader = ({ isOwner, tripData, tripId }) => {
                 <>
                     <ChangeableField
                         name="name"
-                        isOwner={true}
                         label=""
-                        value={tripTitle}
-                        setValue={setTripTitle}
-                        edit={editTripTitle}
-                        setEdit={setEditTripTitle}
-                        save={handleSave}
+                        initValue={tripData.title}
                         size="large"
+                        url={`/api/trips/editTripField/${tripId}`}
                     />
                     <ChangeableField
                         name="subtitle"
-                        isOwner={true}
                         label=""
-                        value={tripSubtitle}
-                        setValue={setTripSubtitle}
-                        edit={editTripSubtitle}
-                        setEdit={setEditTripSubtitle}
-                        save={handleSave}
+                        initValue={tripData.subtitle}
                         size="medium"
+                        url={`/api/trips/editTripField/${tripId}`}
                     />
                     <EditDate 
                         name="date"
                         startingMonth={tripData.month}
                         startingYear={tripData.year}
-                        edit={editTripDate}
-                        setEdit={setEditTripDate}
-                        save={handleSave}
-                        />
+                        tripId={tripId}
+                    />
                 </>
                 ) : (
                 <>

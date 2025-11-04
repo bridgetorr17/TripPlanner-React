@@ -3,38 +3,68 @@ import { useState } from 'react';
 import IconButton from './IconButton'
 import { spanStylesMedium } from '../Utilities/commonStyles';
 
-const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit, save, size }) => {
+type FieldSize = "large" | "medium";
 
-    const [tempValue, setTempValue] = useState(value);
+interface ChangeableFieldProps {
+    name: string;
+    label: string;
+    initValue: string;
+    size: FieldSize;
+    url: string
+}
+
+const ChangeableField = ({ name, label, initValue, url, size }: ChangeableFieldProps) => {
+    const [edit, setEdit] = useState(false);
+    const [value, setValue] = useState(initValue);
     const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
     const displayStyles = {
         large: "text-4xl font-bold text-blue-900",
         medium: spanStylesMedium
     }
 
-    const inputStyles = {
+    const inputStyles: Record<FieldSize, string> = {
         large: "text-4xl font-bold text-blue-900 border-blue-400",
         medium: `${spanStylesMedium} border-blue-400`
     }
 
-    const iconStyles = {
+    const iconStyles: Record<FieldSize, string> = {
         large: "ml-2",
         medium: "ml-1"
     }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setValue(value);
+        const updatedTripData = {
+            field: name,
+            value: value
+        }
+        const res = await fetch(url, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedTripData)
+        });
+
+        const data = await res.json();
+
+        if(!data.success){
+            throw data.message
+        }
+        setEdit(false)
+    }
     return (
         <>
-            <form onSubmit={(e) => {
-                    e.preventDefault();
-                    setValue(tempValue);
-                    save(name, tempValue, setEdit);
-                }} className="mb-6">
+            <form onSubmit={handleSubmit} className="mb-6">
                 {label && <label className="block text-teal-800 font-semibold mb-1">{label}</label>}
                 {edit ? (
                     <div className="flex items-center space-x-2">
                         <input
                             type="text"
-                            value={tempValue}
-                            onChange={(e) => setTempValue(e.target.value)}
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
                             className={`${baseInputStyles} ${inputStyles[size]}`}
                         />
                         <IconButton
@@ -45,7 +75,7 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                         <IconButton
                             onClick={(e) => {
                                 e.preventDefault();
-                                setTempValue(value);
+                                setValue(value);
                                 setEdit(false);
                             }}
                             color="gray"
@@ -60,7 +90,6 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                     <span className={`text-blue-800 ${displayStyles[size]}`}>
                         {value !== '' ? value : `Add ${name} here`}
                     </span>
-                    {isOwner && (
                     <IconButton
                         onClick={(e) => {
                             e.preventDefault();
@@ -70,7 +99,7 @@ const ChangeableField = ({ name, isOwner, label, value, setValue, edit, setEdit,
                         aria-label={`Edit ${name}`}
                     >
                         <FaEdit className="w-5 h-5" />
-                    </IconButton>)}
+                    </IconButton>
                 </div>
                 )}
             </form>

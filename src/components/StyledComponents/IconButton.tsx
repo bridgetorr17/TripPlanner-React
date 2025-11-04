@@ -2,6 +2,15 @@
 import React from "react";
 import clsx from "clsx";
 
+type IconButtonProps = {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  color?: "blue" | "gray" | "red";
+  className?: string;
+  type?: "button" | "submit" | "reset";
+  "aria-label"?: string; // allow aria-label
+  children: React.ReactNode;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
 export default function IconButton({
   onClick,
   color = "blue",
@@ -10,7 +19,7 @@ export default function IconButton({
   type = "button",
     "aria-label": ariaLabel, // 👈 allow passing aria-label
   ...props
-}) {
+}: IconButtonProps) {
   const base = "p-2 rounded-md transition focus:outline-none";
 
   const colors = {
