@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom"
 import { useState } from "react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
 import FeaturePanel from "../components/Trip/FeaturePanel"
@@ -9,6 +10,7 @@ import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
 import StyledButton from "../components/StyledComponents/StyledButton"
+import Modal from "../components/StyledComponents/Modal"
 import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
@@ -58,6 +60,13 @@ const TripPage = () => {
     const [editPhotos, setEditPhotos] = useState(false);
     const [editMemories, setEditMemories] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const [viewerModalOpen, setViewerModalOpen] = useState(false);
+
+    useEffect(() => {
+        if (userStatus === 'viewer'){
+            setViewerModalOpen(true);
+        }
+    }, [userStatus])
 
     const toggleEdit = (edit, setEdit) => {
         if (edit) setEdit(false);
@@ -206,6 +215,22 @@ const TripPage = () => {
                             </StyledButton>
                         </Link>
                     </> 
+                }
+                {(userStatus === 'viewer') &&
+                    <Modal
+                        isOpen={viewerModalOpen} 
+                        onClose={() => { 
+                            setViewerModalOpen(false); 
+                        }} 
+                        title={`Welcome!`}
+                    >
+                        <p>
+                            This is Triply, a travel recording app you can use with friends and family. 
+                            <br />
+                            <br />
+                            You are seeing this trip as a viewer- only a preview! After signing up, you will be able to make trips of your own, as well as contribute to others' trips. 
+                        </p>
+                    </Modal>
                 }
             </div>
         </div>
