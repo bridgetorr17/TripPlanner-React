@@ -1,19 +1,13 @@
 import MonthYear from "./MonthYear";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import { useState } from "react";
-import { inputFieldStyles } from "../Utilities/commonStyles"
+import IconButton from "../StyledComponents/IconButton";
 
 interface EditDateProps {
     name: string;
     startingMonth: string;
     startingYear: number;
-    edit: boolean;
-    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-    save: (
-        field: string,
-        newValue: any,
-        setEdit: React.Dispatch<React.SetStateAction<boolean>>,
-    ) => Promise<void>;
+    tripId: string;
 }
 
 type dateData = {
@@ -21,20 +15,41 @@ type dateData = {
     year: number;
 }
 
-const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: EditDateProps) => {
+const EditDate = ({ name, startingMonth, startingYear, tripId }: EditDateProps) => {
+    const [edit, setEdit] = useState(false);
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     const [date, setDate] = useState<dateData>({month: startingMonth, year: startingYear})
     const [selectedDate, setSelectedDate] = useState<Date>(new Date(startingYear, monthNames.indexOf(startingMonth)))
     
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setDate({month: monthNames[selectedDate.getMonth()], year: selectedDate.getFullYear()});
+
+        const updatedTripData = {
+            field: name,
+            value: {month: selectedDate.getMonth(), year: selectedDate.getFullYear()}
+        }
+        const res = await fetch(`/api/trips/editTripField/${tripId}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedTripData)
+        });
+
+        const data = await res.json();
+
+        if(!data.success){
+            throw data.message
+        }
+        setEdit(false)
+    }
     return (
         <>
-            <form onSubmit={(e) => {
-                    e.preventDefault();
-                    setDate({month: monthNames[selectedDate.getMonth()], year: selectedDate.getFullYear()});
-                    save(name, {month: selectedDate.getMonth(), year: selectedDate.getFullYear()}, setEdit);
-                }}
+            <form onSubmit={handleSubmit}
                 className="mb-6">
                 {edit ? (
                     <div className="flex items-center space-x-2">
@@ -42,11 +57,15 @@ const EditDate = ({ name, startingMonth, startingYear, edit, setEdit, save }: Ed
                             selectedDate={selectedDate}
                             setSelectedDate={setSelectedDate}
                         />
-                        <button 
+                        <IconButton
                             type="submit" 
-                            className={`p-2 text-blue-600 hover:text-blue-800`}>
+                            onClick={() => {}}
+                            color="blue"
+                            className="ml-1"
+                            aria-label="Save"
+                        >
                             <FaSave className="w-5 h-5" />
-                        </button>
+                        </IconButton>
                         <button
                             type="button"
                             onClick={(e) => {

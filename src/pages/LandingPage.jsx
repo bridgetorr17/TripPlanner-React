@@ -29,9 +29,11 @@ const LandingPage = () => {
                 <Link to="/signup" className={linkStyles}>
                     Signup
                 </Link>
-                <Link to="/preview" className={linkStyles}>
-                    Explore
-                </Link>
+                <span className={linkStyles}>
+                    <a href="https://triplytravel.vercel.app/trips/viewer/68bafcb827c19de38c521114">
+                        Explore
+                    </a>
+                </span>
             </div>
         </div> 
     )

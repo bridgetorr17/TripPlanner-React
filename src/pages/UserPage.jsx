@@ -16,16 +16,10 @@ const UserPage = () => {
             bio: initBio} = useLoaderData();
 
     const nav = useNavigate();
-    
-    const [userName, setUserName] = useState(initUserName);
-    const [email, setEmail] = useState(initEmail);
-    const [bio, setBio] = useState(initBio);
+
     const [profilePictureURL, setProfilePictureURL] = useState(profilePicture || "");
     const fileInputRef = useRef(null);
 
-    const [editName, setEditName] = useState(false);
-    const [editEmail, setEditEmail] = useState(false);
-    const [editBio, setEditBio] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
     const uploadPhoto = async (file) => {
@@ -33,7 +27,7 @@ const UserPage = () => {
         formData.append("newPhoto", file);
 
         try{
-            const res = await fetch(`/api/dashboard/uploadProfilePicture/${userName}`, {
+            const res = await fetch(`/api/dashboard/uploadProfilePicture/${initUserName}`, {
                 method: "POST",
                 body: formData
             });
@@ -52,36 +46,6 @@ const UserPage = () => {
     const handleFileChange = (e) => {
         const file = e.target.files?.[0] || null;
         if (file) uploadPhoto(file);
-    }
-
-    const handleSave = async (field, newValue, setEdit) => {
-        const editField = {
-            field: field,
-            value: newValue
-        }
-
-        try{
-            const result = await fetch(`/api/dashboard/editUserField`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(editField)
-            });
-
-            const data = await result.json();
-
-            if (!data.success){
-                throw data.message
-            } 
-        }
-        catch (err){
-            nav('/errorpage')
-            console.log(err);
-        }
-        finally{
-            setEdit(false);
-        }
     }
 
     const handleDelete = async () => {
@@ -138,42 +102,30 @@ const UserPage = () => {
                                 />
                             </>
                         : null}
-                    <h1 className="text-2xl font-bold text-blue-700">{userName.toUpperCase()}'s PROFILE</h1>
+                    <h1 className="text-2xl font-bold text-blue-700">{initUserName.toUpperCase()}'s PROFILE</h1>
                 </div>
                 {isOwner ? 
                 <>
                 <ChangeableField
                     name='userName'
-                    isOwner={isOwner}
                     label='User Name'
-                    value={userName}
-                    setValue={setUserName}
-                    edit={editName}
-                    setEdit={setEditName}
-                    save={handleSave}
-                    size="medium"   
+                    initValue={initUserName}
+                    size="medium" 
+                    url="/api/dashboard/editUserField"  
                 />
                 <ChangeableField
                     name='email'
-                    isOwner={isOwner}
                     label='Email'
-                    value={email}
-                    setValue={setEmail}
-                    edit={editEmail}
-                    setEdit={setEditEmail}
-                    save={handleSave}
-                    size="medium"   
+                    initValue={initEmail}
+                    size="medium"
+                    url="/api/dashboard/editUserField"   
                 />
                 <ChangeableField
                     name='bio'
-                    isOwner={isOwner}
                     label='Biography'
-                    value={bio}
-                    setValue={setBio}
-                    edit={editBio}
-                    setEdit={setEditBio}
-                    save={handleSave}
-                    size="medium"   
+                    initValue={initBio}
+                    size="medium"
+                    url="/api/dashboard/editUserField"   
                 />
 
                 <StyledButton 
@@ -197,26 +149,26 @@ const UserPage = () => {
                         handleDelete();
                         setModalOpen(false);
                     }}
-                    itemName={userName}
+                    itemName={initUserName}
                 /> 
             </> : 
             <>
                 <label className={() => inputLabelStyles("black")}> User name:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {userName}
+                    {initUserName}
                 </span>
                 <br/>
                 <label className={() => inputLabelStyles("black")}> Email:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {email}
+                    {initEmail}
                 </span>
                 <br/>
                 <label className={() => inputLabelStyles("black")}> About user:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {bio}
+                    {initBio}
                 </span>
             </>
             }
