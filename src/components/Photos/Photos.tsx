@@ -5,17 +5,17 @@ import { FaTrash } from "react-icons/fa6";
 import Spinner from "../StyledComponents/Spinner";
 import { PhotoProps } from "./PhotoTypes";
 import { PhotoType } from "../../../shared/types/Photo"
+import { useEffect } from "react";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: PhotoProps) => {
 
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
     const [photos, setPhotos] = useState<PhotoType[]>(photosInit)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [buttonLabel, setButtonLabel] = useState<'Upload this photo' | 'Choose Photo'>('Choose Photo')
     const [loading, setLoading] = useState<boolean>(false);
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const uploadPhoto = async () => {
         setLoading(true);
@@ -43,7 +43,7 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: Photo
             }
 
             setPhotos(prev => [...prev, addedPhoto])
-            setModalOpen(false);
+            closeModal();
         }
         catch(err){
             console.error("Upload error: ", err)
@@ -72,8 +72,9 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: Photo
         catch(err){
             console.log(err);
         }  
+    }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLFormElement>) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null
         setSelectedPhoto(file)
 
@@ -97,7 +98,6 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: Photo
 
     const closeModal = () => {
         setLoading(false);
-        setModalOpen(false);
         setPreviewUrl(null);
         setSelectedPhoto(null);
         setEditMode(false);
