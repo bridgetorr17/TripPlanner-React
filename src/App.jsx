@@ -10,7 +10,6 @@ import ErrorPage from './pages/ErrorPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import UserPage from './pages/UserPage';
-import PreviewPage from './pages/PreviewPage';
 import CreateTripPage from './pages/CreateTripPage';
 import TripPage, { authTripLoader, viewerTripLoader } from './pages/TripPage';
 import PageWrapper from './components/Utilities/PageWrapper';
@@ -69,7 +68,6 @@ const App = () => {
                 <Route path='/login' element={<LoginPage loginAttempt={loginAttempt}/>} loader={loginLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/signup' element={<SignupPage signupAttempt={signupAttempt} />} errorElement={<ErrorPage/>}/>
                 <Route path='/resetPassword' element={<ResetPasswordPage />} errorElement={<ErrorPage/>}/>
-                <Route path='/preview' element={<PreviewPage/>} errorElement={<ErrorPage/>}/>
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/dashboard/:id' element={<UserPage/>} loader={userLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/createNew' element={<CreateTripPage />} errorElement={<ErrorPage/>}/>
