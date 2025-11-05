@@ -3,24 +3,27 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../StyledComponents/Modal";
 import { FaTrash } from "react-icons/fa6";
 import Spinner from "../StyledComponents/Spinner";
+import { PhotoProps } from "./PhotoTypes";
+import { PhotoType } from "../../../shared/types/Photo";
 
-const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
+const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: PhotoProps) => {
 
-    const fileInputRef = useRef(null);
-    const [selectedPhoto, setSelectedPhoto] = useState(null);
-    const [photos, setPhotos] = useState(photosInit)
-    const [previewUrl, setPreviewUrl] = useState(null);
-    const [buttonLabel, setButtonLabel] = useState('Choose Photo')
-    const [loading, setLoading] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
-    const navigate = useNavigate()
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+    const [photos, setPhotos] = useState<PhotoType[]>(photosInit)
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [buttonLabel, setButtonLabel] = useState<'Upload this photo' | 'Choose Photo'>('Choose Photo')
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const uploadPhoto = async () => {
         setLoading(true);
         
         const formData = new FormData();
-        formData.append("newPhoto", selectedPhoto);
-
+        if (selectedPhoto){
+            formData.append("newPhoto", selectedPhoto);
+        }
+        
         try{
             const res = await fetch(`/api/trips/uploadPhoto/${tripId}`, {
                 method: "POST",
@@ -30,13 +33,13 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
             const photo = await res.json();
 
             const addedPhoto = {
-                url: photo.url,
+                _id: photo._id,
                 user: {
                     _id: photo.user,
                     userName: loggedInUser,
                 },
-                _id: photo._id
-            }
+                url: photo.url,
+            } as PhotoType;
 
             setPhotos(prev => [...prev, addedPhoto])
             closeModal();
@@ -47,10 +50,11 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
         }
     }
 
-    const deletePhoto = async (id) => {
+    const deletePhoto = async (id: string) => {
         const photoId = {
             id: id
         }
+
         try{
             const res = await fetch(`/api/trips/deletePhoto/${tripId}`, {
                 method: 'DELETE',
@@ -60,24 +64,25 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
                 },
                 body: JSON.stringify(photoId)
             });
-
-            const updatedPhotos = await res.json();
-            setPhotos(updatedPhotos);
+            
+            setPhotos(prev => prev.filter(photo => photo._id !== photoId.id));
         }
         catch(err){
             console.log(err);
-        }
+        }  
     }
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null
         setSelectedPhoto(file)
 
         if (file) {
             const reader = new FileReader();
-            reader.onloadend = () => setPreviewUrl(reader.result);
+            reader.onloadend = () => {
+                if (typeof reader.result === "string") setPreviewUrl(reader.result);
+            }
             reader.readAsDataURL(file);
-            setButtonLabel("Upload this photo");
+            setButtonLabel('Upload this photo');
         }
     }
 
@@ -91,7 +96,6 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}) => {
 
     const closeModal = () => {
         setLoading(false);
-        setModalOpen(false);
         setPreviewUrl(null);
         setSelectedPhoto(null);
         setEditMode(false);
