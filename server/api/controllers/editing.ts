@@ -1,5 +1,6 @@
 import Trip, { ITrip } from '../models/Trip.js';
 import User, { IUser } from '../models/User.js';
+import { IPhoto } from '../models/Photo.js';
 import dotenv from 'dotenv';
 import { Types } from 'mongoose';
 import { Request,  Response } from 'express';

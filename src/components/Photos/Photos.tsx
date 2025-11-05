@@ -4,8 +4,7 @@ import Modal from "../StyledComponents/Modal";
 import { FaTrash } from "react-icons/fa6";
 import Spinner from "../StyledComponents/Spinner";
 import { PhotoProps } from "./PhotoTypes";
-import { PhotoType } from "../../../shared/types/Photo"
-import { useEffect } from "react";
+import { PhotoType } from "../../../shared/types/Photo";
 
 const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: PhotoProps) => {
 
@@ -34,13 +33,13 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: Photo
             const photo = await res.json();
 
             const addedPhoto = {
-                url: photo.url,
+                _id: photo._id,
                 user: {
                     _id: photo.user,
                     userName: loggedInUser,
                 },
-                _id: photo._id
-            }
+                url: photo.url,
+            } as PhotoType;
 
             setPhotos(prev => [...prev, addedPhoto])
             closeModal();
@@ -65,9 +64,8 @@ const Photos = ({tripId, editMode, setEditMode, photosInit, loggedInUser}: Photo
                 },
                 body: JSON.stringify(photoId)
             });
-
-            const updatedPhotos = await res.json();
-            setPhotos(updatedPhotos);
+            
+            setPhotos(prev => prev.filter(photo => photo._id !== photoId.id));
         }
         catch(err){
             console.log(err);
