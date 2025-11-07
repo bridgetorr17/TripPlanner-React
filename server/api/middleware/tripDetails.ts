@@ -8,7 +8,7 @@ interface ITripPopulated {
     name: String;
     subtitle: String;
     owner: {_id: Types.ObjectId; userName: string};
-    contributors: Array<{ _id: Types.ObjectId; userName: string; profilePicture: string }>;
+    contributors: IUserMinimal[];
     locations: ILocation[];
     month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
     year: number;
@@ -37,7 +37,11 @@ const tripDetails = async (
 ): Promise <TripDetailsFailure | TripDetailsSuccess> => {
     const trip = await Trip.findById(tripId) 
         .populate('owner', 'userName')
-        .populate<{ contributors: Array<{ userName: string; profilePicture: string }> }>('contributors', 'userName profilePicture')
+        .populate
+            <{ contributors: IUserMinimal[] }>({
+            path: 'contributors',
+            select: 'userName profilePicture'
+        })
         .populate({
             path: 'memories.user',
             select: 'userName profilePicture'
