@@ -1,13 +1,11 @@
 import bcrypt from 'bcrypt';
 import mongoose, { Document, Model, Types, Schema } from 'mongoose';
+import { UserType } from "../../../shared/types/User.js"
 
 //Minimal user interface - provides only user details for read-only logic
-export interface IUserMinimal {
+type UserBase = Omit<UserType, "_id">
+export interface IUserMinimal extends UserBase {
   _id: Types.ObjectId;
-  userName: string;
-  email: string;
-  profilePicture?: string;
-  bio?: string;
 }
 
 //Full mongoose User document interface 

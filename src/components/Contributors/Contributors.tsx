@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ContributorsInput from "./ContributorsInput";
 import Modal from "../StyledComponents/Modal";
+import { ContributorsProps } from "./UserTypes";
 
-const Contributors = ({editMode, setEditMode, contributors, setContributors, tripId}) => {
+const Contributors = ({editMode, setEditMode, contributors, setContributors, tripId}: ContributorsProps) => {
 
-    const [modalOpen, setModalOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [contributorNames, setContributorNames] = useState(contributors.map(cont => cont.userName))
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [contributorNames, setContributorNames] = useState<string[]>(contributors.map(cont => cont.userName))
 
     useEffect(() => {
         setContributorNames(contributors.map(cont => cont.userName));
@@ -29,8 +30,9 @@ const Contributors = ({editMode, setEditMode, contributors, setContributors, tri
             setContributors(response.contributors);
         }
         catch(err) {
-            console.error("error saving locations:" , err)
-            setErrorMessage(err.message);
+            console.error("error saving contributors:" , err)
+            if (err && typeof err === "object" && "message" in err) setErrorMessage(err.message as string);
+            else setErrorMessage('An unknown error occured');
             setModalOpen(true);
         }
         finally{
