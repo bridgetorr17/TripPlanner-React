@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import MonthYear from "../components/Trip/MonthYear";
 import CreateTripLocationAutocomplete from "../components/Location/CreateTripLocationAutocomplete";
-import { inputLabelStyles, inputFieldStyles } from "../components/Utilities/commonStyles";
+import { inputLabelStyles, inputFieldStyles } from "../Utilities/commonStyles";
 import { LocationType } from '../../shared/types/Location'
 
 export type tripInfoData = {

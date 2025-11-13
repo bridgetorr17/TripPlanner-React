@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import EditDate from "./EditDate"
 import ChangeableField from "../StyledComponents/ChangeableField"
-import { spanStylesMedium } from "../Utilities/commonStyles"
+import { spanStylesMedium } from "../../Utilities/commonStyles"
 
 const TripHeader = ({ isOwner, tripData, tripId }) => {
     

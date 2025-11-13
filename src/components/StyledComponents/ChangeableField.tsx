@@ -1,7 +1,8 @@
 import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
 import IconButton from './IconButton'
-import { spanStylesMedium } from '../Utilities/commonStyles';
+import { spanStylesMedium } from '../../Utilities/commonStyles';
+import { useHandleSubmit } from '../../hooks/useHandleSubmit';
 
 type FieldSize = "large" | "medium";
 
@@ -14,8 +15,6 @@ interface ChangeableFieldProps {
 }
 
 const ChangeableField = ({ name, label, initValue, url, size }: ChangeableFieldProps) => {
-    const [edit, setEdit] = useState(false);
-    const [value, setValue] = useState(initValue);
     const baseInputStyles = "flex-grow px-3 py-2 border border-sky-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
     const displayStyles = {
         large: "text-4xl font-bold text-blue-900",
@@ -32,29 +31,19 @@ const ChangeableField = ({ name, label, initValue, url, size }: ChangeableFieldP
         medium: "ml-1"
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setValue(value);
-        const updatedTripData = {
-            field: name,
-            value: value
-        }
-        const res = await fetch(url, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedTripData)
-        });
-
-        const data = await res.json();
-
-        if(!data.success){
-            throw data.message
-        }
-        setEdit(false)
-    }
+    const {
+        value,
+        setValue,
+        edit,
+        setEdit,
+        handleSubmit,
+        loading,
+        error,
+    } = useHandleSubmit<string>({
+        url: url,
+        fieldName: name,
+        initialValue: initValue,
+    });
     return (
         <>
             <form onSubmit={handleSubmit} className="mb-6">

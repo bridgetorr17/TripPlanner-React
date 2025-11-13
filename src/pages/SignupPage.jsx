@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
-import { inputStyles, panelBorderStyles, panelContainerStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
+import { inputStyles, panelBorderStyles, panelContainerStyles, passwordInputStyles } from "../Utilities/commonStyles.js";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
 
 const SignupPage = ({signupAttempt}) => {

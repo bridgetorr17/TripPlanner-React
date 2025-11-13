@@ -1,6 +1,6 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { inputFieldStyles } from "../../components/Utilities/commonStyles";
+import { inputFieldStyles } from "../../Utilities/commonStyles";
 
 const MonthYear = ( {selectedDate, setSelectedDate} ) => {
 

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import SubmitButton from "../StyledComponents/SubmitButton";
 import { MemoriesProps } from "./MemoryTypes";
 import { MemoryType } from "../../../shared/types/Memory";
-import { inputLabelStyles } from "../Utilities/commonStyles"
+import { inputLabelStyles } from "../../Utilities/commonStyles"
 
 const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}: MemoriesProps) => {
 
