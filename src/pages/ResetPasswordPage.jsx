@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles } from "../components/Utilities/commonStyles.js";
+import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles } from "../Utilities/commonStyles.js";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
 

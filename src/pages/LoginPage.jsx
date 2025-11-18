@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
 import ResetPasswordModal from "../components/Login/ResetPasswordModal.jsx"
-import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles, passwordInputStyles } from "../components/Utilities/commonStyles.js";
+import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles, passwordInputStyles } from "../Utilities/commonStyles.js";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
 
 const LoginPage = ({loginAttempt}) => {

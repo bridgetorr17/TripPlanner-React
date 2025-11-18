@@ -6,7 +6,7 @@ import { redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
 import ChangeableField from "../components/StyledComponents/ChangeableField";
-import { inputLabelStyles, spanStylesMedium } from "../components/Utilities/commonStyles";
+import { inputLabelStyles, spanStylesMedium } from "../Utilities/commonStyles";
 
 const UserPage = () => {
     const { isOwner,
