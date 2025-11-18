@@ -10,11 +10,6 @@ interface EditDateProps {
     tripId: string;
 }
 
-type dateData = {
-    month: string;
-    year: number;
-}
-
 const EditDate = ({ name, startingMonth, startingYear, tripId }: EditDateProps) => {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const initialDate = new Date(startingYear, monthNames.indexOf(startingMonth));
@@ -30,8 +25,8 @@ const EditDate = ({ name, startingMonth, startingYear, tripId }: EditDateProps) 
         fieldName: name,
         initialValue: initialDate,
         formatValue: (date) => ({
-        month: date.getMonth(),
-        year: date.getFullYear(),
+            month: date.getMonth(),
+            year: date.getFullYear(),
         }),
     });
     const displayMonth = monthNames[selectedDate.getMonth()];

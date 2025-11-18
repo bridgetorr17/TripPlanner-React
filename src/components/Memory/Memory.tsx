@@ -1,51 +1,36 @@
 import { FaMapMarkerAlt, FaTrash} from "react-icons/fa";
 import { useState } from "react";
 import Modal from "../StyledComponents/Modal"
-import { Link, useNavigate } from "react-router-dom";
-import { MemoryProps, ToggleEditProps } from "./MemoryTypes";
+import { Link } from "react-router-dom";
+import { MemoryProps } from "./MemoryTypes";
+import { useHandleSubmit } from "../../hooks/useHandleSubmit";
+import SubmitButton from "../StyledComponents/SubmitButton";
 
 const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
 
-    const [editMemory, setEditMemory] = useState<boolean>(false);
-    const [memoryText, setMemoryText] = useState<string>(memory.text);
+    const {
+        value: memoryText,
+        setValue: setMemoryText,
+        edit: editMemory,
+        setEdit: setEditMemory,
+        handleSubmit,
+        loading,
+        error
+    } = useHandleSubmit<string>({
+        url: `/api/trips/editMemory/${tripId}`,
+        fieldName: "updatedMemory",
+        initialValue: memory.text,
+        formatValue: () => ({
+            id: memory._id,
+            updatedText: memoryText
+        }),
+    })
+
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [seeMore, setSeeMore] = useState<boolean>(false);
-    const navigate = useNavigate()
 
     const longLength = memoryText.length > 200;
     const displayText = (longLength && !seeMore) ? memoryText.slice(0, 200) + '...' : memoryText;
-
-    const toggleEdit = ({edit, saveFn, setEdit}: ToggleEditProps) => {
-        if (edit) saveFn();
-        else setEdit(true);
-    }
-
-    const updateMemory = async () => {
-        const updatedMemory = {
-            id: memory._id,
-            updatedText: memoryText
-        }
-
-        try{
-            const res = await fetch(`/api/trips/editMemory/${tripId}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedMemory)
-            });
-
-            const response = await res.json();
-
-            if (!response.success) throw new Error (response.message)
-            setEditMemory(false);
-        }
-        catch(err){
-            navigate('/errorpage')
-            console.log(err);
-        }
-    }
 
     const handleDelete = () => {
         if(memory._id) deleteMemory(memory._id);
@@ -60,8 +45,15 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
                     {loggedInUser === memory.user?.userName && (
                         <div className="absolute top-3 right-3 flex space-x-2">
                             <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
-                                    onClick={() => toggleEdit({edit: editMemory, saveFn: updateMemory, setEdit: setEditMemory})}>
-                                {editMemory ? "Save" : "Edit"}
+                                    onClick={() => {
+                                        if (!editMemory) setEditMemory(true)
+                                        else {
+                                            setEditMemory(false);
+                                            setMemoryText(memory.text);
+                                        }
+                                        }
+                                    }>
+                                {editMemory ? "Cancel" : "Edit"}
                             </button>
                             <button
                                 className="bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"
@@ -76,15 +68,24 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
                     <span>{memory.location}</span>
                 </div>
                 <div className="mt-6">
-                    {editMemory 
-                     ? <textarea 
-                        rows={3}
-                        name="memory"
-                        value={memoryText}
-                        onChange={(e) => setMemoryText(e.target.value)} 
-                        className="border w-full p-2 border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                        />
-                     : <p className="text-base font-semibold text-left leading-relaxed">
+                    {editMemory ? (
+                        <form onSubmit={handleSubmit}>
+                            <textarea 
+                            rows={3}
+                            name="memory"
+                            value={memoryText}
+                            onChange={(e) => setMemoryText(e.target.value)} 
+                            className="border w-full p-2 border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                            />
+                            <SubmitButton
+                                loading={loading}
+                                color="blue"
+                                children="Save Memory"
+                            />
+                        </form>
+                    )
+                     : (
+                     <p className="text-base font-semibold text-left leading-relaxed">
                         {displayText}
                         {longLength && (
                             <button
@@ -93,8 +94,8 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
                                 {seeMore ? "see less" : "see more"}
                             </button>
                         )}
-                    </p>}
-                    
+                    </p>
+                )}
                 </div>
                 <Link to={`/dashboard/${memory.user?._id}`}>
                     <div className="mt-2 text-right text-xs italic text-blue-800 opacity-90">

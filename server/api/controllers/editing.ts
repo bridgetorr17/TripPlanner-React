@@ -89,9 +89,9 @@ const editMemory = async (req: Request, res: Response) => {
     try{
         const tripId = req.params.id;
         const trip = await Trip.findById(tripId) as ITrip;
-        const memory = trip.memories.find(mem => mem._id.equals(req.body.id)) as IMemory;
+        const memory = trip.memories.find(mem => mem._id.equals(req.body.value.id)) as IMemory;
         
-        memory.text = req.body.updatedText;
+        memory.text = req.body.value.updatedText;
 
         await trip.save();
 
