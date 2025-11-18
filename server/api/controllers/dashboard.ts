@@ -31,11 +31,7 @@ const getDashboard = async (req: Request, res: Response) => {
                 userTrips,
                 sharedTrips
             },
-            user: {
-                _id: user._id,
-                userName: user.userName,
-                profilePicture: user.profilePicture,
-            }
+            user
         });
     }
     catch(err){
