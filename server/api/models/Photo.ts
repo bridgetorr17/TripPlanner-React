@@ -11,7 +11,7 @@ export interface IPhoto extends PhotoBase, Document{
     }
 }
 
-const PhotoSchema = new mongoose.Schema<IPhoto>({
+const PhotoSchema = new mongoose.Schema({
     url: {
         type: String,
         required: true

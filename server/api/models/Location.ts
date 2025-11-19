@@ -6,7 +6,7 @@ export interface ILocation extends LocationBase, Document{
     _id: Types.ObjectId;
 }
 
-const LocationSchema = new mongoose.Schema<ILocation>({
+const LocationSchema = new mongoose.Schema({
     name: {
         mainText: { type: String, required: true},
         secondaryText: { type: String },
