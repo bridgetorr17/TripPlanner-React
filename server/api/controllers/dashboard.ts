@@ -31,11 +31,7 @@ const getDashboard = async (req: Request, res: Response) => {
                 userTrips,
                 sharedTrips
             },
-            user: {
-                _id: user._id,
-                userName: user.userName,
-                profilePicture: user.profilePicture,
-            }
+            user
         });
     }
     catch(err){
@@ -62,10 +58,7 @@ const getUser = async (req: Request, res: Response) => {
         res.json({
             success: true,
             isOwner,
-            userName: requestedUser.userName,
-            email: requestedUser.email,
-            profilePicture: requestedUser.profilePicture,
-            bio: requestedUser.bio
+            requestedUser
         })
     }
     catch(err){

@@ -7,7 +7,7 @@ export interface IMemory extends MemoryBase, Document{
     user: Types.ObjectId;
 }
 
-const MemorySchema = new mongoose.Schema<IMemory>({
+const MemorySchema = new mongoose.Schema({
     text: {
         type: String,
         required: true

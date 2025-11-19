@@ -2,32 +2,35 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { FaSignOutAlt, FaTrash } from "react-icons/fa";
 import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
-import { redirect } from "react-router-dom";
+import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import StyledButton from "../components/StyledComponents/StyledButton"
 import { Link } from "react-router-dom";
 import ChangeableField from "../components/StyledComponents/ChangeableField";
 import { inputLabelStyles, spanStylesMedium } from "../Utilities/commonStyles";
+import { UserType } from "../../shared/types/User";
+
+interface UserLoaderDetails {
+    isOwner: boolean,
+    user: UserType
+}
 
 const UserPage = () => {
     const { isOwner,
-            userName: initUserName, 
-            email: initEmail, 
-            profilePicture,
-            bio: initBio} = useLoaderData();
+            user} = useLoaderData();
 
     const nav = useNavigate();
 
-    const [profilePictureURL, setProfilePictureURL] = useState(profilePicture || "");
-    const fileInputRef = useRef(null);
+    const [profilePictureURL, setProfilePictureURL] = useState(user.profilePicture || "");
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [modalOpen, setModalOpen] = useState(false);
 
-    const uploadPhoto = async (file) => {
+    const uploadPhoto = async (file: File) => {
         const formData = new FormData();
         formData.append("newPhoto", file);
 
         try{
-            const res = await fetch(`/api/dashboard/uploadProfilePicture/${initUserName}`, {
+            const res = await fetch(`/api/dashboard/uploadProfilePicture/${user.userName}`, {
                 method: "POST",
                 body: formData
             });
@@ -43,7 +46,7 @@ const UserPage = () => {
 
     }
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
         if (file) uploadPhoto(file);
     }
@@ -90,7 +93,7 @@ const UserPage = () => {
                         ? <>
                             <button
                                 className="bg-gray-400 hover:bg-gray-600 rounded-3xl text-white text-sm p-1"
-                                onClick={() => fileInputRef.current.click()}
+                                onClick={() => fileInputRef.current?.click()}
                                 >Edit Profile Photo</button>
                                 <input 
                                     type="file"
@@ -102,28 +105,28 @@ const UserPage = () => {
                                 />
                             </>
                         : null}
-                    <h1 className="text-2xl font-bold text-blue-700">{initUserName.toUpperCase()}'s PROFILE</h1>
+                    <h1 className="text-2xl font-bold text-blue-700">{user.userName.toUpperCase()}'s PROFILE</h1>
                 </div>
                 {isOwner ? 
                 <>
                 <ChangeableField
                     name='userName'
                     label='User Name'
-                    initValue={initUserName}
+                    initValue={user.userName}
                     size="medium" 
                     url="/api/dashboard/editUserField"  
                 />
                 <ChangeableField
                     name='email'
                     label='Email'
-                    initValue={initEmail}
+                    initValue={user.email}
                     size="medium"
                     url="/api/dashboard/editUserField"   
                 />
                 <ChangeableField
                     name='bio'
                     label='Biography'
-                    initValue={initBio}
+                    initValue={user.bio}
                     size="medium"
                     url="/api/dashboard/editUserField"   
                 />
@@ -149,26 +152,26 @@ const UserPage = () => {
                         handleDelete();
                         setModalOpen(false);
                     }}
-                    itemName={initUserName}
+                    itemName={user.userName}
                 /> 
             </> : 
             <>
-                <label className={() => inputLabelStyles("black")}> User name:</label>
+                <label className={inputLabelStyles("black")}> User name:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {initUserName}
+                    {user.userName}
                 </span>
                 <br/>
-                <label className={() => inputLabelStyles("black")}> Email:</label>
+                <label className={inputLabelStyles("black")}> Email:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {initEmail}
+                    {user.email}
                 </span>
                 <br/>
-                <label className={() => inputLabelStyles("black")}> About user:</label>
+                <label className={inputLabelStyles("black")}> About user:</label>
                 <br/>
                 <span className={spanStylesMedium}>
-                    {initBio}
+                    {user.bio}
                 </span>
             </>
             }
@@ -178,14 +181,17 @@ const UserPage = () => {
 }
 
 //User GET
-const userLoader = async ({params}) => {
+const userLoader = async ({params}: LoaderFunctionArgs) => {
     const {id} = params;
     const user = await fetch(`/api/dashboard/${id}`);
     const data = await user.json();
     if (!data.success) {
         return redirect('/')
     }
-    return data;
+    return {
+        isOwner: data.isOwner,
+        user: data.requestedUser
+    };
 }
 
 export {

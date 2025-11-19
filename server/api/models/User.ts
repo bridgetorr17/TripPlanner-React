@@ -14,7 +14,7 @@ export interface IUser extends IUserMinimal, Document<Types.ObjectId>{
   comparePassword(candidatePassword: string, cb: (err: any, isMatch: boolean) => void): void
 }
 
-const UserSchema = new Schema<IUser>({
+const UserSchema = new mongoose.Schema({
     userName: {
       type: String, 
       unique: true,
@@ -62,6 +62,6 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword:
   })
 }
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 export default User;

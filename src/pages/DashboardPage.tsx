@@ -4,15 +4,22 @@ import TripList from '../components/Dashboard/TripList'
 import NavLinks from "../components/Dashboard/NavLinks";
 import { Link } from "react-router-dom";
 import { redirect } from "react-router-dom";
+import { UserType } from "../../shared/types/User";
+
+type DashboardTrip = {
+    _id: string;
+    name: string;
+}
+
+interface DashboardLoaderDetails {
+    userTrips: DashboardTrip[],
+    sharedTrips: DashboardTrip[],
+    user: UserType
+}
 
 const DashboardPage = () => {
-    const { userTrips, sharedTrips, user } = useLoaderData();
-    const [activeTab, setActiveTab] = useState('my');
-
-    const userName = user.userName;
-    const userProfilePicture = user.profilePicture;
-    const userId = user._id;
-
+    const { userTrips, sharedTrips, user } = useLoaderData<DashboardLoaderDetails>();
+    const [activeTab, setActiveTab] = useState<string>('my');
     let content = null;
 
     if (activeTab === 'my'){
@@ -25,13 +32,13 @@ const DashboardPage = () => {
         <div className="flex flex-col p-12 bg-sky-50 text-blue-800 min-h-screen">
             <section className="flex flex-row justify-between">
                 <h1 className="text-3xl font-bold mb-4 text-blue-700">
-                    {userName.toUpperCase()}'s DASHBOARD
+                    {user.userName.toUpperCase()}'s DASHBOARD
                 </h1>
                 <div className="relative">
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-sky-300 focus:border-blue-400">
-                        <Link to={`/dashboard/${userId}`}>
+                        <Link to={`/dashboard/${user._id}`}>
                             <img
-                                src={userProfilePicture}
+                                src={user.profilePicture}
                                 alt="Profile Picture"
                                 className="w-full h-full object-cover object-center"
                             />
@@ -60,7 +67,7 @@ const dashboardLoader = async () => {
         userTrips: tripsRes.trips.userTrips,
         sharedTrips: tripsRes.trips.sharedTrips,
         user: tripsRes.user,
-    }
+    } as DashboardLoaderDetails;
 }
 
 export {
