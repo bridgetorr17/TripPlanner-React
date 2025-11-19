@@ -58,10 +58,7 @@ const getUser = async (req: Request, res: Response) => {
         res.json({
             success: true,
             isOwner,
-            userName: requestedUser.userName,
-            email: requestedUser.email,
-            profilePicture: requestedUser.profilePicture,
-            bio: requestedUser.bio
+            requestedUser
         })
     }
     catch(err){
