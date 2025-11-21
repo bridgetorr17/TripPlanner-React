@@ -1,7 +1,7 @@
 import Trip from '../models/Trip.js';
 import { IUserMinimal } from '../models/User.js'
 import { Types } from 'mongoose';
-import { ILocation }  from '../models/Location.js';
+import { ILocation }  from '../models/Location.js'
 
 interface ITripPopulated {
     _id: Types.ObjectId;
@@ -50,11 +50,12 @@ const tripDetails = async (
             path: 'photos.user',
             select: 'userName'
         })
-        .lean();
+        .lean<ITripPopulated>();
     
     if (!trip) {
         throw new Error('Trip not found');
     }
+
 
     const currentUser = (() => {
         //the user is not logged in or does not exist - they are a viewer
@@ -101,4 +102,6 @@ const tripDetails = async (
     }
 }
 
-export { tripDetails }
+export { tripDetails,
+    ITripPopulated
+ }

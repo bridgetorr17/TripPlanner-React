@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom"
-import { useState } from "react"
+import React, { useState } from "react"
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, LoaderFunctionArgs } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
 import FeaturePanel from "../components/Trip/FeaturePanel"
 import Locations from "../components/Location/Locations"
@@ -14,36 +14,46 @@ import Modal from "../components/StyledComponents/Modal"
 import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
+import { ITripPopulated } from '../../server/api/middleware/tripDetails'
+import { UserType } from '../../shared/types/User'
+import { LocationType } from '../../shared/types/Location'
 
-const authTripLoader = async ({ request }) => {
-    const tripId = request.url.slice(-24)
-    const trip = await fetch(`/api/trips/${tripId}`)
-    const tripRes = await trip.json();
-
-    if (!tripRes.success) {
-        return redirect(tripRes.redirect)
-    }
-
-    return tripRes;
+interface TripRes {
+    success: boolean,
+    trip: ITripPopulated,
+    currentUser: {
+        userName: string | null,
+        userStatus: 'owner' | 'viewer' | 'contributor'
+    } | null
 }
 
-const viewerTripLoader = async ({ request }) => {
-    const tripId = request.url.slice(-24)
-    const trip = await fetch(`/api/trips/viewer/${tripId}`)
+const authTripLoader = async ({params}: LoaderFunctionArgs) => {
+    const {id} = params;
+    const trip = await fetch(`/api/trips/${id}`)
+    const tripRes = await trip.json();
+
+    if (!tripRes.success) {
+        return redirect(tripRes.redirect)
+    }
+    return tripRes as TripRes;
+}
+
+const viewerTripLoader = async ({params}: LoaderFunctionArgs) => {
+    const {id} = params;
+    const trip = await fetch(`/api/trips/viewer/${id}`)
     const tripRes = await trip.json();
 
     if (!tripRes.success) {
         return redirect(tripRes.redirect)
     }
 
-    return tripRes;
+    return tripRes as TripRes;
 }
 
 const TripPage = () => {
-    
     const trip = useLoaderData().trip;
     const currentUser = useLoaderData().currentUser;
-    const userStatus = currentUser.userStatus;
+    const userStatus = currentUser.userStatus as 'owner' | 'viewer' | 'contributor';
 
     const nav = useNavigate();
 
@@ -53,14 +63,15 @@ const TripPage = () => {
         year: trip.year,
         month: trip.month
     };
-    const [editLocations, setEditLocations] = useState(false);
-    const [locationsData, setLocationsData] = useState(trip.locations);
-    const [editContributors, setEditContributors] = useState(false);
-    const [contributors, setContributors] = useState(trip.contributors)
-    const [editPhotos, setEditPhotos] = useState(false);
-    const [editMemories, setEditMemories] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [viewerModalOpen, setViewerModalOpen] = useState(false);
+
+    const [editLocations, setEditLocations] = useState<boolean>(false);
+    const [locationsData, setLocationsData] = useState<LocationType[]>(trip.locations);
+    const [editContributors, setEditContributors] = useState<boolean>(false);
+    const [contributors, setContributors] = useState<UserType[]>(trip.contributors)
+    const [editPhotos, setEditPhotos] = useState<boolean>(false);
+    const [editMemories, setEditMemories] = useState<boolean>(false);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [viewerModalOpen, setViewerModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (userStatus === 'viewer'){
@@ -68,7 +79,7 @@ const TripPage = () => {
         }
     }, [userStatus])
 
-    const toggleEdit = (edit, setEdit) => {
+    const toggleEdit = (edit: boolean, setEdit: React.Dispatch<React.SetStateAction<boolean>>) => {
         if (edit) setEdit(false);
         else setEdit(true);
     }
