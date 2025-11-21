@@ -1,6 +1,7 @@
 import Trip, { ITrip } from '../models/Trip.js';
 import User, { IUserMinimal } from '../models/User.js';
 import { ILocation } from '../models/Location.js'
+import { ITripPopulated } from '../middleware/tripDetails.js';
 import { tripDetails } from '../middleware/tripDetails.js';
 import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
@@ -22,7 +23,7 @@ const getTrip = async (req: Request, res: Response) => {
 
         return res.json({
             success: true,
-            trip: details.trip,
+            trip: details.trip as ITripPopulated,
             currentUser: details.currentUser
         });
     }

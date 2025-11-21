@@ -191,7 +191,7 @@ const userLoader = async ({params}: LoaderFunctionArgs) => {
     return {
         isOwner: data.isOwner,
         user: data.requestedUser
-    };
+    } as UserLoaderDetails;
 }
 
 export {
