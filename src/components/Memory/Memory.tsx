@@ -23,7 +23,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
         formatValue: () => ({
             id: memory._id,
             updatedText: memoryText
-        }),
+        })
     })
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);

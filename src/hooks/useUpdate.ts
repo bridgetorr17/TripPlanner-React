@@ -5,6 +5,7 @@ interface UseUpdateOptions<T> {
   fieldName: string;
   initialValue: T;
   formatValue?: (val: T) => any;
+  onSuccess?: (responseData: any) => void;
 }
 
 interface UseUpdateResult<T> {
@@ -22,6 +23,7 @@ export function useUpdate<T>({
   fieldName,
   initialValue,
   formatValue,
+  onSuccess,
 }: UseUpdateOptions<T>): UseUpdateResult<T> {
   const [value, setValue] = useState<T>(initialValue);
   const [edit, setEdit] = useState(false);
@@ -48,6 +50,7 @@ export function useUpdate<T>({
 
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
+      else if (onSuccess) onSuccess(data);
 
       setEdit(false);
     } catch (err: any) {
