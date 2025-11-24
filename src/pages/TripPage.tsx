@@ -179,7 +179,7 @@ const TripPage = () => {
                     <Contributors 
                         editMode={editContributors}
                         setEditMode={setEditContributors}
-                        contributors={trip.contributors}
+                        contributorsInit={trip.contributors}
                         tripId={trip._id}/>
                 </FeaturePanel>
                 {(userStatus !== 'viewer') &&

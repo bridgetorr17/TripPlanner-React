@@ -6,10 +6,11 @@ import { ContributorsProps } from "./UserTypes";
 import { useUpdate } from "../../hooks/useUpdate";
 import SubmitButton from "../StyledComponents/SubmitButton"
 
-const Contributors = ({editMode, setEditMode, contributors, tripId}: ContributorsProps) => {
+const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: ContributorsProps) => {
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [contributors, setContributors] = useState(contributorsInit)
     //const [contributorNames, setContributorNames] = useState<string[]>(contributors.map(cont => cont.userName))
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const Contributors = ({editMode, setEditMode, contributors, tripId}: Contributor
         url: `/api/trips/editContributors/${tripId}`,
         fieldName: 'updatedContributors',
         initialValue: contributors.map(cont => cont.userName),
-        //onSuccess: (data) => (setContributors(data.contributors))
+        onSuccess: (data) => (setContributors(data.contributors))
     })
 
     // const editContributors = async () => {
