@@ -11,7 +11,6 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [contributors, setContributors] = useState(contributorsInit)
-    //const [contributorNames, setContributorNames] = useState<string[]>(contributors.map(cont => cont.userName))
 
     useEffect(() => {
         if (!editMode) {
@@ -41,37 +40,10 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
 
     useEffect(() => {
         if (error) {
-            console.log(error);
             setErrorMessage(error);
             setModalOpen(true);
         }
     }, [error])
-
-    // const editContributors = async () => {
-    //     try{
-    //         const res = await fetch(`/api/trips/editContributors/${tripId}`, {
-    //             method: 'PUT',
-    //             headers: {'Content-Type': 'application/json'},
-    //             body: JSON.stringify({contributors: contributorNames})
-    //         });
-
-    //         if(!res.ok) throw new Error('Failed to save');
-
-    //         const response = await res.json();
-
-    //         if (!response.success) throw new Error (response.message)
-    //         setContributors(response.contributors);
-    //     }
-    //     catch(err) {
-    //         console.error("error saving contributors:" , err)
-    //         if (err && typeof err === "object" && "message" in err) setErrorMessage(err.message as string);
-    //         else setErrorMessage('An unknown error occured');
-    //         setModalOpen(true);
-    //     }
-    //     finally{
-    //         setEditMode(false);
-    //     }
-    // }  
 
     return (
         <>
@@ -81,7 +53,7 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
                 title="Error Updating Contributors">
                     <span>{errorMessage}</span>
                 </Modal>
-            { editMode && editContributors ?
+            { editMode ?
                 <form onSubmit={handleSubmit}>
                     <ContributorsInput 
                         contributorNames={contributorNames} 
@@ -90,14 +62,6 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
                         loading={loading}
                         color="teal"
                         children="Update Contributors"/>
-                    {/* <button
-                        type="submit"
-                        onClick={() => {
-                            console.log('submit button clicked')
-                            setEditMode(false)}}
-                        className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition">
-                        Update Contributors
-                    </button> */}
                 </form>
                
             :  (
