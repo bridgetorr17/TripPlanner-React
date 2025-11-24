@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-interface UseHandleSubmitOptions<T> {
+interface UseUpdateOptions<T> {
   url: string;
   fieldName: string;
   initialValue: T;
   formatValue?: (val: T) => any;
 }
 
-interface UseHandleSubmitResult<T> {
+interface UseUpdateResult<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
   edit: boolean;
@@ -17,12 +17,12 @@ interface UseHandleSubmitResult<T> {
   error: string | null;
 }
 
-export function useHandleSubmit<T>({
+export function useUpdate<T>({
   url,
   fieldName,
   initialValue,
   formatValue,
-}: UseHandleSubmitOptions<T>): UseHandleSubmitResult<T> {
+}: UseUpdateOptions<T>): UseUpdateResult<T> {
   const [value, setValue] = useState<T>(initialValue);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);

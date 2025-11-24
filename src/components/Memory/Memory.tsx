@@ -3,7 +3,7 @@ import { useState } from "react";
 import Modal from "../StyledComponents/Modal"
 import { Link } from "react-router-dom";
 import { MemoryProps } from "./MemoryTypes";
-import { useHandleSubmit } from "../../hooks/useHandleSubmit";
+import { useUpdate } from "../../hooks/useUpdate";
 import SubmitButton from "../StyledComponents/SubmitButton";
 
 const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
@@ -16,7 +16,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
         handleSubmit,
         loading,
         error
-    } = useHandleSubmit<string>({
+    } = useUpdate<string>({
         url: `/api/trips/editMemory/${tripId}`,
         fieldName: "updatedMemory",
         initialValue: memory.text,
