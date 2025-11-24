@@ -33,7 +33,10 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
         url: `/api/trips/editContributors/${tripId}`,
         fieldName: 'updatedContributors',
         initialValue: contributors.map(cont => cont.userName),
-        onSuccess: (data) => (setContributors(data.contributors))
+        onSuccess: (data) => {
+            setContributors(data.contributors)
+            setEditMode(false)
+        }
     })
 
     // const editContributors = async () => {
