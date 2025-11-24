@@ -39,6 +39,14 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
         }
     })
 
+    useEffect(() => {
+        if (error) {
+            console.log(error);
+            setErrorMessage(error);
+            setModalOpen(true);
+        }
+    }, [error])
+
     // const editContributors = async () => {
     //     try{
     //         const res = await fetch(`/api/trips/editContributors/${tripId}`, {
