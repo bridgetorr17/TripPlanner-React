@@ -2,7 +2,7 @@ import { FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
 import IconButton from './IconButton'
 import { spanStylesMedium } from '../../Utilities/commonStyles';
-import { useHandleSubmit } from '../../hooks/useHandleSubmit';
+import { useUpdate } from '../../hooks/useUpdate';
 
 type FieldSize = "large" | "medium";
 
@@ -39,7 +39,7 @@ const ChangeableField = ({ name, label, initValue, url, size }: ChangeableFieldP
         handleSubmit,
         loading,
         error,
-    } = useHandleSubmit<string>({
+    } = useUpdate<string>({
         url: url,
         fieldName: name,
         initialValue: initValue,

@@ -41,8 +41,8 @@ const editTripField = async (req: Request, res: Response) => {
 const editContributors = async (req: Request, res: Response) => {
     try{
         const tripId = req.params.id;
-        const updatedContributors = req.body.contributors as string[];
-        
+        const updatedContributors = req.body.value as string[];
+
         const updatedUsers = await User.find({ userName: { $in: updatedContributors}}) as IUser[];
         const foundName = updatedUsers.map(u => u.userName) as string[];
 

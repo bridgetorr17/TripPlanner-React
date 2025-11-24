@@ -1,7 +1,7 @@
 import MonthYear from "./MonthYear";
 import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
 import IconButton from "../StyledComponents/IconButton";
-import { useHandleSubmit } from "../../hooks/useHandleSubmit";
+import { useUpdate } from "../../hooks/useUpdate";
 
 interface EditDateProps {
     name: string;
@@ -20,7 +20,7 @@ const EditDate = ({ name, startingMonth, startingYear, tripId }: EditDateProps) 
         setEdit,
         handleSubmit,
         loading,
-    } = useHandleSubmit<Date>({
+    } = useUpdate<Date>({
         url: `/api/trips/editTripField/${tripId}`,
         fieldName: name,
         initialValue: initialDate,

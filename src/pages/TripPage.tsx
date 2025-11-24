@@ -67,7 +67,7 @@ const TripPage = () => {
     const [editLocations, setEditLocations] = useState<boolean>(false);
     const [locationsData, setLocationsData] = useState<LocationType[]>(trip.locations);
     const [editContributors, setEditContributors] = useState<boolean>(false);
-    const [contributors, setContributors] = useState<UserType[]>(trip.contributors)
+    //const [contributors, setContributors] = useState<UserType[]>(trip.contributors)
     const [editPhotos, setEditPhotos] = useState<boolean>(false);
     const [editMemories, setEditMemories] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -179,8 +179,7 @@ const TripPage = () => {
                     <Contributors 
                         editMode={editContributors}
                         setEditMode={setEditContributors}
-                        contributors={contributors}
-                        setContributors={setContributors}
+                        contributorsInit={trip.contributors}
                         tripId={trip._id}/>
                 </FeaturePanel>
                 {(userStatus !== 'viewer') &&

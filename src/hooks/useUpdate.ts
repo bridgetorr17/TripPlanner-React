@@ -1,13 +1,14 @@
 import { useState } from "react";
 
-interface UseHandleSubmitOptions<T> {
+interface UseUpdateOptions<T> {
   url: string;
   fieldName: string;
   initialValue: T;
   formatValue?: (val: T) => any;
+  onSuccess?: (responseData: any) => void;
 }
 
-interface UseHandleSubmitResult<T> {
+interface UseUpdateResult<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
   edit: boolean;
@@ -17,12 +18,13 @@ interface UseHandleSubmitResult<T> {
   error: string | null;
 }
 
-export function useHandleSubmit<T>({
+export function useUpdate<T>({
   url,
   fieldName,
   initialValue,
   formatValue,
-}: UseHandleSubmitOptions<T>): UseHandleSubmitResult<T> {
+  onSuccess,
+}: UseUpdateOptions<T>): UseUpdateResult<T> {
   const [value, setValue] = useState<T>(initialValue);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -48,6 +50,7 @@ export function useHandleSubmit<T>({
 
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
+      else if (onSuccess) onSuccess(data);
 
       setEdit(false);
     } catch (err: any) {
