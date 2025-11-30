@@ -5,6 +5,11 @@ export type SignupInfo = {
   confirmPassword: string;
 }
 
+export type LoginInfo = {
+    email: string;
+    password: string;
+}
+
 export type AuthenticationResult = {
     success: boolean;
     message?: string;
