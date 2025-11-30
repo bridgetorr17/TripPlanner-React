@@ -64,7 +64,7 @@ const ChangeableField = ({ name, label, initValue, url, size }: ChangeableFieldP
                         <IconButton
                             onClick={(e) => {
                                 e.preventDefault();
-                                setValue(value);
+                                setValue(initValue);
                                 setEdit(false);
                             }}
                             color="gray"
