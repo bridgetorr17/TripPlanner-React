@@ -67,7 +67,6 @@ const TripPage = () => {
     const [editLocations, setEditLocations] = useState<boolean>(false);
     const [locationsData, setLocationsData] = useState<LocationType[]>(trip.locations);
     const [editContributors, setEditContributors] = useState<boolean>(false);
-    //const [contributors, setContributors] = useState<UserType[]>(trip.contributors)
     const [editPhotos, setEditPhotos] = useState<boolean>(false);
     const [editMemories, setEditMemories] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
