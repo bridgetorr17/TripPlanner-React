@@ -4,19 +4,24 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
 import { inputStyles, panelBorderStyles, panelContainerStyles, passwordInputStyles } from "../Utilities/commonStyles.js";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
+import { SignupInfo, AuthenticationResult } from '../../shared/types/Authentication.js'
 
-const SignupPage = ({signupAttempt}) => {
+type SignupPageProps = {
+    signupAttempt: (info: SignupInfo) => Promise<AuthenticationResult>
+}
 
-    const [userName, setUserName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false)
-    const [confirmPassword, setConfrimPassword] = useState('');
-    const [signupError, setSignupError] = useState('');
-    const [loading, setLoading] = useState(false);
+const SignupPage = ({signupAttempt}: SignupPageProps) => {
+
+    const [userName, setUserName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [confirmPassword, setConfrimPassword] = useState<string>('');
+    const [signupError, setSignupError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const submitForm = async (e) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
 
@@ -25,7 +30,7 @@ const SignupPage = ({signupAttempt}) => {
             email,
             password,
             confirmPassword
-        }
+        };
 
         let nav = '';
 
@@ -34,7 +39,7 @@ const SignupPage = ({signupAttempt}) => {
             nav = result.success ? '/dashboard' : '/signup';
 
             if (!result.success) {
-                setSignupError(result.message);
+                if (result.message) setSignupError(result.message);
                 throw result.message;
             }
         }
