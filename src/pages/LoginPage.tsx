@@ -6,10 +6,13 @@ import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
 import ResetPasswordModal from "../components/Login/ResetPasswordModal.jsx"
 import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles, passwordInputStyles } from "../Utilities/commonStyles.js";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
-import { LoginInfo } from "../../shared/types/Authentication.js";
-import { useCreateAuth } from '../hooks/useCreateAuth.js'
+import { LoginInfo, AuthenticationResult } from "../../shared/types/Authentication.js";
 
-const LoginPage = () => {
+type LoginPageProps = {
+    loginAttempt: (info: LoginInfo) => Promise<AuthenticationResult>
+}
+
+const LoginPage = ({loginAttempt}: LoginPageProps) => {
     const nav = useNavigate();
 
     let isAlreadyLoggedIn = false;
@@ -25,29 +28,50 @@ const LoginPage = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [loginError, setLoginError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const loginAttemptInfo = {
+            email,
+            password
+        }
+
+        let navTo = '';
+
+        try{
+            const result = await loginAttempt(loginAttemptInfo);
+            navTo = result.success ? '/dashboard' : '/login';
+
+            if (!result.success) {
+                if (result.message) setLoginError(result.message);
+                throw result.message;
+            }
+        }
+        catch(err){
+            console.error(err);
+        }
+        finally{
+            setLoading(false);
+            nav(navTo);
+        }
+    }
 
     const closeModal = () => {
         setModalOpen(false);
     }
     
-    const {
-        loading, 
-        error, 
-        handleSubmit
-    } = useCreateAuth<LoginInfo>({
-        url: '/api/login',
-        attemptData: {email, password},
-        rerouteTo: '/login'
-    });
-
     return (
         <div className={panelContainerStyles}>
             <div className={panelBorderStyles}>
                 <StyledH2 color={"blue"}>
                     Triply
                 </StyledH2>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <form onSubmit={submitForm} className="flex flex-col gap-4">
                     <input
                         id="email"
                         name="email"
@@ -80,9 +104,9 @@ const LoginPage = () => {
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
                     </div>
-                    {error && (
+                    {loginError && (
                         <div className="text-center">
-                            <p className="text-red-600 font-semibold">{error}</p>
+                            <p className="text-red-600 font-semibold">{loginError}</p>
                         </div>
                     )}
                     <button
