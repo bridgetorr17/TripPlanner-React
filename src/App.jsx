@@ -23,22 +23,6 @@ const App = () => {
     //configure styles for markers ono the map
     configureMarkers();
 
-    //Signup POST
-    const signupAttempt = async (singupInfo) => {
-
-        const res = await fetch('/api/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(singupInfo)
-        });
-
-        const result = await res.json();
-        console.log(result);
-        return result;
-    }
-
     const ErrorBoundaryLayout = () => {
         return (
         <ErrorBoundary FallbackComponent={ErrorPage}>
