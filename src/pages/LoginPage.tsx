@@ -39,7 +39,7 @@ const LoginPage = () => {
         url: '/api/login',
         attemptData: {email, password},
         rerouteTo: '/login'
-    })
+    });
 
     return (
         <div className={panelContainerStyles}>

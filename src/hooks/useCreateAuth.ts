@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationResult } from '../../shared/types/Authentication';
 
 interface UseCreateAuthOptions<T>{
     url: string;
@@ -38,7 +39,7 @@ export function useCreateAuth<T>({
                 body: JSON.stringify(attemptData)
             })
 
-            const result = await res.json();
+            const result = await res.json() as AuthenticationResult;
             nav = result.success ? '/dashboard' : rerouteTo;
 
             if (!result.success){
