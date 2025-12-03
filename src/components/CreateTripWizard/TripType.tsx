@@ -1,10 +1,14 @@
 import { Form, Input } from 'usetheform';
 
-export default function TripTypeWizard (props: any) {
+export default function TripTypeWizard (props: { onSubmit: () => void }) {
+
+    const { onSubmit } = props;
+
     return (
-        <Form name="page1" {...props}>
-            <Input type="text"></Input>
-            <button type="submit">Next Page</button>
+        <Form onSubmit={onSubmit}>
+            {/* <Input type="text" name="triptype"></Input> */}
+            <span>select trip type here</span>
+            <button type="submit">NEXT</button>
         </Form>
     )
 }
