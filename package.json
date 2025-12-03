@@ -24,6 +24,7 @@
     "react-router-dom": "^7.9.4",
     "react-spinners": "^0.17.0",
     "tailwindcss": "^4.1.15",
+    "usetheform": "^4.0.0",
     "validator": "^13.15.15",
     "vara": "^1.4.1"
   },
