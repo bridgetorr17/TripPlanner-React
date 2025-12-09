@@ -5,7 +5,11 @@ const override = {
     margin: 'auto'
 }
 
-const Spinner = ({ loading }) => {
+interface SpinnerProps {
+    loading: boolean;
+}
+
+const Spinner = ({ loading }: SpinnerProps) => {
     return (
         <SquareLoader 
             color="#1e3a8a"

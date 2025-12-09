@@ -1,6 +1,12 @@
 import Spinner from "./Spinner";
 
-const SubmitButton = ({loading, color, children}) => {
+interface SubmitButtonProps {
+  loading: boolean;
+  color: string;
+  children: React.ReactNode;
+}
+
+const SubmitButton = ({loading, color, children}: SubmitButtonProps) => {
     return (
         <button
             type="submit"

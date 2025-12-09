@@ -117,6 +117,10 @@ const TripPage = () => {
         }
     }
 
+    const navToSignup = () => {
+        nav('/signup')
+    }
+
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
             <TripHeader 
@@ -217,7 +221,7 @@ const TripPage = () => {
                     <>
                         <Link to="/signup">
                             <StyledButton
-                                onClickFn={null}
+                                onClickFn={navToSignup}
                                 color="blue"
                             >
                                 <FaPlaneDeparture className="text-lg" />

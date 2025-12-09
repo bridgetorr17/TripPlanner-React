@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles } from "../Utilities/commonStyles.js";
+import { inputStyles, panelBorderStyles, panelButtonStyles, panelContainerStyles, passwordInputStyles } from "../Utilities/commonStyles.js";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
 
@@ -12,15 +12,15 @@ const ResetPasswordPage = () => {
     const token = searchParams.get('token');
     const userId = searchParams.get('id');
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false)
-    const [confirmPassword, setConfrimPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [status, setStatus] = useState('');
-    const [statusColor, setStatusColor] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [confirmPassword, setConfrimPassword] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [status, setStatus] = useState<string>('');
+    const [statusColor, setStatusColor] = useState<string>('');
 
-    const submitForm = async (e) => {
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const resetPasswordDetails = {

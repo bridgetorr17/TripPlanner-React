@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { DashboardTrip } from "pages/DashboardPage";
 
-const TripList = ({trips}) => {
+interface TripListProps {
+    trips: DashboardTrip[];
+}
+
+const TripList = ({trips}: TripListProps) => {
     
     return (
         <div>

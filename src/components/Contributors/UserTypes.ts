@@ -6,3 +6,8 @@ export interface ContributorsProps {
     contributorsInit: UserType[];
     tripId: string;
 }
+
+export interface ContributorsInputProps {
+    contributorNames: string[];
+    setContributorNames: React.Dispatch<React.SetStateAction<string[]>>;
+}
