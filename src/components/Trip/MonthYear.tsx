@@ -2,9 +2,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { inputFieldStyles } from "../../Utilities/commonStyles";
 
-const MonthYear = ( {selectedDate, setSelectedDate} ) => {
+interface MonthYearProps {
+  selectedDate: Date | null;
+  setSelectedDate: (date: Date | null) => void;
+}
 
-  const renderMonthContent = (month, shortMonth, longMonth, day) => {
+const MonthYear = ( {selectedDate, setSelectedDate}: MonthYearProps ) => {
+
+  const renderMonthContent = (month: number, shortMonth: string, longMonth: string, day: Date) => {
     const fullYear = new Date(day).getFullYear();
     const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`;
     return <span title={tooltipText}>{shortMonth}</span>;

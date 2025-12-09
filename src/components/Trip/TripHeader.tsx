@@ -4,7 +4,18 @@ import EditDate from "./EditDate"
 import ChangeableField from "../StyledComponents/ChangeableField"
 import { spanStylesMedium } from "../../Utilities/commonStyles"
 
-const TripHeader = ({ isOwner, tripData, tripId }) => {
+interface TripHeaderProps {
+    isOwner: boolean;
+    tripData: {
+        title: string;
+        subtitle: string;
+        year: number;
+        month: string;
+    };
+    tripId: string;
+}
+
+const TripHeader = ({ isOwner, tripData, tripId }: TripHeaderProps) => {
     
     return (
         <div className="w-full max-w-3xl mb-8 flex flex-col space-y-4">
