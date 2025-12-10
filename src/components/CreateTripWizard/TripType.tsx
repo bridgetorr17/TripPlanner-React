@@ -1,14 +1,29 @@
-import { Form, Input } from 'usetheform';
+import { useState } from "react"
 
-export default function TripTypeWizard (props: { onSubmit: () => void }) {
+interface Props {
+    tripType: string;
+    onSubmit: (tripType: string) => void;
+}
 
-    const { onSubmit } = props;
+export default function TripTypeWizard ( { tripType, onSubmit }: Props ) {
+
+    const [localType, setLocalType] = useState(tripType)
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSubmit(localType);
+    };
 
     return (
-        <Form onSubmit={onSubmit}>
-            {/* <Input type="text" name="triptype"></Input> */}
-            <span>select trip type here</span>
-            <button type="submit">NEXT</button>
-        </Form>
+        <form onSubmit={handleSubmit}>
+            <label>
+                Trip Type: 
+                <input 
+                    type="text" 
+                    value={localType}
+                    onChange={(e) => setLocalType(e.target.value)}/>
+            </label>
+            <button type="submit">Next</button>
+        </form>
     )
 }

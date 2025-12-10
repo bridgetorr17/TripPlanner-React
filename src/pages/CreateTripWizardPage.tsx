@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { useMultipleForm } from "usetheform";
+import { useNavigate } from "react-router-dom";
 
 import TripTypeWizard from "../components/CreateTripWizard/TripType.jsx";
-import TripDescriptionWizard from "../components/CreateTripWizard/TripDescription";
-import TripDatesWizard from "../components/CreateTripWizard/TripDates";
 import TripContributorsWizard from "../components/CreateTripWizard/TripContributors";
 
 export type WizardData = {
-    tripType?: string;
-    tripName?: string;
-    tripDate?: string;
-    tripContributors?: string;
+    tripType: string;
+    tripContributors: string;
 }
 
 const CreateTripWizardPage = () => {
@@ -18,32 +14,42 @@ const CreateTripWizardPage = () => {
     const [currentPage, setPage] = useState(1);
     const next = () => setPage((prev) => ++prev);
     const back = () => setPage((prev) => --prev);
-
-
-    const [getWizardState, wizard] = useMultipleForm();
-    const onSubmitWizard = (finalData: WizardData) => {
-        console.log(`wizard finished, data: ${finalData}`)
-    }
     
-    const handleFinal = () => {
-        const data = getWizardState();
-        onSubmitWizard(data as WizardData);
+    const [tripInformation, setTripInformation] = useState<WizardData>({
+        tripType: '',
+        tripContributors: '',
+    });
+
+    const updateInformation = <K extends keyof WizardData>(field: K, value: WizardData[K]) => {
+        console.log('updating information')
+        setTripInformation((prev) => ({
+            ...prev,
+            [field]: value
+        }))
+    }
+
+    const handleFinalSubmit = async () => {
+        console.log('submitting to backend')
+        console.log(tripInformation)
     }
 
     return (
         <div>
-            {currentPage === 1 && (
-                <TripTypeWizard onSubmit={next}/>
-            )}
-            {/* {currentPage === 2 && (
-                <TripDescriptionWizard prevPage={back} onSubmit={next}/>
-            )}
-            {currentPage === 3 && (
-                <TripDatesWizard prevPage={back} onSubmit={next}/>
-            )} */}
-            {currentPage === 4 && (
-                <TripContributorsWizard prevPage={back} onSubmit={handleFinal}/>
-            )}
+            {currentPage === 1 && 
+                (<TripTypeWizard 
+                    tripType={tripInformation.tripType}
+                    onSubmit={(value) => {
+                        updateInformation('tripType', value);
+                        next();
+                    }}/>)}
+            {currentPage === 2 && 
+                (<TripContributorsWizard 
+                    tripContributors={tripInformation.tripContributors}
+                    onBack={back}
+                    onSubmit={(value) => {
+                        updateInformation('tripContributors', value);
+                        handleFinalSubmit();
+                    }}/>)}
         </div>
     )
 }

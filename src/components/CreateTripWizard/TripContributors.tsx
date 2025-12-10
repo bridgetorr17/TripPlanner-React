@@ -1,15 +1,33 @@
-import { Form, Input } from 'usetheform';
+import { useState } from "react"
 
-export default function TripContributorsWizard (props: { prevPage: () => void; onSubmit: () => void }) {
-    
-    const { prevPage, onSubmit } = props;
+interface Props {
+    tripContributors: string;
+    onBack: () => void;
+    onSubmit: (tripContributors: string) => void;
+}
+
+export default function TripContributorsWizard ( { tripContributors, onBack, onSubmit }: Props ) {
+
+    const [localContributors, setLocalContributors] = useState(tripContributors);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSubmit(localContributors);
+    }
 
     return (
-        <Form onSubmit={onSubmit}>
-            {/* <Input type="text" name="trippeople"></Input> */}
-            <span>trip contributors here</span>
-            <button type="button" onClick={prevPage}>BACK</button>
-            <button type="submit">SUBMIT</button>
-        </Form>
+        <form onSubmit={handleSubmit}>
+            <label>
+                Contributors:
+                <input 
+                    type="text"
+                    value={localContributors}
+                    onChange={(e) => setLocalContributors(e.target.value)} />
+            </label>
+            <button type="button" onClick={onBack}>
+                Back
+            </button>
+            <button type="submit">Finish</button>
+        </form>
     )
 }
