@@ -6,7 +6,7 @@ interface Props {
     onSubmit: (tripContributors: string) => void;
 }
 
-export default function TripContributorsWizard ( { tripContributors, onBack, onSubmit }: Props ) {
+export default function TripContributors ( { tripContributors, onBack, onSubmit }: Props ) {
 
     const [localContributors, setLocalContributors] = useState(tripContributors);
 

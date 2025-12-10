@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import TripTypeWizard from "../components/CreateTripWizard/TripType.jsx";
-import TripContributorsWizard from "../components/CreateTripWizard/TripContributors";
+import TripType from "../components/CreateTrip/TripType.js";
+import TripContributors from "../components/CreateTrip/TripContributors.js";
 
 export type WizardData = {
     tripType: string;
@@ -36,14 +36,14 @@ const CreateTripWizardPage = () => {
     return (
         <div>
             {currentPage === 1 && 
-                (<TripTypeWizard 
+                (<TripType
                     tripType={tripInformation.tripType}
                     onSubmit={(value) => {
                         updateInformation('tripType', value);
                         next();
                     }}/>)}
             {currentPage === 2 && 
-                (<TripContributorsWizard 
+                (<TripContributors
                     tripContributors={tripInformation.tripContributors}
                     onBack={back}
                     onSubmit={(value) => {
