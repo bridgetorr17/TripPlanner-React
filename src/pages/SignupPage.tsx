@@ -1,62 +1,34 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SubmitButton from "../components/StyledComponents/SubmitButton.jsx"
 import { inputStyles, panelBorderStyles, panelContainerStyles, passwordInputStyles } from "../Utilities/commonStyles.js";
 import StyledH2 from "../components/StyledComponents/StyledH2.jsx"
-import { SignupInfo, AuthenticationResult } from '../../shared/types/Authentication.js'
+import { SignupInfo } from '../../shared/types/Authentication.js'
+import { useCreateAuth } from "../hooks/useCreateAuth.js";
 
-type SignupPageProps = {
-    signupAttempt: (info: SignupInfo) => Promise<AuthenticationResult>
-}
-
-const SignupPage = ({signupAttempt}: SignupPageProps) => {
+const SignupPage = () => {
 
     const [userName, setUserName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [confirmPassword, setConfrimPassword] = useState<string>('');
-    const [signupError, setSignupError] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const navigate = useNavigate();
 
-    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
-
-        const signupAttemptInfo = {
-            userName,
-            email,
-            password,
-            confirmPassword
-        };
-
-        let nav = '';
-
-        try{
-            const result = await signupAttempt(signupAttemptInfo);
-            nav = result.success ? '/dashboard' : '/signup';
-
-            if (!result.success) {
-                if (result.message) setSignupError(result.message);
-                throw result.message;
-            }
-        }
-        catch(err){
-            console.log(err);
-        }
-        finally{
-            setLoading(false);
-            navigate(nav);
-        }
-    }
+   const { 
+        loading,
+        error,
+        handleSubmit
+   } = useCreateAuth<SignupInfo>({
+        url: '/api/signup',
+        attemptData: {userName, email, password, confirmPassword},
+        rerouteTo: '/signup'
+   });
 
     return (
     <div className={panelContainerStyles}>
         <div className={panelBorderStyles}>
             <StyledH2 color="blue">Triply</StyledH2>
-            <form onSubmit={submitForm} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <input 
                     type="text"
                     name="userName" 
@@ -104,7 +76,7 @@ const SignupPage = ({signupAttempt}: SignupPageProps) => {
                     disabled={loading}
                 />
                 <div className="text-center font-bold text-red-500">
-                    {signupError}    
+                    {error}    
                 </div>
                 <SubmitButton 
                     loading={loading}
