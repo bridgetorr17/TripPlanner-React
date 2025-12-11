@@ -39,7 +39,8 @@ const EditDate = ({ name, startingMonth, startingYear, tripId }: EditDateProps) 
                     <div className="flex items-center space-x-2">
                         <MonthYear
                             selectedDate={selectedDate}
-                            setSelectedDate={setSelectedDate}
+                            setSelectedDate={(date) => {
+                                if (date) setSelectedDate(date)}}
                         />
                         <IconButton
                             type="submit" 

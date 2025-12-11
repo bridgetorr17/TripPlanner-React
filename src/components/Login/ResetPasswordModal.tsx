@@ -3,11 +3,15 @@ import StyledButton from "../StyledComponents/StyledButton";
 import Modal from "../StyledComponents/Modal";
 import SubmitButton from "../StyledComponents/SubmitButton";
 
-const ResetPasswordModal = ({ closeModal }) => {
+interface ResetPasswordModalProps {
+    closeModal: () => void;
+}
+
+const ResetPasswordModal = ({ closeModal }: ResetPasswordModalProps) => {
     const [emailReset, setEmailReset] = useState('');
     const [emailSent, setEmailSent] = useState(false);
     
-    const sendEmail = async (e) => {
+    const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('sending request to backend for ' + emailReset)
         try{

@@ -1,6 +1,12 @@
 import { FaPenToSquare, FaPlus, FaX } from "react-icons/fa6"
 
-const FeatureHeader = ({headerTitle, modifyText, onToggleEdit}) => {
+interface FeatureHeaderProps {
+    headerTitle: string;
+    modifyText: 'Add' | 'Cancel';
+    onToggleEdit: () => void;
+}
+
+const FeatureHeader = ({headerTitle, modifyText, onToggleEdit}: FeatureHeaderProps) => {
     let editIcon;
     if (modifyText==="Add") editIcon = <FaPlus className="w-4 h-4 mr-2" aria-hidden="true" />
     else if (modifyText==="Cancel") editIcon = <FaX className="w-4 h-4 mr-2" aria-hidden="true"/>

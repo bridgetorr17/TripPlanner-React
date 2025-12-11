@@ -1,11 +1,18 @@
 import { Link } from "react-router-dom"
 
-const NavLinks = ({activeTab, setActiveTab}) => {
+type TabKey = 'my' | 'shared';
 
-    const tabs = [
-        { key: 'my', label: 'My Trips' },
-        { key: 'shared', label: 'Shared Trips' }
-    ]
+interface NavLinksProps {
+    activeTab: TabKey;
+    setActiveTab: React.Dispatch<React.SetStateAction<TabKey>>
+}
+
+const tabs: {key: TabKey; label: string}[] = [
+    { key: 'my', label: 'My Trips' },
+    { key: 'shared', label: 'Shared Trips' }
+]
+
+const NavLinks = ({activeTab, setActiveTab}: NavLinksProps) => {
 
     return (
         <div className="flex space-x-4 mb-8">

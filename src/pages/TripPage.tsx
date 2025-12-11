@@ -15,7 +15,6 @@ import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 import { ITripPopulated } from '../../server/api/middleware/tripDetails'
-import { UserType } from '../../shared/types/User'
 import { LocationType } from '../../shared/types/Location'
 
 interface TripRes {
@@ -25,6 +24,11 @@ interface TripRes {
         userName: string | null,
         userStatus: 'owner' | 'viewer' | 'contributor'
     } | null
+}
+
+export type ToggleEditArgs = {
+    edit: boolean;
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const authTripLoader = async ({params}: LoaderFunctionArgs) => {
@@ -67,7 +71,6 @@ const TripPage = () => {
     const [editLocations, setEditLocations] = useState<boolean>(false);
     const [locationsData, setLocationsData] = useState<LocationType[]>(trip.locations);
     const [editContributors, setEditContributors] = useState<boolean>(false);
-    //const [contributors, setContributors] = useState<UserType[]>(trip.contributors)
     const [editPhotos, setEditPhotos] = useState<boolean>(false);
     const [editMemories, setEditMemories] = useState<boolean>(false);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -79,7 +82,7 @@ const TripPage = () => {
         }
     }, [userStatus])
 
-    const toggleEdit = (edit: boolean, setEdit: React.Dispatch<React.SetStateAction<boolean>>) => {
+    const toggleEdit = ( { edit, setEdit }: ToggleEditArgs) => {
         if (edit) setEdit(false);
         else setEdit(true);
     }
@@ -117,6 +120,10 @@ const TripPage = () => {
         }
     }
 
+    const navToSignup = () => {
+        nav('/signup')
+    }
+
     return (
         <div className="flex flex-col items-center bg-sky-50 text-blue-800 min-h-screen p-8">
             <TripHeader 
@@ -144,7 +151,7 @@ const TripPage = () => {
                     toggleEdit={toggleEdit}
                     editFeature={editPhotos}
                     setEditFeature={setEditPhotos}
-                    headerTitle="Where we saw"
+                    headerTitle="What we saw"
                 >
                     <Photos 
                         tripId={trip._id}
@@ -217,7 +224,7 @@ const TripPage = () => {
                     <>
                         <Link to="/signup">
                             <StyledButton
-                                onClickFn={null}
+                                onClickFn={navToSignup}
                                 color="blue"
                             >
                                 <FaPlaneDeparture className="text-lg" />

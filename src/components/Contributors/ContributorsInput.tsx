@@ -1,6 +1,7 @@
 import { FaTrash } from "react-icons/fa"
+import { ContributorsInputProps } from './UserTypes'
 
-const ContributorsInput = ({ contributorNames, setContributorNames }) => {
+const ContributorsInput = ({ contributorNames, setContributorNames }: ContributorsInputProps) => {
 
     return (
         <div className={`space-y-2 bg-teal-50 p-4 rounded-md`}>
