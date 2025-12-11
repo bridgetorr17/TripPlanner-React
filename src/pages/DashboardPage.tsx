@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import { UserType } from "../../shared/types/User";
 
-type DashboardTrip = {
+export type DashboardTrip = {
     _id: string;
     name: string;
 }
@@ -19,7 +19,7 @@ interface DashboardLoaderDetails {
 
 const DashboardPage = () => {
     const { userTrips, sharedTrips, user } = useLoaderData<DashboardLoaderDetails>();
-    const [activeTab, setActiveTab] = useState<string>('my');
+    const [activeTab, setActiveTab] = useState<'my' | 'shared'>('my');
     let content = null;
 
     if (activeTab === 'my'){
