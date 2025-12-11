@@ -1,38 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import TripType from "../components/CreateTrip/TripType.js";
 import TripContributors from "../components/CreateTrip/TripContributors.js";
+import { TbRoad } from "react-icons/tb";
 
 export type WizardData = {
     tripType: string;
-    tripContributors: string;
+    tripContributors: string[];
 }
 
 const CreateTripWizardPage = () => {
 
+    const navigate = useNavigate();
     const [currentPage, setPage] = useState(1);
     const next = () => setPage((prev) => ++prev);
     const back = () => setPage((prev) => --prev);
     
     const [tripInformation, setTripInformation] = useState<WizardData>({
         tripType: '',
-        tripContributors: '',
+        tripContributors: [],
     });
 
+    useEffect(() => {
+        if (tripInformation.tripContributors.length !== 0){
+            console.log('post to backend', tripInformation);
+            navigate('/dashboard')
+        }
+    }, [tripInformation])
+
     const updateInformation = <K extends keyof WizardData>(field: K, value: WizardData[K]) => {
-        console.log('updating information')
         setTripInformation((prev) => ({
             ...prev,
             [field]: value
-        }))
-    }
+        }));
 
-    const handleFinalSubmit = async () => {
-        console.log('submitting to backend')
+        console.log(`trip information was updated, ${tripInformation}`)
         console.log(tripInformation)
     }
-
+    
     return (
         <div>
             {currentPage === 1 && 
@@ -48,7 +54,6 @@ const CreateTripWizardPage = () => {
                     onBack={back}
                     onSubmit={(value) => {
                         updateInformation('tripContributors', value);
-                        handleFinalSubmit();
                     }}/>)}
         </div>
     )

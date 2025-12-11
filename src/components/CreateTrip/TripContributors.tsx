@@ -1,29 +1,26 @@
 import { useState } from "react"
+import ContributorsInput from '../Contributors/ContributorsInput'
 
 interface Props {
-    tripContributors: string;
+    tripContributors: string[];
     onBack: () => void;
-    onSubmit: (tripContributors: string) => void;
+    onSubmit: (tripContributors: string[]) => void;
 }
 
 export default function TripContributors ( { tripContributors, onBack, onSubmit }: Props ) {
 
-    const [localContributors, setLocalContributors] = useState(tripContributors);
+    const [contributors, setContributors] = useState<string[]>(tripContributors);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(localContributors);
+        onSubmit(contributors);
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>
-                Contributors:
-                <input 
-                    type="text"
-                    value={localContributors}
-                    onChange={(e) => setLocalContributors(e.target.value)} />
-            </label>
+            <ContributorsInput 
+                contributorNames={contributors} 
+                setContributorNames={setContributors} />
             <button type="button" onClick={onBack}>
                 Back
             </button>
