@@ -3,8 +3,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { inputFieldStyles } from "../../Utilities/commonStyles";
 
 interface MonthYearProps {
-  selectedDate: Date | null;
-  setSelectedDate: (date: Date | null) => void;
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
 }
 
 const MonthYear = ( {selectedDate, setSelectedDate}: MonthYearProps ) => {
@@ -23,7 +23,7 @@ const MonthYear = ( {selectedDate, setSelectedDate}: MonthYearProps ) => {
       showMonthYearPicker
       dateFormat="MM/yyyy"
       selected={selectedDate}
-      onChange={(date => setSelectedDate(date))}
+      onChange={(date => { if(date) setSelectedDate(date)})}
       renderMonthContent={renderMonthContent}
     />
   )
