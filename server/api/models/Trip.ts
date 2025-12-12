@@ -54,7 +54,7 @@ const TripSchema = new mongoose.Schema<ITrip>({
         type: [PhotoSchema],
         default: []
     }
-});
+}, {timestamps: true});
 
 const Trip = mongoose.model<ITrip>('Trip', TripSchema);
 
