@@ -3,7 +3,7 @@ import MemorySchema, { IMemory } from "./Memory.js"
 import PhotoSchema, { IPhoto }  from "./Photo.js"
 import LocationSchema, { ILocation }  from './Location.js';
 
-export interface ITrip extends Document {
+export interface ITrip extends Document  {
     _id: Types.ObjectId;
     name: String;
     subtitle?: String;
@@ -14,6 +14,8 @@ export interface ITrip extends Document {
     year: number;
     memories: Types.DocumentArray<IMemory>;
     photos: Types.DocumentArray<IPhoto>;
+    createdAt: Date;     // ⭐ Add this
+    updatedAt: Date; 
 }
 
 const TripSchema = new mongoose.Schema<ITrip>({
