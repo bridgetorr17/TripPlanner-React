@@ -14,7 +14,7 @@ export interface ITrip extends Document  {
     year: number;
     memories: Types.DocumentArray<IMemory>;
     photos: Types.DocumentArray<IPhoto>;
-    createdAt: Date;     // ⭐ Add this
+    createdAt: Date;     
     updatedAt: Date; 
 }
 
