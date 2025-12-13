@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 import { ITripPopulated } from '../../server/api/middleware/tripDetails'
 import { LocationType } from '../../shared/types/Location'
+import { PDFViewer } from "../components/PDFGeneration/PDFViewer"
 
 interface TripRes {
     success: boolean,
@@ -250,6 +251,9 @@ const TripPage = () => {
                     </Modal>
                 }
             </div>
+            <PDFViewer
+                lorem={trip.name}
+            />
         </div>
     )
 }
