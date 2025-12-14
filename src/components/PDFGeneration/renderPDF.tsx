@@ -1,10 +1,10 @@
-import { pdf } from "@react-pdf/renderer";
+import { pdf, PDFViewerProps } from "@react-pdf/renderer";
 import TripPDF, { TripPDFProps } from "./TripPDF";
+import { ITripPopulated } from "../../../server/api/middleware/tripDetails";
 
-export async function renderPDF(iframe: HTMLIFrameElement, lorem: string) {
-const loremText: TripPDFProps = { lorem };
+export async function renderPDF(iframe: HTMLIFrameElement, trip: ITripPopulated) {
   const blob = await pdf(
-    <TripPDF lorem={lorem} />
+    <TripPDF trip={trip} />
   ).toBlob();
 
   const url = URL.createObjectURL(blob);

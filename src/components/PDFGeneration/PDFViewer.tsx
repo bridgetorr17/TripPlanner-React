@@ -11,21 +11,31 @@ Adding lorem to the dependency array ensures live updates when data changes.
 
 import React, { useRef, useEffect } from "react";
 import { renderPDF } from "./renderPDF";
+import StyledButton from "../StyledComponents/StyledButton";
+import { ITripPopulated } from "../../../server/api/middleware/tripDetails";
 
+export interface PDFViewerProps {
+  trip: ITripPopulated;
+}
 /** FOR manual generation */
-export function PDFViewer({ lorem }: { lorem: string }) {
+const PDFViewer = ( { trip }: PDFViewerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-
+  console.log("IN PDFViewer ", trip)
   const handleGenerate = () => {
     if (iframeRef.current) {
-      renderPDF(iframeRef.current, lorem);
+      renderPDF(iframeRef.current, trip);
     }
   };
 
   return (
     <div>
-      <button onClick={handleGenerate}>Generate PDF</button>
+      <StyledButton 
+        onClickFn={handleGenerate}
+        color="blue"
+        >Generate PDF</StyledButton>
       <iframe ref={iframeRef} width="100%" height="600px" />
     </div>
   );
 }
+
+export { PDFViewer as default }

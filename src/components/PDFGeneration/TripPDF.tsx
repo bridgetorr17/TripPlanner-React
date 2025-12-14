@@ -7,21 +7,22 @@ import {
   StyleSheet,
   Font,
 } from "@react-pdf/renderer";
+import { ITripPopulated } from "../../../server/api/middleware/tripDetails";
 
-export type TripPDFProps = {
-  lorem: string;
+export interface TripPDFProps {
+  trip: ITripPopulated;
 };
 
 // Register fonts (must be URL or imported asset)
-Font.register({
-  family: "Roboto",
-  src: "/fonts/Roboto-Regular.ttf",
-});
+// Font.register({
+//   family: "Roboto",
+//   src: "/fonts/Roboto-Regular.ttf",
+// });
 
 const styles = StyleSheet.create({
   page: {
     padding: 40,
-    fontFamily: "Roboto",
+    // fontFamily: "Roboto",
   },
 
   title: {
@@ -63,40 +64,35 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TripPDF({ lorem }: TripPDFProps) {
+export default function TripPDF({ trip }: TripPDFProps) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>
-          Here is some vector graphics...
+          {trip.name}
+        </Text>
+        <Text>
+          {trip.month+", "+trip.year}
         </Text>
 
         {/* Vector-like shapes */}
-        <View style={[styles.section, styles.row]}>
+        {/* <View style={[styles.section, styles.row]}>
           <View style={styles.box} />
           <View style={styles.circle} />
-        </View>
+        </View> */}
 
         {/* Text */}
         <View style={styles.section}>
           <Text style={styles.text}>
-            And here is some wrapped text...
+            Here are the memories
           </Text>
-          <Text style={styles.text}>{lorem}</Text>
+          {trip.memories.map(memory => 
+          <div>
+            <Text style={styles.text}>Where: {memory.location}</Text>
+            <Text style={styles.text}>{memory.text}</Text>
+          </div>
+          )}
         </View>
-      </Page>
-
-      {/* Second page */}
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>And an image...</Text>
-        <Image
-          style={styles.image}
-          src="/images/bee.png"
-        />
-
-        <Text style={{ marginTop: 20 }}>
-          Finish...
-        </Text>
       </Page>
     </Document>
   );
