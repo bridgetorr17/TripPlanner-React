@@ -11,6 +11,7 @@ import Contributors from "../components/Contributors/Contributors"
 import ConfirmDelete from "../components/StyledComponents/ConfirmDelete"
 import StyledButton from "../components/StyledComponents/StyledButton"
 import Modal from "../components/StyledComponents/Modal"
+import  PDFViewer  from "../components/PDFGeneration/PDFViewer"
 import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
@@ -250,6 +251,9 @@ const TripPage = () => {
                     </Modal>
                 }
             </div>
+            <PDFViewer
+                trip={trip}
+            />
         </div>
     )
 }
