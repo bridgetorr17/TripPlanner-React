@@ -7,7 +7,7 @@ interface UseCreateContentOptions<T>{
     onSuccess?: (responseData: any) => void;
     //is onFailure needed? only differences are some navigate to errorPage, and PlaceAutocomplete resets suggestions to empty array
     onFailure?: (responseData: any) => void;  
-    finally?: (responseData: any) => void;
+    onFinally?: (responseData: any) => void;
 }
 
 interface UseCreateContentResult<T> {
@@ -21,7 +21,7 @@ export function useCreateContent<T>({
     content,
     onSuccess,
     onFailure,
-    finally
+    onFinally
 }: UseCreateContentOptions<T>): UseCreateContentResult<T> {
 
     const [error, setError] = useState<string>('');
