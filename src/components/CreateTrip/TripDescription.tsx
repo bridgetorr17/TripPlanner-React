@@ -25,7 +25,7 @@ export default function TripDescriptionWizard (props: {
     }
 
     return (
-        <form name="page2" onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex justify-between">
                 <button type="button" onClick={onBack} className="text-sm font-semibold text-blue-600 hover:text-cyan-600">
                     Back

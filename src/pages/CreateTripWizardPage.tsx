@@ -4,11 +4,16 @@ import { useNavigate } from "react-router-dom";
 import CreateTripIntro from "../components/CreateTrip/CreateTripIntro.js"
 import TripContributors from "../components/CreateTrip/TripContributors.js";
 import TripDescriptionWizard from "../components/CreateTrip/TripDescription.js";
+import TripDatesWizard from "../components/CreateTrip/TripDates.js";
 
 export type WizardData = {
     tripDescription: {
         tripName: string;
         tripSubtitle: string;
+    },
+    tripDate: {
+        tripMonth: number,
+        tripYear: number,
     },
     tripContributors: string[];
 }
@@ -24,6 +29,10 @@ const CreateTripWizardPage = () => {
         tripDescription: {
             tripName: '',
             tripSubtitle: '',
+        },
+        tripDate: {
+            tripMonth: 0,
+            tripYear: 0,
         },
         tripContributors: [],
     });
@@ -64,6 +73,17 @@ const CreateTripWizardPage = () => {
                 )
             }
             {currentPage === 3 && 
+                (<TripDatesWizard 
+                    tripDate={tripInformation.tripDate}
+                    onBack={back}
+                    onSubmit={(value) => {
+                        updateInformation('tripDate', value);
+                        next();
+                    }}
+                    />
+                )
+            }
+            {currentPage === 4 && 
                 (<TripContributors
                     tripContributors={tripInformation.tripContributors}
                     onBack={back}
