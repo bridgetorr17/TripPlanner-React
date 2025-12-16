@@ -39,11 +39,11 @@ const getTrip = async (req: Request, res: Response) => {
 //POST - creates new trip. 
 const postNewTrip = async (req: Request, res: Response) => {
     let contributors = req.body.contributors as string[];
-    const name = req.body.name as string;
-    const subtitle = req.body.subtitle as string;
-    const locations = req.body.locations as ILocation[];
-    const monthNumber = req.body.month as number;
-    const year = req.body.year as number;
+    const name = req.body.tripDescription.tripName as string;
+    const subtitle = req.body.tripDescription.tripSubtitle as string;
+    //const locations = req.body.locations as ILocation[];
+    const monthNumber = req.body.tripDate.tripMonth as number;
+    const year = req.body.tripDate.tripYear as number;
     const user = req.user as IUserMinimal;
 
     if (!Array.isArray(contributors)) {
@@ -72,7 +72,6 @@ const postNewTrip = async (req: Request, res: Response) => {
             subtitle,
             owner: user._id,
             contributors: userIds,
-            locations,
             month: monthNames[monthNumber],
             year,
         });

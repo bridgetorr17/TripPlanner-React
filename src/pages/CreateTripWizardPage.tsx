@@ -18,6 +18,25 @@ export type WizardData = {
     tripContributors: string[];
 }
 
+const newTripAttempt = async (tripInfo: WizardData) => {
+    console.log(`posting new trip to backend: ${tripInfo}`)
+    try {
+        const res = await fetch('/api/trips/createNew', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tripInfo)
+        });
+
+        const result = await res.json();
+        console.log(result);
+    } catch(err) {
+        throw err;
+    }
+}
+
 const CreateTripWizardPage = () => {
 
     const [currentPage, setPage] = useState(1);
@@ -39,10 +58,10 @@ const CreateTripWizardPage = () => {
 
     useEffect(() => {
         if (tripInformation.tripContributors.length !== 0){
-            console.log('post to backend', tripInformation);
-            navigate('/dashboard')
+            newTripAttempt(tripInformation);
+            console.log('now navigating to dashboard');
+            navigate('/dashboard');
         }
-        console.log('trip info was changed', tripInformation)
     }, [tripInformation])
 
     const updateInformation = <K extends keyof WizardData>(field: K, value: WizardData[K]) => {
