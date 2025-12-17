@@ -6,6 +6,7 @@ import { tripDetails } from '../middleware/tripDetails.js';
 import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
 import { Request,  Response } from 'express';
+import { editContributors } from './editing.js';
 dotenv.config({path: './config/.env'})
 
 //GET - trip information for trip page (request comes from react loader)
@@ -38,12 +39,11 @@ const getTrip = async (req: Request, res: Response) => {
 
 //POST - creates new trip. 
 const postNewTrip = async (req: Request, res: Response) => {
-    let contributors = req.body.contributors as string[];
-    const name = req.body.name as string;
-    const subtitle = req.body.subtitle as string;
-    const locations = req.body.locations as ILocation[];
-    const monthNumber = req.body.month as number;
-    const year = req.body.year as number;
+    let contributors = req.body.tripContributors as string[];
+    const name = req.body.tripDescription.tripName as string;
+    const subtitle = req.body.tripDescription.tripSubtitle as string;
+    const monthNumber = req.body.tripDate.tripMonth as number;
+    const year = req.body.tripDate.tripYear as number;
     const user = req.user as IUserMinimal;
 
     if (!Array.isArray(contributors)) {
@@ -51,7 +51,7 @@ const postNewTrip = async (req: Request, res: Response) => {
     }
 
     //add this creating user's name as the first contributor
-    contributors.unshift(user.userName)
+    contributors.unshift(user.userName);
 
     //array of User documents who's userName appears in the contributors array
     const users = await User.find({ userName: { $in: contributors}})
@@ -72,7 +72,6 @@ const postNewTrip = async (req: Request, res: Response) => {
             subtitle,
             owner: user._id,
             contributors: userIds,
-            locations,
             month: monthNames[monthNumber],
             year,
         });
