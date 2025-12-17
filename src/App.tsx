@@ -10,7 +10,6 @@ import ErrorPage from './pages/ErrorPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import UserPage from './pages/UserPage';
-import CreateTripPage from './pages/CreateTripPage';
 import CreateTripWizardPage from './pages/CreateTripWizardPage';
 import TripPage, { authTripLoader, viewerTripLoader } from './pages/TripPage';
 import PageWrapper from './Utilities/PageWrapper';
