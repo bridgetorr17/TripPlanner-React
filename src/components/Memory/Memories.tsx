@@ -5,6 +5,7 @@ import SubmitButton from "../StyledComponents/SubmitButton";
 import { MemoriesProps } from "./MemoryTypes";
 import { MemoryType } from "../../../shared/types/Memory";
 import { inputLabelStyles } from "../../Utilities/commonStyles"
+import { useCreateContent } from "../../hooks/useCreateContent.js";
 
 const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}: MemoriesProps) => {
 
@@ -12,37 +13,20 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}: M
     const [location, setLocation] = useState<string>('');
     const [memories, setMemories] = useState<MemoryType[]>(memoriesInit);
     const navigate = useNavigate()
-    const createMemory = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
 
-        const newMemory = {
-            location,
-            memory
-        }
-
-        try{
-            const res = await fetch(`/api/trips/createNewMemory/${tripId}`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newMemory)
-            });
-
-            const created = await res.json();
-            setMemories(prev => [...prev, created])
-        }
-        catch(err){
-            navigate('/errorpage')
-            console.log(err);
-        }
-        finally{
+    const { createContent: createNewMemory } = useCreateContent<
+        { location: string; memory: string },
+        MemoryType
+    >({
+        url: `/api/trips/createNewMemory/${tripId}`,
+        onSuccess: created =>
+            setMemories(prev => [...prev, created]),
+        onFinally: () => {
             setMemory('');
             setLocation('');
             setEditMode(false);
-        }
-    }
+        },
+    });
 
     const deleteMemory = async (id: string) => {
         const memoryId = {
@@ -67,11 +51,21 @@ const Memories = ({editMode, setEditMode, memoriesInit, tripId, loggedInUser}: M
         }
     }
 
+    const handleCreateMemory = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const newMemory = {
+            location,
+            memory,
+        };
+
+        await createNewMemory(newMemory);
+    };
     return (
         <>
             { editMode ?
                 <form 
-                    onSubmit={createMemory}
+                    onSubmit={handleCreateMemory}
                     className="flex flex-col w-full p-4 space-y-6"
                 >
                     <label className={inputLabelStyles("blue")}>Location</label>
