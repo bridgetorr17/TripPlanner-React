@@ -19,7 +19,6 @@ export type WizardData = {
 }
 
 const newTripAttempt = async (tripInfo: WizardData) => {
-    console.log(`posting new trip to backend: ${tripInfo}`)
     try {
         const res = await fetch('/api/trips/createNew', {
             method: 'POST',
@@ -59,7 +58,6 @@ const CreateTripWizardPage = () => {
     useEffect(() => {
         if (tripInformation.tripContributors.length !== 0){
             newTripAttempt(tripInformation);
-            console.log('now navigating to dashboard');
             navigate('/dashboard');
         }
     }, [tripInformation])
