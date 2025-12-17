@@ -1,35 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface UseCreateContentOptions<T>{
+interface UseCreateContentOptions<TPayload, TResult>{
     url: string;
-    content: T;
-    onSuccess?: (responseData: any) => void;
+    onSuccess?: (data: TResult) => void;
     //is onFailure needed? only differences are some navigate to errorPage, and PlaceAutocomplete resets suggestions to empty array
-    onFailure?: (responseData: any) => void;  
-    onFinally?: (responseData: any) => void;
+    onFailure?: (error: unknown) => void;  
+    onFinally?: () => void;
 }
 
-interface UseCreateContentResult<T> {
-    loading: boolean;
-    error: string;
-    handleCreateContent: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
-}
-
-export function useCreateContent<T>({
+export const useCreateContent = <TPayload, TResult>({
     url,
-    content,
     onSuccess,
     onFailure,
     onFinally
-}: UseCreateContentOptions<T>): UseCreateContentResult<T> {
+}: UseCreateContentOptions<TPayload, TResult>) => {
 
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const handleCreateContent = async(e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const createContent = async(payload: TPayload) => {
         setLoading(true);
 
         try{
@@ -38,18 +29,29 @@ export function useCreateContent<T>({
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(content)
+                body: JSON.stringify(payload)
             });
 
-            const created = await res.json();
-            
+            const data: TResult = await res.json();
+            onSuccess?.(data);
+            return data;
         }
         catch(err){
             //onFailure would be executed here
             console.log(err);
-        }
+            setError("Unable to create content");
 
+            // hook-level failure (navigation, logging, etc.)
+            navigate("/errorpage");
+            // consumer-level failure
+            onFailure?.(err);
+
+            throw err;
+        } finally {
+            setLoading(false);
+            onFinally?.();
+        }
     }
 
-    return { loading, error, handleCreateContent}
+    return { loading, error, createContent}
 }
