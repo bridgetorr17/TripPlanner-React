@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import CreateTripIntro from "../components/CreateTrip/CreateTripIntro.js"
 import TripContributors from "../components/CreateTrip/TripContributors.js";
 import TripDescriptionWizard from "../components/CreateTrip/TripDescription.js";
 import TripDatesWizard from "../components/CreateTrip/TripDates.js";
 
-export type WizardData = {
+type WizardData = {
     tripDescription: {
         tripName: string;
         tripSubtitle: string;
