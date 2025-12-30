@@ -1,7 +1,7 @@
-import { UserType } from "./User";
-import { LocationType } from "./Location";
-import { MemoryType } from "./Memory";
-import { PhotoType } from "./Photo";
+import { UserType } from "./User.js";
+import { LocationType } from "./Location.js";
+import { MemoryType } from "./Memory.js";
+import { PhotoType } from "./Photo.js";
 
 export type TripType = {
     _id: string;
