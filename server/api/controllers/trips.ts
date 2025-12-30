@@ -1,12 +1,10 @@
 import Trip, { ITrip } from '../models/Trip.js';
 import User, { IUserMinimal } from '../models/User.js';
-import { ILocation } from '../models/Location.js'
-import { ITripPopulated } from '../middleware/tripDetails.js';
+import { TripType } from '../../../shared/types/Trip.js';
 import { tripDetails } from '../middleware/tripDetails.js';
 import { proccessPhoto } from '../middleware/processPhoto.js';
 import dotenv from 'dotenv';
 import { Request,  Response } from 'express';
-import { editContributors } from './editing.js';
 dotenv.config({path: './config/.env'})
 
 //GET - trip information for trip page (request comes from react loader)
@@ -24,7 +22,7 @@ const getTrip = async (req: Request, res: Response) => {
 
         return res.json({
             success: true,
-            trip: details.trip as ITripPopulated,
+            trip: details.trip as TripType,
             currentUser: details.currentUser
         });
     }

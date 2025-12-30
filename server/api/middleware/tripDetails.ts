@@ -1,29 +1,7 @@
 import Trip from '../models/Trip.js';
 import { IUserMinimal } from '../models/User.js'
 import { Types } from 'mongoose';
-import { ILocation }  from '../models/Location.js'
-
-interface ITripPopulated {
-    _id: Types.ObjectId;
-    name: String;
-    subtitle: String;
-    owner: {_id: Types.ObjectId; userName: string};
-    contributors: IUserMinimal[];
-    locations: ILocation[];
-    month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
-    year: number;
-    memories: Array<{ text: string; location: string; user: {_id: Types.ObjectId; userName: string; profilePicture: string;}}>;
-    photos: Array<{ url: string; user: {_id: Types.ObjectId; userName: string;} }>;
-}
-
-interface TripDetailsSuccess {
-    success: true;
-    trip: ITripPopulated;
-    currentUser: null | {
-        userName: string | null;
-        userStatus: string;
-    }
-}
+import { TripType, TripRes } from '../../../shared/types/Trip.js';
 
 interface TripDetailsFailure {
     success: false;
@@ -34,7 +12,7 @@ interface TripDetailsFailure {
 const tripDetails = async (
     tripId: string | Types.ObjectId, 
     user: IUserMinimal
-): Promise <TripDetailsFailure | TripDetailsSuccess> => {
+): Promise <TripDetailsFailure | TripRes> => {
     const trip = await Trip.findById(tripId) 
         .populate('owner', 'userName')
         .populate
@@ -50,14 +28,17 @@ const tripDetails = async (
             path: 'photos.user',
             select: 'userName'
         })
-        .lean<ITripPopulated>();
+        .lean<TripType>();
     
     if (!trip) {
         throw new Error('Trip not found');
     }
 
 
-    const currentUser = (() => {
+    const currentUser: {
+        userName: string | null;
+        userStatus: "owner" | "viewer" | "contributor"
+    } | null = (() => {
         //the user is not logged in or does not exist - they are a viewer
         if (!user){
             return {
@@ -94,14 +75,9 @@ const tripDetails = async (
 
     return {
         success: true,
-        //patchwork solution becuase typescript was throwing error for ITripPopulated being inconsistent with ITrip
-        //they are definitely not the same types, ITripPopulated includes additional user information not saved directly in the document, but necessary for the trip loader
-        //is there a better work around for this? Or should ITripPopulated not be typed?s
-        trip: trip as unknown as ITripPopulated,
+        trip: trip as TripType,
         currentUser
     }
 }
 
-export { tripDetails,
-    ITripPopulated
- }
+export { tripDetails }
