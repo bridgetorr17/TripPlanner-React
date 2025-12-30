@@ -15,6 +15,7 @@ import TripPage, { authTripLoader, viewerTripLoader } from './pages/TripPage';
 import PageWrapper from './Utilities/PageWrapper';
 import { dashboardLoader } from './pages/DashboardPage';
 import { userLoader } from './pages/UserPage';
+import { createTripLoader } from './pages/CreateTripWizardPage';
 import { loginLoader } from './pages/LoginPage';
 import { ErrorBoundary } from "react-error-boundary";
 import { configureMarkers } from './Utilities/ConfigureMarkerStyles'
@@ -40,7 +41,7 @@ const App = () => {
                 <Route path='/resetPassword' element={<ResetPasswordPage />} errorElement={<ErrorPage/>}/>
                 <Route path='/dashboard' element={<DashboardPage/>} loader={dashboardLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/dashboard/:id' element={<UserPage/>} loader={userLoader} errorElement={<ErrorPage/>}/>
-                <Route path='/trips/createNew' element={<CreateTripWizardPage />} errorElement={<ErrorPage/>}/>
+                <Route path='/trips/createNew' element={<CreateTripWizardPage />} loader={createTripLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/viewer/:id' element={<TripPage/>} loader={viewerTripLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/trips/:id' element={<TripPage/>} loader={authTripLoader} errorElement={<ErrorPage/>}/>
                 <Route path='/logout' element={<LandingPage/>} errorElement={<ErrorPage/>}/>

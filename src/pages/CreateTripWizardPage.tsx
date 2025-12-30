@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLoaderData } from "react-router-dom"
 import CreateTripIntro from "../components/CreateTrip/CreateTripIntro.js"
 import TripContributors from "../components/CreateTrip/TripContributors.js";
 import TripDescriptionWizard from "../components/CreateTrip/TripDescription.js";
@@ -42,6 +42,8 @@ const CreateTripWizardPage = () => {
     const next = () => setPage((prev) => ++prev);
     const back = () => setPage((prev) => --prev);
     const navigate = useNavigate();
+    const { user } = useLoaderData();
+    console.log('we got the userName!', user)
     
     const [tripInformation, setTripInformation] = useState<WizardData>({
         tripDescription: {
@@ -111,4 +113,13 @@ const CreateTripWizardPage = () => {
     )
 }
 
-export default CreateTripWizardPage;
+async function createTripLoader() {
+    const res = await fetch('/api/me');
+    const data = await res.json();
+    return { user: data.user }
+}
+
+export {
+    CreateTripWizardPage as default,
+    createTripLoader
+};
