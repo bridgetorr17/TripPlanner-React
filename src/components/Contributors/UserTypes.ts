@@ -8,6 +8,7 @@ export interface ContributorsProps {
 }
 
 export interface ContributorsInputProps {
+    creator: string;
     contributorNames: string[];
     setContributorNames: React.Dispatch<React.SetStateAction<string[]>>;
 }

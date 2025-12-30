@@ -1,11 +1,20 @@
 import { FaTrash } from "react-icons/fa"
 import { ContributorsInputProps } from './UserTypes'
 
-const ContributorsInput = ({ contributorNames, setContributorNames }: ContributorsInputProps) => {
+const ContributorsInput = ({ creator, contributorNames, setContributorNames }: ContributorsInputProps) => {
 
     return (
         <div className={`space-y-2 bg-teal-50 p-4 rounded-md`}>
             <h3 className="text-lg font-semibold text-cyan-700">Contributors</h3>
+            <div className="flex items-center space-x-2">
+                <input
+                    type="text"
+                    readOnly
+                    value={creator}
+                    className="grow border border-blue-300 rounded-md px-3 py-2 bg-gray-100 text-gray-700"
+                />
+                <span className="text-sm font-medium text-teal-800">owner</span>
+            </div>
             {contributorNames.map((val, ind) => {
                 return (
                     <div key={ind} className="flex items-center space-x-2">
@@ -21,7 +30,7 @@ const ContributorsInput = ({ contributorNames, setContributorNames }: Contributo
                                         : val
                                 )
                             )}
-                            className={`flex-grow border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500`}
+                            className={`grow border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500`}
                         />
                         {contributorNames.length > 1 && (
                             <button 

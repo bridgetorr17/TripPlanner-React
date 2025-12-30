@@ -42,8 +42,7 @@ const CreateTripWizardPage = () => {
     const next = () => setPage((prev) => ++prev);
     const back = () => setPage((prev) => --prev);
     const navigate = useNavigate();
-    const { user } = useLoaderData();
-    console.log('we got the userName!', user)
+    const { userName } = useLoaderData();
     
     const [tripInformation, setTripInformation] = useState<WizardData>({
         tripDescription: {
@@ -58,7 +57,7 @@ const CreateTripWizardPage = () => {
     });
 
     useEffect(() => {
-        if (tripInformation.tripContributors.length !== 0){
+        if (tripInformation.tripContributors.length !== 1){
             newTripAttempt(tripInformation);
             navigate('/dashboard');
         }
@@ -104,6 +103,7 @@ const CreateTripWizardPage = () => {
             }
             {currentPage === 4 && 
                 (<TripContributors
+                    creator={userName}
                     tripContributors={tripInformation.tripContributors}
                     onBack={back}
                     onSubmit={(value) => {
@@ -116,7 +116,7 @@ const CreateTripWizardPage = () => {
 async function createTripLoader() {
     const res = await fetch('/api/me');
     const data = await res.json();
-    return { user: data.user }
+    return { userName: data.user }
 }
 
 export {

@@ -56,6 +56,7 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
             { editMode ?
                 <form onSubmit={handleSubmit}>
                     <ContributorsInput 
+                        creator={'test'}
                         contributorNames={contributorNames} 
                         setContributorNames={setContributorNames} />
                     <SubmitButton
