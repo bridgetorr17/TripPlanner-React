@@ -1,16 +1,7 @@
 import Trip from '../models/Trip.js';
 import { IUserMinimal } from '../models/User.js'
 import { Types } from 'mongoose';
-import { TripType } from '../../../shared/types/Trip.js';
-
-interface TripDetailsSuccess {
-    success: true;
-    trip: TripType;
-    currentUser: null | {
-        userName: string | null;
-        userStatus: string;
-    }
-}
+import { TripType, TripRes } from '../../../shared/types/Trip.js';
 
 interface TripDetailsFailure {
     success: false;
@@ -21,7 +12,7 @@ interface TripDetailsFailure {
 const tripDetails = async (
     tripId: string | Types.ObjectId, 
     user: IUserMinimal
-): Promise <TripDetailsFailure | TripDetailsSuccess> => {
+): Promise <TripDetailsFailure | TripRes> => {
     const trip = await Trip.findById(tripId) 
         .populate('owner', 'userName')
         .populate
@@ -44,7 +35,10 @@ const tripDetails = async (
     }
 
 
-    const currentUser = (() => {
+    const currentUser: {
+        userName: string | null;
+        userStatus: "owner" | "viewer" | "contributor"
+    } | null = (() => {
         //the user is not logged in or does not exist - they are a viewer
         if (!user){
             return {

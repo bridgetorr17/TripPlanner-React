@@ -14,17 +14,8 @@ import Modal from "../components/StyledComponents/Modal"
 import { FaTrash, FaShare, FaPlaneDeparture } from "react-icons/fa6"
 import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
-import { TripType } from "../../shared/types/Trip"
+import { TripType, TripRes } from "../../shared/types/Trip"
 import { LocationType } from '../../shared/types/Location'
-
-interface TripRes {
-    success: boolean,
-    trip: TripType,
-    currentUser: {
-        userName: string | null,
-        userStatus: 'owner' | 'viewer' | 'contributor'
-    } | null
-}
 
 export type ToggleEditArgs = {
     edit: boolean;

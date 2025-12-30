@@ -18,3 +18,12 @@ export type TripType = {
     memories: MemoryType[];
     photos: PhotoType[];
 }
+
+export type TripRes = {
+    success: boolean;
+    trip: TripType;
+    currentUser: {
+        userName: string | null,
+        userStatus: 'owner' | 'viewer' | 'contributor'
+    } | null
+}
