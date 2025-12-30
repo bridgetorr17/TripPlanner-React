@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoaderData } from "react-router-dom"
 import CreateTripIntro from "../components/CreateTrip/CreateTripIntro.js"
@@ -43,6 +43,7 @@ const CreateTripWizardPage = () => {
     const back = () => setPage((prev) => --prev);
     const navigate = useNavigate();
     const { userName } = useLoaderData();
+    const submitRef = useRef(false);
     
     const [tripInformation, setTripInformation] = useState<WizardData>({
         tripDescription: {
@@ -57,13 +58,14 @@ const CreateTripWizardPage = () => {
     });
 
     useEffect(() => {
-        if (tripInformation.tripContributors.length !== 1){
+        if (submitRef.current){
             newTripAttempt(tripInformation);
             navigate('/dashboard');
         }
     }, [tripInformation])
 
     const updateInformation = <K extends keyof WizardData>(field: K, value: WizardData[K]) => {
+        if (field === 'tripContributors') submitRef.current = true;
         setTripInformation((prev) => ({
             ...prev,
             [field]: value

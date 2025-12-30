@@ -178,6 +178,7 @@ const TripPage = () => {
                         editMode={editContributors}
                         setEditMode={setEditContributors}
                         contributorsInit={trip.contributors}
+                        creator={trip.owner.userName}
                         tripId={trip._id}/>
                 </FeaturePanel>
                 {(userStatus !== 'viewer') &&

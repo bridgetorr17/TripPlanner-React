@@ -6,7 +6,7 @@ import { ContributorsProps } from "./UserTypes";
 import { useUpdate } from "../../hooks/useUpdate";
 import SubmitButton from "../StyledComponents/SubmitButton"
 
-const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: ContributorsProps) => {
+const Contributors = ({editMode, setEditMode, contributorsInit, creator, tripId}: ContributorsProps) => {
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -56,7 +56,7 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
             { editMode ?
                 <form onSubmit={handleSubmit}>
                     <ContributorsInput 
-                        creator={'test'}
+                        creator={creator}
                         contributorNames={contributorNames} 
                         setContributorNames={setContributorNames} />
                     <SubmitButton
@@ -67,6 +67,7 @@ const Contributors = ({editMode, setEditMode, contributorsInit, tripId}: Contrib
                
             :  (
                 <div className="flex space-x-4 overflow-x-auto">
+                    {/* add owner icon here */}
                     {contributors?.map((cont, ind) => (
                         <Link to={`/dashboard/${cont._id}`}>
                             <div key={ind} className="flex flex-col items-center">

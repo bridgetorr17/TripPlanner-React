@@ -32,7 +32,6 @@ const ContributorsInput = ({ creator, contributorNames, setContributorNames }: C
                             )}
                             className={`grow border border-blue-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500`}
                         />
-                        {contributorNames.length > 1 && (
                             <button 
                                 type="button" 
                                 onClick={() => setContributorNames(prev => prev.filter((val, i) => i !== ind))}
@@ -40,7 +39,6 @@ const ContributorsInput = ({ creator, contributorNames, setContributorNames }: C
                             >
                                 <FaTrash />
                             </button>
-                        )}
                     </div>)
             })}
             <button 
