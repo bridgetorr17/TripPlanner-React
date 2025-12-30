@@ -14,7 +14,7 @@ const tripDetails = async (
     user: IUserMinimal
 ): Promise <TripDetailsFailure | TripRes> => {
     const trip = await Trip.findById(tripId) 
-        .populate('owner', 'userName')
+        .populate('owner', 'userName profilePicture')
         .populate
             <{ contributors: IUserMinimal[] }>({
             path: 'contributors',

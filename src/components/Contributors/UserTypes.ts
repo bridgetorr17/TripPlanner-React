@@ -4,7 +4,7 @@ export interface ContributorsProps {
     editMode: boolean;
     setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
     contributorsInit: UserType[];
-    creator: string;
+    creator: UserType;
     tripId: string;
 }
 
