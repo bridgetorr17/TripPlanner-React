@@ -41,7 +41,7 @@ const Memory = ({memory, loggedInUser, tripId, deleteMemory}: MemoryProps) => {
         <>
             <div
                 key={memory._id}
-                className="relative inline-block rounded-3xl p-4 bg-gradient-to-br to-sky-200 text-blue-900 shadow:md hover:shadow-lg transition-shadow w-full max-w-md">
+                className="relative inline-block rounded-3xl p-4 bg-linear-to-br to-sky-200 text-blue-900 shadow:md hover:shadow-lg transition-shadow w-full max-w-md">
                     {loggedInUser === memory.user?.userName && (
                         <div className="absolute top-3 right-3 flex space-x-2">
                             <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-2 py-1 rounded focus:outline-none"

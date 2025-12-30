@@ -7,12 +7,6 @@ export interface MemoryProps {
     deleteMemory: (id: string) => Promise<void>;
 }
 
-export interface ToggleEditProps {
-    edit: boolean;
-    saveFn: () => Promise<void>;
-    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 export interface MemoriesProps {
     editMode: boolean;
     setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
