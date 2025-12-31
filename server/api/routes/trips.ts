@@ -11,7 +11,7 @@ router.get('/viewer/:id', tripController.getTrip);
 router.post('/createNew', tripController.postNewTrip);
 router.post('/createNewMemory/:id', tripController.postNewMemory);
 router.post('/uploadPhoto/:id', tripController.postNewPhoto);
-router.post('/addPlace/:id', tripController.postNewPlace);
+//router.post('/addPlace/:id', tripController.postNewPlace);
 router.delete('/delete/:id', tripController.deleteTrip);
 
 //editTripController

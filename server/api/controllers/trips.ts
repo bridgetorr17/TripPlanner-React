@@ -151,29 +151,30 @@ const postNewPhoto = async (req: Request, res: Response) => {
     }
 }
 
-const postNewPlace = async (req: Request, res: Response) => {
-    const tripId = req.params.id;
+// const postNewPlace = async (req: Request, res: Response) => {
+//     const tripId = req.params.id;
 
-    try{
-        const trip = await Trip.findById(tripId) as ITrip;
-        trip.locations.push(req.body);
-        await trip.save();
+//     try{
+//         const trip = await Trip.findById(tripId) as ITrip;
+//         trip.locations.push(req.body);
+//         await trip.save();
         
-        const lastLocation = trip.locations[trip.locations.length - 1]
-        return res.json(lastLocation);
-    }
-    catch(err){
-        console.error(err);
-        return res.json({
-            success: false,
-            message: 'error adding the location to the trip'
-        });  
-    }
-}
+//         const lastLocation = trip.locations[trip.locations.length - 1]
+//         return res.json(lastLocation);
+//     }
+//     catch(err){
+//         console.error(err);
+//         return res.json({
+//             success: false,
+//             message: 'error adding the location to the trip'
+//         });  
+//     }
+// }
 
 export {getTrip, 
         postNewTrip, 
         deleteTrip,
         postNewMemory,
         postNewPhoto,
-        postNewPlace};
+        //postNewPlace
+    };

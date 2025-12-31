@@ -1,7 +1,7 @@
 import mongoose, { Document, Types } from 'mongoose';
 import MemorySchema, { IMemory } from "./Memory.js"
 import PhotoSchema, { IPhoto }  from "./Photo.js"
-import LocationSchema, { ILocation }  from './Location.js';
+import DestinationSchema, { IDestination } from './Destination.js';
 
 export interface ITrip extends Document  {
     _id: Types.ObjectId;
@@ -9,7 +9,7 @@ export interface ITrip extends Document  {
     subtitle?: String;
     owner: Types.ObjectId;
     contributors: Types.ObjectId[];
-    locations: Types.DocumentArray<ILocation>;
+    destinations: Types.DocumentArray<IDestination>;
     month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
     year: number;
     memories: Types.DocumentArray<IMemory>;
@@ -36,8 +36,8 @@ const TripSchema = new mongoose.Schema<ITrip>({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    locations: {
-        type: [LocationSchema],
+    destinations: {
+        type: [DestinationSchema],
         required: true
     },
     month: {
