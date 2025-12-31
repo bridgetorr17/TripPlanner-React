@@ -16,6 +16,14 @@ const getLogin = (req: Request, res: Response) => {
     } else res.json({success: false})
   }
 
+const getThisUser = (req: Request, res: Response) => {
+    const user = req.user as IUserMinimal;
+    res.json({
+      success: true,
+      user: user.userName
+    })
+  }
+
 //POST - login request. Validates user account and redirects to dashboard
 const postLogin = (req: Request, res: Response, next: NextFunction) => {
     const validationErrors = []
@@ -290,6 +298,7 @@ const postSignup = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   export {  getLogin, 
+            getThisUser,
             postLogin, 
             getlogout, 
             postSignup,

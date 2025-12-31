@@ -52,6 +52,7 @@ const TripPage = () => {
 
     const nav = useNavigate();
 
+    console.log(trip);
     const tripData ={
         title: trip.name,
         subtitle: trip.subtitle,
@@ -178,6 +179,7 @@ const TripPage = () => {
                         editMode={editContributors}
                         setEditMode={setEditContributors}
                         contributorsInit={trip.contributors}
+                        creator={trip.owner}
                         tripId={trip._id}/>
                 </FeaturePanel>
                 {(userStatus !== 'viewer') &&

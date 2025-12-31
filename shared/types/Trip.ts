@@ -7,10 +7,7 @@ export type TripType = {
     _id: string;
     name: string;
     subtitle?: string;
-    owner: {
-        _id: string;
-        userName: string;
-    };
+    owner: UserType;
     contributors: UserType[];
     locations: LocationType[];
     month: "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";

@@ -1,8 +1,9 @@
 import Trip, { ITrip } from '../models/Trip.js';
-import User, { IUserMinimal } from '../models/User.js';
+import { IUserMinimal } from '../models/User.js';
 import { TripType } from '../../../shared/types/Trip.js';
 import { tripDetails } from '../middleware/tripDetails.js';
 import { proccessPhoto } from '../middleware/processPhoto.js';
+import { contributorsOnCreateTrip } from '../middleware/contributorsProcessing.js';
 import dotenv from 'dotenv';
 import { Request,  Response } from 'express';
 dotenv.config({path: './config/.env'})
@@ -37,32 +38,14 @@ const getTrip = async (req: Request, res: Response) => {
 
 //POST - creates new trip. 
 const postNewTrip = async (req: Request, res: Response) => {
-    let contributors = req.body.tripContributors as string[];
+    const contributors = req.body.tripContributors as string[];
     const name = req.body.tripDescription.tripName as string;
     const subtitle = req.body.tripDescription.tripSubtitle as string;
     const monthNumber = req.body.tripDate.tripMonth as number;
     const year = req.body.tripDate.tripYear as number;
     const user = req.user as IUserMinimal;
 
-    if (!Array.isArray(contributors)) {
-        contributors = [contributors];
-    }
-
-    //add this creating user's name as the first contributor
-    contributors.unshift(user.userName);
-
-    //array of User documents who's userName appears in the contributors array
-    const users = await User.find({ userName: { $in: contributors}})
-    //extracting the userNames of those User documents 
-    const foundNames = users.map(u => u.userName);
-
-    //handle userNames submitted that are not users
-    const missing = contributors.filter(name => !foundNames.includes(name));
-    if (missing.length > 0){
-        console.warn(`${missing[0]} does not exist as a user of Triply.`)
-    }
-
-    const userIds = users.map(u => u._id)
+    const userIds = await contributorsOnCreateTrip(contributors)
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     try{
         await Trip.create({

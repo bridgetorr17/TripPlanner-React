@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom"
 import CreateTripIntro from "../components/CreateTrip/CreateTripIntro.js"
 import TripContributors from "../components/CreateTrip/TripContributors.js";
 import TripDescriptionWizard from "../components/CreateTrip/TripDescription.js";
@@ -41,6 +42,8 @@ const CreateTripWizardPage = () => {
     const next = () => setPage((prev) => ++prev);
     const back = () => setPage((prev) => --prev);
     const navigate = useNavigate();
+    const { userName } = useLoaderData();
+    const submitRef = useRef(false);
     
     const [tripInformation, setTripInformation] = useState<WizardData>({
         tripDescription: {
@@ -55,13 +58,14 @@ const CreateTripWizardPage = () => {
     });
 
     useEffect(() => {
-        if (tripInformation.tripContributors.length !== 0){
+        if (submitRef.current){
             newTripAttempt(tripInformation);
             navigate('/dashboard');
         }
     }, [tripInformation])
 
     const updateInformation = <K extends keyof WizardData>(field: K, value: WizardData[K]) => {
+        if (field === 'tripContributors') submitRef.current = true;
         setTripInformation((prev) => ({
             ...prev,
             [field]: value
@@ -101,6 +105,7 @@ const CreateTripWizardPage = () => {
             }
             {currentPage === 4 && 
                 (<TripContributors
+                    creator={userName}
                     tripContributors={tripInformation.tripContributors}
                     onBack={back}
                     onSubmit={(value) => {
@@ -110,4 +115,13 @@ const CreateTripWizardPage = () => {
     )
 }
 
-export default CreateTripWizardPage;
+async function createTripLoader() {
+    const res = await fetch('/api/me');
+    const data = await res.json();
+    return { userName: data.user }
+}
+
+export {
+    CreateTripWizardPage as default,
+    createTripLoader
+};

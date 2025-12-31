@@ -2,12 +2,13 @@ import { useState } from "react"
 import ContributorsInput from '../Contributors/ContributorsInput'
 
 export default function TripContributors ( props: {
+    creator: string;
     tripContributors: string[];
     onBack: () => void;
     onSubmit: (tripContributors: string[]) => void;
 }) {
 
-    const { tripContributors, onBack, onSubmit } = props;
+    const { creator, tripContributors, onBack, onSubmit } = props;
     const [contributors, setContributors] = useState<string[]>(tripContributors);
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -36,6 +37,7 @@ export default function TripContributors ( props: {
                         Viewers without accounts can be added after creation of the trip. 
                     </p>
                     <ContributorsInput 
+                        creator={creator}
                         contributorNames={contributors} 
                         setContributorNames={setContributors} />
                 </div>
