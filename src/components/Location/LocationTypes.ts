@@ -1,4 +1,5 @@
 import { LocationType } from "../../../shared/types/Location"
+import { DestinationType } from "../../../shared/types/Destination";
 
 export interface PlaceAutocompleteProps {
     editMode: Boolean;
@@ -15,6 +16,13 @@ export interface LocationsProps {
     editMode: Boolean;
     locations: LocationType[];
     setLocations: React.Dispatch<React.SetStateAction<LocationType[]>>;
+    tripId: string;
+}
+
+export interface DestinationProps {
+    editMode: Boolean;
+    destinations: DestinationType[];
+    setDestinations: React.Dispatch<React.SetStateAction<DestinationType[]>>;
     tripId: string;
 }
 

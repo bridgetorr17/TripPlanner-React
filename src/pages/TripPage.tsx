@@ -5,6 +5,7 @@ import { Link, LoaderFunctionArgs } from "react-router-dom"
 import TripHeader from "../components/Trip/TripHeader"
 import FeaturePanel from "../components/Trip/FeaturePanel"
 import Locations from "../components/Location/Locations"
+import Destinations from "../components/Location/Destinations"
 import Photos from "../components/Photos/Photos"
 import Memories from "../components/Memory/Memories"
 import Contributors from "../components/Contributors/Contributors"
@@ -16,6 +17,7 @@ import { useNavigate } from "react-router-dom"
 import { redirect } from "react-router-dom"
 import { TripType, TripRes } from "../../shared/types/Trip"
 import { LocationType } from '../../shared/types/Location'
+import { DestinationType } from '../../shared/types/Destination'
 
 export type ToggleEditArgs = {
     edit: boolean;
@@ -60,8 +62,9 @@ const TripPage = () => {
         month: trip.month
     };
 
-    const [editLocations, setEditLocations] = useState<boolean>(false);
-    const [locationsData, setLocationsData] = useState<LocationType[]>(trip.locations);
+    const [editDestinations, setEditDestinations] = useState<boolean>(false);
+    //const [locationsData, setLocationsData] = useState<LocationType[]>(trip.locations);
+    const [destinationsData, setDestinationsData] = useState<DestinationType[]>(trip.destinations)
     const [editContributors, setEditContributors] = useState<boolean>(false);
     const [editPhotos, setEditPhotos] = useState<boolean>(false);
     const [editMemories, setEditMemories] = useState<boolean>(false);
@@ -124,7 +127,7 @@ const TripPage = () => {
                 tripId={trip._id}
             />
             <div className="w-full max-w-3xl space-y-6">
-                <FeaturePanel 
+                {/* <FeaturePanel 
                     userStatus={userStatus}
                     toggleEdit={toggleEdit}
                     editFeature={editLocations}
@@ -135,6 +138,20 @@ const TripPage = () => {
                         editMode={editLocations}
                         locations={locationsData}
                         setLocations={setLocationsData}
+                        tripId={trip._id}/>
+                </FeaturePanel> */}
+
+                <FeaturePanel 
+                    userStatus={userStatus}
+                    toggleEdit={toggleEdit}
+                    editFeature={editDestinations}
+                    setEditFeature={setEditDestinations}
+                    headerTitle="Where we went"
+                >
+                    <Destinations 
+                        editMode={editDestinations}
+                        destinations={destinationsData}
+                        setDestinations={setDestinationsData}
                         tripId={trip._id}/>
                 </FeaturePanel>
 
