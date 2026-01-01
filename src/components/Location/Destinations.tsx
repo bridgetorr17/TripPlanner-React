@@ -56,9 +56,8 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
                         <div key={ind}>
                             <div
                                 onClick={() => {
-                                setSelectedDest(ind === selectedDest ? null : ind);
-                                setMapLocations(dest.locations);
-                                setCoords([dest.coordinates.latitude, dest.coordinates.longitude]);
+                                    setSelectedDest(ind === selectedDest ? null : ind);
+                                    setMapLocations(dest.locations);
                                 }}
                                 className={`cursor-pointer px-3 py-2 rounded transition-all duration-200${selectedDest === ind ? "bg-blue-100 font-bold text-lg text-blue-700" : "hover:bg-gray-100 text-gray-800"}`}>
                                     {dest.name.mainText}
