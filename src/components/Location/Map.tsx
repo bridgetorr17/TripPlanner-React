@@ -15,6 +15,9 @@ const ZoomTo = ({ coords, zoom }: ZoomToArgs) => {
 };
 
 const Map = ({locations, coords}: MapProps) => {
+    //console.log(`were in the map! the locations shown are ${locations[0]} and the center coords are ${coords}`)
+    console.log(locations);
+
     const mapRef = useRef<L.Map | null>(null);
     const [centerCoords, setCenterCoords] = useState<Coordinates>(coords);
     const [zoom, setZoom] = useState<number>(2);

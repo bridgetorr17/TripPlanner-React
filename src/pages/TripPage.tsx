@@ -53,8 +53,7 @@ const TripPage = () => {
     const userStatus = currentUser.userStatus as 'owner' | 'viewer' | 'contributor';
 
     const nav = useNavigate();
-
-    console.log(trip);
+    
     const tripData ={
         title: trip.name,
         subtitle: trip.subtitle,
