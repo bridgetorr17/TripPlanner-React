@@ -5,6 +5,7 @@ import { FaTrash } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { LocationType } from "../../../shared/types/Location"
 import { LocationsProps, AutocompletePrediction, Coordinates } from "./LocationTypes";
+import { useCreateContent } from "../../hooks/useCreateContent.js";
 
 const Locations = ({editMode, locations, setLocations, tripId}: LocationsProps) => {
     
@@ -51,7 +52,19 @@ const Locations = ({editMode, locations, setLocations, tripId}: LocationsProps) 
         }
     }
 
-    const addLocation = async () => {
+    const { createContent: createNewLocation } = useCreateContent<
+        LocationType,
+        LocationType
+    >({
+        url: `/api/trips/addPlace/${tripId}`,
+        onSuccess: created =>
+            setLocations(prev => [...prev, created]),
+        onFinally: () => {
+            setNewPlace(null);
+        },
+        });
+    
+    const handleCreateNewLocation = async () => {
         const addPlace = {
             name: {
                 mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
@@ -62,28 +75,9 @@ const Locations = ({editMode, locations, setLocations, tripId}: LocationsProps) 
                 longitude: coords[1]
             }
         } as LocationType;
-
-        try{
-            const res = await fetch(`/api/trips/addPlace/${tripId}`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(addPlace)
-            });
-
-            const created = await res.json();
-            setLocations(prev => [...prev, created])
-        }
-        catch (err) {
-            console.log(err);
-        }
-        finally{
-            setNewPlace(null);
-        }
+        await createNewLocation(addPlace)
     }
-
+    
     const deleteLocation = async (id: string | undefined) => {
 
         if (!id) throw new Error('this location was not found');
@@ -147,7 +141,7 @@ const Locations = ({editMode, locations, setLocations, tripId}: LocationsProps) 
                             </div>
                             <button
                                 className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white font-semibold py-3 rounded-lg transition"
-                                onClick={addLocation}>
+                                onClick={handleCreateNewLocation}>
                                 Add this Location
                             </button>
                         </div>
