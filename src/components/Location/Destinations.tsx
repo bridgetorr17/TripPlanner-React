@@ -9,7 +9,8 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
 
     const [selectedDest, setSelectedDest] = useState<number | null>(null);
     const [newPlace, setNewPlace] = useState<AutocompletePrediction | null>(null);
-    const [newPlaceCoords, setNewPlaceCoords] = useState<Coordinates>([0,0])
+    const [newPlaceCoords, setNewPlaceCoords] = useState<Coordinates>([0,0]);
+    const [newPlaceType, setNewPlaceType] = useState<'destination' | 'location'>('destination')
     const [mapLocations, setMapLocations] = useState<LocationType[]>(destinations.map(dest => ({
         name: dest.name,
         coordinates: dest.coordinates
@@ -48,9 +49,9 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
     }
 
     return (
+        <div>
         <div className="flex flex-col sm:flex-row justify-around items-stretch space-y-4 sm:space-y-0 sm:space-x-6">
             <div className="w-full sm:w-1/3 bg-white border border-gray-200 rounded shadow-sm p-4 overflow-y-auto">
-                <h2 className="text-xl font-semibold mb-4">Destinations</h2>
                 {destinations.map((dest, ind) => (
                     <div key={ind}>
                         <div
@@ -79,26 +80,7 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
                         )}
                     </div>
                 ))}
-                {newPlace && editMode && (
-                        <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg">
-                            <div className="mb-3 text-lg font-semibold text-green-800">
-                                <span 
-                                    className="inline-block transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
-                                    onClick={() => setCoords([...newPlaceCoords])}>
-                                    {newPlace.placePrediction?.structuredFormat?.mainText?.text}
-                                </span>
-                            </div>
-                            <div className="mb-3 text-md font-medium text-green-800">
-                                {newPlace.placePrediction?.structuredFormat?.secondaryText?.text}
-                            </div>
-                            <button
-                                className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white font-semibold py-3 rounded-lg transition"
-                                //onClick={addLocation}
-                                >
-                                Add this Location
-                            </button>
-                        </div>
-                    )}
+                
             </div>
             <div className="sm:flex-1 flex flex-col p-2 rounded shadow-sm relative h-64 sm:h-[250px] md:h-[350px]">
                 <PlaceAutocomplete 
@@ -108,6 +90,41 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
                 <Map locations={mapLocations} coords={coords} />
             </div>
         </div>
+        <div>
+            {newPlace && editMode && (
+                        <div className="mt-4 p-4 bg-green-50 border border-green-300 rounded-lg">
+                            <div className="mb-3 text-lg font-semibold text-green-800">
+                                <span 
+                                    className="inline-block transform hover:scale-105 transition-transform duration-200 ease-in-out cursor-pointer"
+                                    onClick={() => setCoords([...newPlaceCoords])}>
+                                    {newPlace.placePrediction?.structuredFormat?.mainText?.text}
+                                </span>
+                            </div>
+                            <div className="mb-3 text-sm font-medium text-green-800">
+                                {newPlace.placePrediction?.structuredFormat?.secondaryText?.text}
+                            </div>
+                            {(selectedDest !== null) && 
+                                <div>
+                                    <button
+                                        className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white text-base font-semibold py-1 rounded-lg transition"
+                                        //onClick={addLocation}
+                                        >
+                                        Add this location to {destinations[selectedDest].name.mainText}
+                                    </button>
+                                    <div className="flex items-center justify-center text-gray-500 font-medium">
+                                        <span className="px-2 bg-green-50 text-gray-600">or</span>
+                                    </div>
+                                </div>
+                            }
+                            <button
+                                className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white font-semibold py-1 rounded-lg transition"
+                                //onClick={addLocation}
+                                >
+                                Add as new destination
+                            </button>
+                        </div>
+                    )}
+        </div></div>
     )
 }
 
