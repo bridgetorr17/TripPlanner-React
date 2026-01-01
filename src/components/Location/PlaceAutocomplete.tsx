@@ -78,7 +78,7 @@ const PlaceAutocomplete = ({ editMode, handleSelect, clearPlace }: PlaceAutocomp
                         <ul
                             id="suggestion-list"
                             role="listbox"
-                            className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-48 overflow-y-auto z-[1100] rounded text-xs"
+                            className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-48 overflow-y-auto z-1100 rounded text-xs"
                             >
                             {suggestions.map((sug, index) => (
                                 <li
