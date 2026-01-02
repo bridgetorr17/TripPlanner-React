@@ -5,7 +5,7 @@ import Map from "./Map";
 import PlaceAutocomplete from "./PlaceAutocomplete";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCreateContent } from "hooks/useCreateContent";
+import { useCreateContent } from "../../hooks/useCreateContent";
 
 const Destinations = ({editMode, destinations, setDestinations, tripId}: DestinationProps) => {
 
@@ -25,9 +25,53 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
     const navigate = useNavigate();
 
     const { createContent: createNewDestination } = useCreateContent<
-        
+        LocationType, DestinationType> ({
+            url: `/api/trips/addDestination/${tripId}`,
+            onSuccess: (created) => setDestinations(prev => [...prev, created]),
+            onFinally: () => setNewPlace(null),
+        });
 
-    const selectNewPlace = async (selectedPlace: AutocompletePrediction) => {
+    const { createContent: createNewLocation } = useCreateContent<
+        LocationType, LocationType> ({
+            url: `/api/trips/addLocation/${tripId}`,
+            onSuccess: () => console.log('added new location'),
+            onFinally: () => setNewPlace(null),
+        });
+
+    const handleCreateNewDestination = async () => {
+        console.log('creating a new destination')
+        const addDestination = {
+            name: {
+                mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
+                secondaryText: newPlace?.placePrediction.structuredFormat.secondaryText?.text,
+            },
+            coordinates: {
+                latitude: coords[0],
+                longitude: coords[1]
+            }
+        } as LocationType;
+
+        await createNewDestination(addDestination);
+    }
+
+    const handleCreateNewLocation = async (destinationId: string) => {
+        console.log('creating a new location')
+        const addLocation = {
+            id: destinationId,
+            name: {
+                mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
+                secondaryText: newPlace?.placePrediction.structuredFormat.secondaryText?.text,
+            },
+            coordinates: {
+                latitude: coords[0],
+                longitude: coords[1]
+            }
+        } as LocationType;
+
+        await createNewLocation(addLocation);
+    }
+
+        const selectNewPlace = async (selectedPlace: AutocompletePrediction) => {
         setNewPlace(selectedPlace);
         const placeId = selectedPlace.placePrediction.placeId;
         try {
@@ -49,26 +93,6 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
         catch (err) {
             console.log(err);
             navigate('/errorpage')
-        }
-    }
-
-    const handleCreateNewPlace = async (placeType: 'destination' | 'location') => {
-        const addPlace = {
-            name: {
-                mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
-                secondaryText: newPlace?.placePrediction.structuredFormat.secondaryText?.text,
-            },
-            coordinates: {
-                latitude: coords[0],
-                longitude: coords[1]
-            }
-        };
-        
-        if (placeType === 'destination') {
-            await createNewDestination(addPlace);
-        }
-        else {
-
         }
     }
 
@@ -130,7 +154,7 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
                             <div>
                                 <button
                                     className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white text-base font-semibold py-1 rounded-lg transition"
-                                    onClick={() => handleCreateNewPlace('location')}
+                                    onClick={() => handleCreateNewLocation(destinations[selectedDest]._id)}
                                     >
                                     Add this location to {destinations[selectedDest].name.mainText}
                                 </button>
@@ -141,7 +165,7 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
                         }
                         <button
                             className="w-full flex justify-center items-center gap-2 bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 text-white font-semibold py-1 rounded-lg transition"
-                            onClick={() => handleCreateNewPlace('destination')}
+                            onClick={() => handleCreateNewDestination()}
                             >
                             Add as new destination
                         </button>

@@ -1,7 +1,7 @@
 import { LocationType } from "./Location.js";
 
 export type DestinationType = {
-    _id?: string;
+    _id: string;
     name: {
         mainText: string;
         secondaryText?: string;

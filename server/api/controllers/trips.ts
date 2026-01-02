@@ -6,6 +6,7 @@ import { proccessPhoto } from '../middleware/processPhoto.js';
 import { contributorsOnCreateTrip } from '../middleware/contributorsProcessing.js';
 import dotenv from 'dotenv';
 import { Request,  Response } from 'express';
+import { IDestination } from 'api/models/Destination.js';
 dotenv.config({path: './config/.env'})
 
 //GET - trip information for trip page (request comes from react loader)
@@ -151,6 +152,37 @@ const postNewPhoto = async (req: Request, res: Response) => {
     }
 }
 
+const postNewLocation = async (req: Request, res: Response) => {
+    const tripId = req.params.id;
+    console.log(req.body);
+}
+
+const postNewDestination = async (req: Request, res: Response) => {
+    const tripId = req.params.id;
+
+    const newDestination = {
+        name: req.body.name,
+        coordinates: req.body.coordinates,
+        locations: []
+    };
+    
+    try{
+        const trip = await Trip.findById(tripId) as ITrip;
+        trip.destinations.push(newDestination);
+        await trip.save();
+        
+        const lastDestination = trip.destinations[trip.destinations.length - 1];
+        return res.json(lastDestination);
+    }
+    catch(err){
+        console.error(err);
+        return res.json({
+            success: false,
+            message: 'error adding the location to the trip'
+        });  
+    }
+}
+
 // const postNewPlace = async (req: Request, res: Response) => {
 //     const tripId = req.params.id;
 
@@ -176,5 +208,7 @@ export {getTrip,
         deleteTrip,
         postNewMemory,
         postNewPhoto,
+        postNewLocation,
+        postNewDestination
         //postNewPlace
     };

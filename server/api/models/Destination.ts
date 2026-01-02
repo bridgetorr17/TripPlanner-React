@@ -18,6 +18,6 @@ const DestinationSchema = new mongoose.Schema({
         type: [LocationSchema],
         required: true
     }
-}, {timestamps: true});
+});
 
 export default DestinationSchema;

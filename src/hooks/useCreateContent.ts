@@ -22,7 +22,7 @@ export const useCreateContent = <TPayload, TResult>({
 
     const createContent = async(payload: TPayload) => {
         setLoading(true);
-
+        console.log('about to POST the payload')
         try{
             const res = await fetch(url, {
                 method: 'POST',
