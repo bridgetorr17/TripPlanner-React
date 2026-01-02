@@ -12,7 +12,6 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
     const [selectedDest, setSelectedDest] = useState<number | null>(null);
     const [newPlace, setNewPlace] = useState<AutocompletePrediction | null>(null);
     const [newPlaceCoords, setNewPlaceCoords] = useState<Coordinates>([0,0]);
-    //const [newPlaceType, setNewPlaceType] = useState<'destination' | 'location'>('destination')
     const [mapLocations, setMapLocations] = useState<LocationType[]>(destinations.map(dest => ({
         name: dest.name,
         coordinates: dest.coordinates
@@ -54,7 +53,6 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
     }
 
     const handleCreateNewLocation = async (destinationId: string) => {
-        console.log('creating a new location')
         const addLocation = {
             _id: destinationId,
             name: {
@@ -103,8 +101,20 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
                         <div key={ind}>
                             <div
                                 onClick={() => {
-                                    setSelectedDest(ind === selectedDest ? null : ind);
-                                    setMapLocations(dest.locations);
+                                    if (selectedDest === null){
+                                        setSelectedDest(ind);
+                                        setMapLocations(dest.locations.length !== 0 ? dest.locations : [{
+                                            name: dest.name,
+                                            coordinates: dest.coordinates
+                                        }]);
+                                    }
+                                    else {
+                                        setSelectedDest(null);
+                                        setMapLocations(destinations.map(dest => ({
+                                            name: dest.name,
+                                            coordinates: dest.coordinates
+                                        })))
+                                    }
                                 }}
                                 className={`cursor-pointer px-3 py-2 rounded transition-all duration-200${selectedDest === ind ? "bg-blue-100 font-bold text-lg text-blue-700" : "hover:bg-gray-100 text-gray-800"}`}>
                                     {dest.name.mainText}

@@ -30,11 +30,17 @@ const Map = ({locations, coords}: MapProps) => {
 
     const seeAllMarkers = () => {
         const map = mapRef.current;
-        if (!map) return;
+        if (!map) {
+            console.log('map not yet mounted')
+            return;
+        }
 
         const leafletMap = map;
 
-        if (!locations || locations.length === 0) return;
+        if (!locations || locations.length === 0) {
+            console.log('locations array is empty')
+            return;
+        }
 
         let minLat = Infinity,
             maxLat = -Infinity,
@@ -53,6 +59,8 @@ const Map = ({locations, coords}: MapProps) => {
             [minLat, minLng],
             [maxLat, maxLng]
         ] as LatLngBoundsExpression;
+
+        console.log(`the bounds are ${bounds}`)
 
         leafletMap.fitBounds(bounds, { padding: [50, 50], animate: true })
     }
