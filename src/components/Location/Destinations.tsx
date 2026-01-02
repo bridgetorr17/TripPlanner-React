@@ -25,21 +25,20 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
     const navigate = useNavigate();
 
     const { createContent: createNewDestination } = useCreateContent<
-        LocationType, DestinationType> ({
+        LocationType, DestinationType[]> ({
             url: `/api/trips/addDestination/${tripId}`,
-            onSuccess: (created) => setDestinations(prev => [...prev, created]),
+            onSuccess: (created) => setDestinations(created),
             onFinally: () => setNewPlace(null),
         });
 
     const { createContent: createNewLocation } = useCreateContent<
-        LocationType, LocationType> ({
+        LocationType, DestinationType[]> ({
             url: `/api/trips/addLocation/${tripId}`,
-            onSuccess: () => console.log('added new location'),
+            onSuccess: (created) => setDestinations(created),
             onFinally: () => setNewPlace(null),
         });
 
     const handleCreateNewDestination = async () => {
-        console.log('creating a new destination')
         const addDestination = {
             name: {
                 mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
@@ -57,7 +56,7 @@ const Destinations = ({editMode, destinations, setDestinations, tripId}: Destina
     const handleCreateNewLocation = async (destinationId: string) => {
         console.log('creating a new location')
         const addLocation = {
-            id: destinationId,
+            _id: destinationId,
             name: {
                 mainText: newPlace?.placePrediction.structuredFormat.mainText?.text,
                 secondaryText: newPlace?.placePrediction.structuredFormat.secondaryText?.text,

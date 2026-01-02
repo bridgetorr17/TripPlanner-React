@@ -155,6 +155,24 @@ const postNewPhoto = async (req: Request, res: Response) => {
 const postNewLocation = async (req: Request, res: Response) => {
     const tripId = req.params.id;
     console.log(req.body);
+    
+    const newLocation = {
+        name: req.body.name,
+        coordinates: req.body.coordinates
+    }
+
+    try{
+        const trip = await Trip.findById(tripId) as ITrip;
+        const dest = trip.destinations.id(req.body._id);
+
+        dest?.locations.push(newLocation);
+        await trip.save();
+
+        return res.json(trip.destinations);
+    }
+    catch(err){
+
+    }
 }
 
 const postNewDestination = async (req: Request, res: Response) => {
@@ -171,8 +189,7 @@ const postNewDestination = async (req: Request, res: Response) => {
         trip.destinations.push(newDestination);
         await trip.save();
         
-        const lastDestination = trip.destinations[trip.destinations.length - 1];
-        return res.json(lastDestination);
+        return res.json(trip.destinations);
     }
     catch(err){
         console.error(err);
