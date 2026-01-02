@@ -6,6 +6,7 @@ import { proccessPhoto } from '../middleware/processPhoto.js';
 import { contributorsOnCreateTrip } from '../middleware/contributorsProcessing.js';
 import dotenv from 'dotenv';
 import { Request,  Response } from 'express';
+import { IDestination } from 'api/models/Destination.js';
 dotenv.config({path: './config/.env'})
 
 //GET - trip information for trip page (request comes from react loader)
@@ -151,16 +152,44 @@ const postNewPhoto = async (req: Request, res: Response) => {
     }
 }
 
-const postNewPlace = async (req: Request, res: Response) => {
+const postNewLocation = async (req: Request, res: Response) => {
     const tripId = req.params.id;
+    console.log(req.body);
+    
+    const newLocation = {
+        name: req.body.name,
+        coordinates: req.body.coordinates
+    }
 
     try{
         const trip = await Trip.findById(tripId) as ITrip;
-        trip.locations.push(req.body);
+        const dest = trip.destinations.id(req.body._id);
+
+        dest?.locations.push(newLocation);
+        await trip.save();
+
+        return res.json(trip.destinations);
+    }
+    catch(err){
+
+    }
+}
+
+const postNewDestination = async (req: Request, res: Response) => {
+    const tripId = req.params.id;
+
+    const newDestination = {
+        name: req.body.name,
+        coordinates: req.body.coordinates,
+        locations: []
+    };
+    
+    try{
+        const trip = await Trip.findById(tripId) as ITrip;
+        trip.destinations.push(newDestination);
         await trip.save();
         
-        const lastLocation = trip.locations[trip.locations.length - 1]
-        return res.json(lastLocation);
+        return res.json(trip.destinations);
     }
     catch(err){
         console.error(err);
@@ -171,9 +200,32 @@ const postNewPlace = async (req: Request, res: Response) => {
     }
 }
 
+// const postNewPlace = async (req: Request, res: Response) => {
+//     const tripId = req.params.id;
+
+//     try{
+//         const trip = await Trip.findById(tripId) as ITrip;
+//         trip.locations.push(req.body);
+//         await trip.save();
+        
+//         const lastLocation = trip.locations[trip.locations.length - 1]
+//         return res.json(lastLocation);
+//     }
+//     catch(err){
+//         console.error(err);
+//         return res.json({
+//             success: false,
+//             message: 'error adding the location to the trip'
+//         });  
+//     }
+// }
+
 export {getTrip, 
         postNewTrip, 
         deleteTrip,
         postNewMemory,
         postNewPhoto,
-        postNewPlace};
+        postNewLocation,
+        postNewDestination
+        //postNewPlace
+    };

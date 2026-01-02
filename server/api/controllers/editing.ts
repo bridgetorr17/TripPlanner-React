@@ -156,23 +156,23 @@ const deletePhoto = async (req: Request, res: Response) => {
 
 //DELETE - delete a location in a trip
 const deleteLocation = async (req: Request, res: Response) => {
-    try{
-        const tripId = req.params.id;
-        const locationId = req.body.id;
+    // try{
+    //     const tripId = req.params.id;
+    //     const locationId = req.body.id;
 
-        const trip = await Trip.findById(tripId) as ITrip;
+    //     const trip = await Trip.findById(tripId) as ITrip;
 
-        trip.locations.pull({_id: locationId})
-        await trip.save();
+    //     trip.locations.pull({_id: locationId})
+    //     await trip.save();
 
-        return res.json(trip.locations)
-    }
-    catch(err){
-        return res.json({
-            success: false,
-            message: 'Error deleting that location.'
-        });
-    }
+    //     return res.json(trip.locations)
+    // }
+    // catch(err){
+    //     return res.json({
+    //         success: false,
+    //         message: 'Error deleting that location.'
+    //     });
+    // }
 }
 
 export {editTripField,
